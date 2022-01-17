@@ -1,6 +1,9 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const app = express()
+const sendMail = require('./utils/mail');
+const routes = require('./routes/routes');
+
 const path = require('path')
 require('dotenv').config();
 // const upload = require('./utils/fileHandler');
@@ -15,8 +18,12 @@ mongoose.connect(process.env.DB_CONNECTION, { useNewUrlParser: true, useUnifiedT
     console.log('Database Connected')
 })
 
-const routes = require('./routes/routes')
 app.use('/api/', routes)
+
+app.get('/', (req, res) => {
+}) 
+sendMail('rredouane342@gmail.com', 'test', 'test')
+// console.log(process.env.PASSWORD); 
 
 
 app.listen(port, () => {
