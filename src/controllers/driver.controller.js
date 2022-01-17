@@ -47,9 +47,9 @@ const loginDriver = async (req, res) => {
 }
 
 const store = async (req, res) => {
-    const { email, firstName, lastName, password } = req.body
+    const { email, firstName, lastName, password, file } = req.body
     try {
-        if (!email || !firstName || !lastName || !password) return res.status(400).json({ message: "Please fill all the fields" })
+        if (!email || !firstName || !lastName || !password || file) return res.status(400).json({ message: "Please fill all the fields" })
 
         const existingDriver = await Driver.findOne({ email })
 
@@ -57,11 +57,13 @@ const store = async (req, res) => {
 
         const hashedPassword = await bcrypt.hash(password, 12)
 
-        const newDriver = await Driver.create({ email, name: `${firstName} ${lastName}`, password: hashedPassword })
+        const newDriver = await Driver.create({ email, name: `${firstName} ${lastName}`, password: hashedPassword , file: req.file.filename })
 
         const token = jwt.sign({ id: newDriver._id, email: newDriver.email }, `${process.env.JWT_SECRET}`, { expiresIn: '1h' })
 
         res.status(200).json({newDriver, token})
+    
+
 
     } catch (err) {
         res.status(400).json({ message: err })
