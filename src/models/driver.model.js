@@ -30,6 +30,10 @@ const driverSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: "delivery"
     }],
+    TotalTraveledDistance: {
+        type: Number,
+        default: 0
+    },
     license: {
         type: String,
         required: true,

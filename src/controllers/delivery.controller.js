@@ -60,14 +60,14 @@ const store = async (req, res) => {
             if (vanDrivers.length === 0) return res.status(400).json({ error: "No van driver available" });
             await Delivery.create({ delivery, weight, from, to, distance: distance, price:price, shipmentMethod: "Van", createdBy:createdBy, region })
             vanDrivers?.forEach((driver) => {
-                sendMail(driver.email);
+                sendMail(driver.email , driver.name , from , to , weight);
                 return res.status(200).send({ message: "email has been send to truck the drivers" });
             });
         } else if (Nw <= 1600) {
             if (truckDrivers.length === 0) return res.status(400).json({ error: "No truck driver available" });
             await Delivery.create({ delivery, weight, from, to, distance: distance, price:price, shipmentMethod: "Truck", createdBy:createdBy, region })
-            truckDrivers?.forEach((driver) => {
-                sendMail(driver.email);
+            truckDrivers?.forEach((driver ) => {
+                sendMail(driver.email , driver.name , from , to , weight);
                 return res.status(200).json({ message: "email has been send to truck the drivers" });
             });
         } else {
