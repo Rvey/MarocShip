@@ -3,7 +3,6 @@ const {
     Schema
 } = mongoose;
 
-
 const driverSchema = new Schema({
     name: {
         type: String,
@@ -27,15 +26,13 @@ const driverSchema = new Schema({
         type: String,
         default: "driver"
     },
-    delivery: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: "delivery"
-        }
-    ],
-    truck: {
+    AcceptedDeliveries: [{
         type: Schema.Types.ObjectId,
-        ref: "truck"
+        ref: "delivery"
+    }],
+    license: {
+        type: String,
+        required: true,
     },
     verified: {
         type: Boolean,
@@ -46,10 +43,15 @@ const driverSchema = new Schema({
         immutable: true,
         default: Date.now
     },
-    updatedAt: {
+    verifiedAt: {
         type: Date,
         default: Date.now
     }
 });
+
+driverSchema.pre('update', function(doc , next) {
+    doc.verifiedAt = new Date();
+    next();
+})
 
 module.exports = mongoose.model('driver', driverSchema)

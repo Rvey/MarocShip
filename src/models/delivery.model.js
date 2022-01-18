@@ -9,13 +9,12 @@ const deliverySchema = new Schema({
         required: true
     },
     weight: {
-        type: String,
+        type: Number,
         required: true
     },
     from: {
         type: String,
         required: true,
-
     },
     to: {
         type: String,
@@ -23,37 +22,41 @@ const deliverySchema = new Schema({
     },
     distance: {
         type: String,
-        required: true,
     },
     price: {
         type: String,
-        required: true,
     },
     shipmentMethod: {
         type: String,
         required: true,
-        default: "car" | "truck" | "van"
     },
     createdBy: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "manager",
-        required: true
-    },
-    AcceptedBy: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "driver",
-        required: true
     },
     region: {
         type: String,
         required: true,
         default: "Europe" | "Asia" | "Africa" | "America" | "National"
     },
+    AcceptedBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "driver",
+    },
+    Available: {
+        type: Boolean,
+        default: true
+    },
     createdAt: {
         type: Date,
         immutable: true,
         default: Date.now
     },
+    updatedAt: {
+        type: Date,
+        default: Date.now
+    }
 });
+
 
 module.exports = mongoose.model("delivery", deliverySchema);

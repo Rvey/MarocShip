@@ -57,9 +57,9 @@ const loginDriver = async (req, res) => {
 };
 
 const store = async (req, res, next) => {
-  const { email, firstName, lastName, password, delivery } = req.body;
+  const { email, firstName, lastName, password, license } = req.body;
   try {
-    if (!email || !firstName || !lastName || !password)
+    if (!email || !firstName || !lastName || !password || !license)
       return res.status(400).json({ message: "Please fill all the fields" });
 
     const existingDriver = await Driver.findOne({ email });
@@ -74,7 +74,7 @@ const store = async (req, res, next) => {
       name: `${firstName} ${lastName}`,
       password: hashedPassword,
       file: req.file.filename,
-      delivery,
+      license,
     });
 
     const token = jwt.sign(
