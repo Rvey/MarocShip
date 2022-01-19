@@ -33,10 +33,32 @@ const store = async (req, res) => {
         // if (!delivery || !weight || !from || !to || !shipmentMethod || !region) return res.status(400).json({ message: "Please fill all the fields" })
         let distance = '100'
         let createdBy = '61e4808f735f6f5a37b2fa3b'
-        let price = '100'
+        let price = 0
 
         const Nw = parseInt(req.body.weight);
+        
+        if (region === 'national') {
+            if (Nw <= 3) {
+            price = Nw * 40
+            } else if (Nw > 3) {
+            price = (Nw - 3) * 5 + 120
 
+            }
+        } else if (region === 'Europe') {
+            price = Nw * 160
+        } else if (region === 'Asia') {
+            price = Nw * 200
+        } else if (region === 'Australia') {
+            price = Nw * 260
+        } else if (region === 'America') {
+            price = Nw * 220 
+        } 
+
+
+        res.status(200).json({price : price})
+
+
+        // find drivers
         const drivers = await Driver.find();
 
         const carDrivers = drivers.filter((driver) => {
@@ -49,30 +71,30 @@ const store = async (req, res) => {
             return driver.license === "truck" && driver.verified === true;
         });
 
-        if (Nw <= 200) {
-            if (carDrivers.length === 0)  return res.status(400).json({ error: "No car driver available" });
-            await Delivery.create({ delivery, weight, from, to, distance: distance, price:price, shipmentMethod: "Car", createdBy:createdBy, region })
-            carDrivers.forEach((driver) => {
-                sendMail(driver.email);
-                return res.status(200).send({ message: "email has been send to truck the drivers" });
-            });
-        } else if (Nw <= 800) {
-            if (vanDrivers.length === 0) return res.status(400).json({ error: "No van driver available" });
-            await Delivery.create({ delivery, weight, from, to, distance: distance, price:price, shipmentMethod: "Van", createdBy:createdBy, region })
-            vanDrivers?.forEach((driver) => {
-                sendMail(driver.email , driver.name , from , to , weight);
-                return res.status(200).send({ message: "email has been send to truck the drivers" });
-            });
-        } else if (Nw <= 1600) {
-            if (truckDrivers.length === 0) return res.status(400).json({ error: "No truck driver available" });
-            await Delivery.create({ delivery, weight, from, to, distance: distance, price:price, shipmentMethod: "Truck", createdBy:createdBy, region })
-            truckDrivers?.forEach((driver ) => {
-                sendMail(driver.email , driver.name , from , to , weight);
-                return res.status(200).json({ message: "email has been send to truck the drivers" });
-            });
-        } else {
-            res.status(200).json({ error: "A problem occurred" });
-        }
+        // if (Nw <= 200) {
+        //     if (carDrivers.length === 0)  return res.status(400).json({ error: "No car driver available" });
+        //     await Delivery.create({ delivery, weight, from, to, distance: distance, price:price, shipmentMethod: "Car", createdBy:createdBy, region })
+        //     carDrivers.forEach((driver) => {
+        //         sendMail(driver.email);
+        //         return res.status(200).send({ message: "email has been send to truck the drivers" });
+        //     });
+        // } else if (Nw <= 800) {
+        //     if (vanDrivers.length === 0) return res.status(400).json({ error: "No van driver available" });
+        //     await Delivery.create({ delivery, weight, from, to, distance: distance, price:price, shipmentMethod: "Van", createdBy:createdBy, region })
+        //     vanDrivers?.forEach((driver) => {
+        //         sendMail(driver.email , driver.name , from , to , weight);
+        //         return res.status(200).send({ message: "email has been send to truck the drivers" });
+        //     });
+        // } else if (Nw <= 1600) {
+        //     if (truckDrivers.length === 0) return res.status(400).json({ error: "No truck driver available" });
+        //     await Delivery.create({ delivery, weight, from, to, distance: distance, price:price, shipmentMethod: "Truck", createdBy:createdBy, region })
+        //     truckDrivers?.forEach((driver ) => {
+        //         sendMail(driver.email , driver.name , from , to , weight);
+        //         return res.status(200).json({ message: "email has been send to truck the drivers" });
+        //     });
+        // } else {
+        //     res.status(200).json({ error: "A problem occurred" });
+        // }
 
         // const newDelivery = await Delivery.create({ delivery, weight, from, to, distance: distance, price:price, shipmentMethod, createdBy:createdBy, region })
 
