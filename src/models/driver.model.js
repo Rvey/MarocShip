@@ -39,6 +39,10 @@ const driverSchema = new Schema({
         type: String,
         required: true,
     },
+    bonus: {
+        type: Number,
+        default: 0
+    },
     verified: {
         type: Boolean,
         default: false

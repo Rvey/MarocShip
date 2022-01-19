@@ -21,10 +21,12 @@ const deliverySchema = new Schema({
         required: true,
     },
     distance: {
-        type: String,
+        type: Number,
+        default:0
     },
     price: {
-        type: String,
+        type: Number,
+        default: 0
     },
     shipmentMethod: {
         type: String,

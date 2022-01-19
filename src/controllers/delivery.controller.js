@@ -2,8 +2,7 @@ const Delivery = require("../models/delivery.model");
 const Driver = require("../models/driver.model");
 const NodeGeocoder = require("node-geocoder");
 const sendMail = require("../utils/mail");
-const jwt = require("jsonwebtoken");
-
+const axios = require('axios');
 const index = async (req, res) => {
     Delivery.find()
         .then((result) => {
@@ -16,6 +15,8 @@ const index = async (req, res) => {
         .catch((err) => {
             console.log(err);
         });
+ 
+
 };
 
 const show = async (req, res) => {
@@ -24,7 +25,7 @@ const show = async (req, res) => {
         const result = await Delivery.findById(id);
         res.status(200).json(result);
     } catch (err) {
-        res.status(400).json({ message: err });
+        res.status(400).json({ error: err });
     }
 };
 
@@ -36,23 +37,29 @@ const store = async (req, res) => {
         let createdBy = '61e4808f735f6f5a37b2fa3b'
         let price = 0
 
+        // calculate distance
+        const getDistance = await axios(`https://www.distance24.org/route.json?stops=${from}%7C${to}`)
+
+        distance = getDistance.data.distance.toFixed(2)
+
         // calculate price based on weight
-        const Nw = parseInt(req.body.weight);
+        const parsedWeight = parseInt(req.body.weight);
+
         if (region === 'national') {
-            if (Nw <= 3) {
-                price = Nw * 40
-            } else if (Nw > 3) {
-                price = (Nw - 3) * 5 + 120
+            if (parsedWeight <= 3) {
+                price = parsedWeight * 40
+            } else if (parsedWeight > 3) {
+                price = (parsedWeight - 3) * 5 + 120
 
             }
         } else if (region === 'Europe') {
-            price = Nw * 160
+            price = parsedWeight * 160
         } else if (region === 'Asia') {
-            price = Nw * 200
+            price = parsedWeight * 200
         } else if (region === 'Australia') {
-            price = Nw * 260
+            price = parsedWeight * 260
         } else if (region === 'America') {
-            price = Nw * 220
+            price = parsedWeight * 220
         }
 
 
@@ -70,21 +77,21 @@ const store = async (req, res) => {
         });
 
         // check the weight of the shipment and send mail to the driver accordingly
-        if (Nw <= 200) {
+        if (parsedWeight <= 200) {
             if (carDrivers.length === 0) return res.status(400).json({ error: "No car driver available" });
             await Delivery.create({ delivery, weight, from, to, distance: distance, price: price, shipmentMethod: "Car", createdBy: createdBy, region })
             carDrivers.forEach((driver) => {
                 sendMail(driver.email);
                 return res.status(200).send({ message: "email has been send to truck the drivers" });
             });
-        } else if (Nw <= 800) {
+        } else if (parsedWeight <= 800 && parsedWeight > 200) {
             if (vanDrivers.length === 0) return res.status(400).json({ error: "No van driver available" });
             await Delivery.create({ delivery, weight, from, to, distance: distance, price: price, shipmentMethod: "Van", createdBy: createdBy, region })
             vanDrivers?.forEach((driver) => {
                 sendMail(driver.email, driver.name, from, to, weight);
                 return res.status(200).send({ message: "email has been send to truck the drivers" });
             });
-        } else if (Nw <= 1600) {
+        } else if (parsedWeight <= 1600 && parsedWeight > 800) {
             if (truckDrivers.length === 0) return res.status(400).json({ error: "No truck driver available" });
             await Delivery.create({ delivery, weight, from, to, distance: distance, price: price, shipmentMethod: "Truck", createdBy: createdBy, region })
             truckDrivers?.forEach((driver) => {
@@ -95,10 +102,6 @@ const store = async (req, res) => {
             res.status(200).json({ error: "A problem occurred" });
         }
 
-        // const newDelivery = await Delivery.create({ delivery, weight, from, to, distance: distance, price:price, shipmentMethod, createdBy:createdBy, region })
-
-        // res.status(200).json(newDelivery)
-        // res.status(200).json(Nw)
     } catch (err) {
         res.status(400).json({ message: err });
     }
@@ -116,10 +119,11 @@ const destroy = async (req, res) => {
 };
 
 const AcceptDelivery = async (req, res) => {
-    const deliveryId = { _id:  req.params.id };
+    const deliveryId = { _id: req.params.id };
 
+    // get current authenticated driver
     const token = await req.headers.authorization.split(" ")[1]
-    let decodeData =  jwt.verify(token, `${process.env.JWT_SECRET}`)
+    let decodeData = jwt.verify(token, `${process.env.JWT_SECRET}`)
 
     try {
         const delivery = await Delivery.findById(deliveryId);
@@ -128,9 +132,10 @@ const AcceptDelivery = async (req, res) => {
             $set: {
                 Available: false,
                 AcceptedBy: decodeData.id,
+                updatedAt : Date.now()
             },
         })
-        await Driver.findByIdAndUpdate({ _id : decodeData.id},
+        await Driver.findByIdAndUpdate({ _id: decodeData.id },
             {
                 $push: { AcceptedDeliveries: deliveryId },
             });
@@ -149,7 +154,7 @@ const update = async (req, res) => {
         const result = await Delivery.updateOne(record, updatedData);
         res.status(200).json(result);
     } catch (err) {
-        res.status(400).json({ message: err });
+        res.status(400).json({ error: err });
     }
 };
 

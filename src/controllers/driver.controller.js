@@ -1,4 +1,5 @@
 const Driver = require("../models/driver.model");
+const Delivery = require("../models/delivery.model");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const sendMail = require("../utils/mail");
@@ -130,6 +131,57 @@ const update = async (req, res) => {
   }
 };
 
+const driverBonus = async (req, res) => {
+  const { driverId } = req.params.id;
+  try {
+    // find driver by id
+    const driver = await Driver.findOne(driverId);
+
+    let allDeliveries = [];
+    let totalTraveledDistance = 0
+    let price = 0
+    let bonus = 0
+
+    // find all deliveries made by this driver
+    await Promise.all(driver.AcceptedDeliveries.map(async (delivery) => {
+      const deliveries = await Delivery.findById({ _id: delivery })
+      allDeliveries.push(deliveries)
+    }));
+
+    // update total traveled distance and price
+    allDeliveries.map(delivery => {
+      totalTraveledDistance += delivery.distance
+      price += delivery.price
+    })
+
+
+    // set monthly bonus depending on the total traveled distance
+    if (totalTraveledDistance === 1000) {
+      bonus = price * 15 / 100
+      const result = await Driver.updateOne({ driverId }, { bonus: bonus }, {
+        new: true,
+      });
+      res.json({ result, bonus })
+    } else if (totalTraveledDistance > 1000 && totalTraveledDistance < 2000) {
+      bonus = price * 22 / 100
+      const result = await Driver.updateOne({ driverId }, { bonus: bonus }, {
+        new: true,
+      });
+      res.json({ result, bonus })
+    } else if (totalTraveledDistance > 2000 && totalTraveledDistance < 2500) {
+      bonus = price * 30 / 100
+      const result = await Driver.updateOne({ driverId }, { bonus: bonus }, {
+        new: true,
+      });
+      res.json({ result, bonus })
+    }
+
+    res.status(200).json({ allDeliveries, totalTraveledDistance, price, bonus });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
 module.exports = {
   index,
   show,
@@ -137,5 +189,6 @@ module.exports = {
   loginDriver,
   destroy,
   validateDriver,
+  driverBonus,
   update,
 };

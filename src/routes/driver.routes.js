@@ -1,6 +1,6 @@
 const express = require('express')
 const driver = express.Router()
-const { index, show, store, destroy, update, loginDriver, validateDriver } = require('../controllers/driver.controller')
+const { index, show, store, destroy, update, loginDriver, validateDriver, driverBonus } = require('../controllers/driver.controller')
 const auth = require('../middleware/auth.middleware')
 const upload = require('../middleware/upload.middleware')
 
@@ -10,6 +10,7 @@ driver.post('/', upload, store);
 driver.post('/login', loginDriver);
 driver.delete('/:id', destroy);
 driver.put('/validateDriver/:id', validateDriver);
+driver.put('/driverBonus/:id', driverBonus);
 driver.put('/:id', update)
 
 module.exports = driver
