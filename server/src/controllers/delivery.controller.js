@@ -13,7 +13,7 @@ const index = async (req, res) => {
             }
         })
         .catch((err) => {
-            console.log(err);
+            res.status(404).json({ error : err.message });
         });
  
 
@@ -78,8 +78,14 @@ const store = async (req, res) => {
 
         // check the weight of the shipment and send mail to the driver accordingly
         if (parsedWeight <= 200) {
+           
+            // check if there is a car driver available
             if (carDrivers.length === 0) return res.status(400).json({ error: "No car driver available" });
+            
+            // store the delivery
             await Delivery.create({ delivery, weight, from, to, distance: distance, price: price, shipmentMethod: "Car", createdBy: createdBy, region })
+          
+            // send mail to the driver who matched the shipmentMethod
             carDrivers.forEach((driver) => {
                 sendMail(driver.email);
                 return res.status(200).send({ message: "email has been send to truck the drivers" });
@@ -103,7 +109,7 @@ const store = async (req, res) => {
         }
 
     } catch (err) {
-        res.status(400).json({ message: err });
+        res.status(400).json({ message: err.message });
     }
 };
 
@@ -114,7 +120,7 @@ const destroy = async (req, res) => {
         const result = await Delivery.deleteOne(record);
         res.status(200).json(result);
     } catch (err) {
-        res.status(400).json({ message: err });
+        res.status(400).json({ message: err.message });
     }
 };
 
@@ -142,7 +148,7 @@ const AcceptDelivery = async (req, res) => {
         return res.status(200).json({ message: "delivery has been accepted" });
 
     } catch (err) {
-        res.status(400).json({ error: err });
+        res.status(400).json({ error: err.message });
     }
 };
 
@@ -154,7 +160,7 @@ const update = async (req, res) => {
         const result = await Delivery.updateOne(record, updatedData);
         res.status(200).json(result);
     } catch (err) {
-        res.status(400).json({ error: err });
+        res.status(400).json({ error: err.message });
     }
 };
 

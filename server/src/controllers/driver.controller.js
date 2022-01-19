@@ -15,7 +15,7 @@ const index = (req, res) => {
       }
     })
     .catch((err) => {
-      console.log(err);
+      res.status(400).json({ error: err.message });
     });
 };
 
@@ -25,7 +25,7 @@ const show = async (req, res) => {
     const result = await Driver.findById(id);
     res.status(200).json(result);
   } catch (err) {
-    res.status(400).json({ message: err });
+    res.status(400).json({ error: err.message });
   }
 };
 
@@ -54,7 +54,7 @@ const loginDriver = async (req, res) => {
 
     res.status(200).json({ existingDriver, token });
   } catch (error) {
-    res.status(500).json({ message: error });
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -87,7 +87,7 @@ const store = async (req, res, next) => {
 
     res.status(200).json({ newDriver, token });
   } catch (err) {
-    res.status(400).json({ message: err });
+    res.status(400).json({ error: err.message });
   }
 };
 
@@ -103,7 +103,7 @@ const validateDriver = async (req, res, next) => {
 
     res.status(200).json(result);
   } catch (err) {
-    res.status(400).json({ message: err });
+    res.status(400).json({ error: err.message });
   }
 };
 
@@ -114,7 +114,7 @@ const destroy = async (req, res) => {
     const result = await Driver.deleteOne(record);
     res.status(200).json(result);
   } catch (err) {
-    res.status(400).json({ message: err });
+    res.status(400).json({ error: err.message });
   }
 };
 
@@ -128,7 +128,7 @@ const update = async (req, res) => {
     });
     res.status(200).json(result);
   } catch (err) {
-    res.status(400).json({ message: err });
+    res.status(400).json({ error: err.message });
   }
 };
 

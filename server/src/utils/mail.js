@@ -9,6 +9,7 @@ const sendMail = async (email, name, from, to, weight , deliveryId) => {
         pass: process.env.PASSWORD,
       },
     })
+    
     const handlebarOptions = {
       viewEngine: {
         extName: '.handlebars',

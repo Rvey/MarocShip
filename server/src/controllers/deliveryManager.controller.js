@@ -10,7 +10,7 @@ const index = (req, res) => {
             res.status(404).json({ error: "No DeliveryManager Found" })
         }
     }).catch((err) => {
-        console.log(err)
+        res.status(400).json({ error: err.message })
     })
 }
 
@@ -20,7 +20,7 @@ const show = async (req, res) => {
         const result = await DeliveryManager.findById(id)
         res.status(200).json(result)
     } catch (err) {
-        res.status(400).json({ message: err })
+        res.status(400).json({ error: err.message })
     }
 }
 
@@ -42,7 +42,7 @@ const loginDeliveryManager = async (req, res) => {
         res.status(200).json({ existingDeliveryManager, token })
 
     } catch (error) {
-        res.status(500).json({ message: error })
+        res.status(500).json({ error: error.message })
     }
 }
 
@@ -64,7 +64,7 @@ const store = async (req, res) => {
         res.status(200).json({newDeliveryManager, token})
 
     } catch (err) {
-        res.status(400).json({ message: err })
+        res.status(400).json({ error: err.message })
     }
 
 }
@@ -76,7 +76,7 @@ const destroy = async (req, res) => {
         const result = await DeliveryManager.deleteOne(record)
         res.status(200).json(result)
     } catch (err) {
-        res.status(400).json({ message: err })
+        res.status(400).json({ error: err.message })
     }
 }
 
@@ -90,7 +90,7 @@ const update = async (req, res) => {
         })
         res.status(200).json(result)
     } catch (err) {
-        res.status(400).json({ message: err })
+        res.status(400).json({ error: err.message })
     }
 }
 
