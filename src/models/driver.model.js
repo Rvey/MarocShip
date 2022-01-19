@@ -28,6 +28,7 @@ const driverSchema = new Schema({
     },
     AcceptedDeliveries: [{
         type: Schema.Types.ObjectId,
+        unique: true,
         ref: "delivery"
     }],
     TotalTraveledDistance: {

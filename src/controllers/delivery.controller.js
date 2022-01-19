@@ -36,12 +36,12 @@ const store = async (req, res) => {
         let price = 0
 
         const Nw = parseInt(req.body.weight);
-        
+
         if (region === 'national') {
             if (Nw <= 3) {
-            price = Nw * 40
+                price = Nw * 40
             } else if (Nw > 3) {
-            price = (Nw - 3) * 5 + 120
+                price = (Nw - 3) * 5 + 120
 
             }
         } else if (region === 'Europe') {
@@ -51,8 +51,8 @@ const store = async (req, res) => {
         } else if (region === 'Australia') {
             price = Nw * 260
         } else if (region === 'America') {
-            price = Nw * 220 
-        } 
+            price = Nw * 220
+        }
 
 
         // res.status(200).json({price : price})
@@ -72,24 +72,24 @@ const store = async (req, res) => {
         });
 
         if (Nw <= 200) {
-            if (carDrivers.length === 0)  return res.status(400).json({ error: "No car driver available" });
-            await Delivery.create({ delivery, weight, from, to, distance: distance, price:price, shipmentMethod: "Car", createdBy:createdBy, region })
+            if (carDrivers.length === 0) return res.status(400).json({ error: "No car driver available" });
+            await Delivery.create({ delivery, weight, from, to, distance: distance, price: price, shipmentMethod: "Car", createdBy: createdBy, region })
             carDrivers.forEach((driver) => {
                 sendMail(driver.email);
                 return res.status(200).send({ message: "email has been send to truck the drivers" });
             });
         } else if (Nw <= 800) {
             if (vanDrivers.length === 0) return res.status(400).json({ error: "No van driver available" });
-            await Delivery.create({ delivery, weight, from, to, distance: distance, price:price, shipmentMethod: "Van", createdBy:createdBy, region })
+            await Delivery.create({ delivery, weight, from, to, distance: distance, price: price, shipmentMethod: "Van", createdBy: createdBy, region })
             vanDrivers?.forEach((driver) => {
-                sendMail(driver.email , driver.name , from , to , weight);
+                sendMail(driver.email, driver.name, from, to, weight);
                 return res.status(200).send({ message: "email has been send to truck the drivers" });
             });
         } else if (Nw <= 1600) {
             if (truckDrivers.length === 0) return res.status(400).json({ error: "No truck driver available" });
-            await Delivery.create({ delivery, weight, from, to, distance: distance, price:price, shipmentMethod: "Truck", createdBy:createdBy, region })
-            truckDrivers?.forEach((driver ) => {
-                sendMail(driver.email , driver.name , from , to , weight);
+            await Delivery.create({ delivery, weight, from, to, distance: distance, price: price, shipmentMethod: "Truck", createdBy: createdBy, region })
+            truckDrivers?.forEach((driver) => {
+                sendMail(driver.email, driver.name, from, to, weight);
                 return res.status(200).json({ message: "email has been send to truck the drivers" });
             });
         } else {
@@ -116,6 +116,32 @@ const destroy = async (req, res) => {
     }
 };
 
+const AcceptDelivery = async (req, res) => {
+    const { id } = req.params;
+    const record = { _id: id };
+    const driverId = { _id: "61e730f9bc266a6e407bb0f3" };
+
+
+    try {
+        const delivery = await Delivery.findById(id);
+        if (delivery.Available === false) return res.status(400).json({ message: "Delivery already accepted" });
+        await Delivery.findByIdAndUpdate(record, {
+            $set: {
+                Available: false,
+                AcceptedBy: driverId,
+            },
+        })
+        await Driver.findByIdAndUpdate(driverId,
+            {
+                $push: { AcceptedDeliveries: record },
+            });
+        return res.status(200).json({ message: "delivery has been accepted" });
+
+    } catch (err) {
+        res.status(400).json({ message: err });
+    }
+};
+
 const update = async (req, res) => {
     const { id } = req.params;
     const record = { _id: id };
@@ -132,6 +158,7 @@ module.exports = {
     index,
     show,
     store,
+    AcceptDelivery,
     destroy,
     update,
 };
