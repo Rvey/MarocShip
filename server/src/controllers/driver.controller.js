@@ -52,6 +52,10 @@ const loginDriver = async (req, res) => {
       { expiresIn: "1h" }
     );
 
+    res.cookie('jwt', token, { httpOnly: true })
+    res.cookie('role', existingDriver.role, { httpOnly: true })
+    res.cookie('id', existingDriver._id, { httpOnly: true })
+    
     res.status(200).json({ existingDriver, token });
   } catch (error) {
     res.status(500).json({ message: error.message });

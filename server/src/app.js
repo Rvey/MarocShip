@@ -1,9 +1,11 @@
 const express = require('express')
 const mongoose = require('mongoose')
-const app = express()
 const routes = require('./routes/routes');
+const cookieParser = require('cookie-parser')
+const app = express()
 
 require('dotenv').config();
+app.use(cookieParser())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(express.static(`${__dirname}/src`))

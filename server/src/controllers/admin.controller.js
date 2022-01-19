@@ -17,6 +17,10 @@ const loginAdmin = async (req, res) => {
 
         const token = jwt.sign({ id: existingAdmin._id, email: existingAdmin.email }, `${process.env.JWT_SECRET}`, { expiresIn: '1h' })
 
+        res.cookie('jwt', token, { httpOnly: true })
+        res.cookie('role', existingAdmin.role, { httpOnly: true })
+        
+
         res.status(200).json({ existingAdmin, token })
 
     } catch (error) {

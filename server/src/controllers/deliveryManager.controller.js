@@ -17,7 +17,7 @@ const index = (req, res) => {
 const show = async (req, res) => {
     let id = req.params.id;
     try {
-        const result = await DeliveryManager.findById(id)
+        const result = await DeliveryManager.findById({_id: id})
         res.status(200).json(result)
     } catch (err) {
         res.status(400).json({ error: err.message })
@@ -39,7 +39,11 @@ const loginDeliveryManager = async (req, res) => {
 
         const token = jwt.sign({ id: existingDeliveryManager._id, email: existingDeliveryManager.email }, `${process.env.JWT_SECRET}`, { expiresIn: '1h' })
 
-        res.status(200).json({ existingDeliveryManager, token })
+        res.cookie('jwt', token, { httpOnly: true })
+        res.cookie('role', existingDeliveryManager.role, { httpOnly: true })
+        res.cookie('id', existingDeliveryManager._id, { httpOnly: true })
+
+        res.status(200).json({ existingDeliveryManager, token})
 
     } catch (error) {
         res.status(500).json({ error: error.message })
@@ -60,7 +64,7 @@ const store = async (req, res) => {
         const newDeliveryManager = await DeliveryManager.create({ email, name: `${firstName} ${lastName}`, password: hashedPassword })
 
         const token = jwt.sign({ id: newDeliveryManager._id, email: newDeliveryManager.email }, `${process.env.JWT_SECRET}`, { expiresIn: '1h' })
-
+        
         res.status(200).json({newDeliveryManager, token})
 
     } catch (err) {

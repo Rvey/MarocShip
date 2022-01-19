@@ -2,16 +2,18 @@ const Manager = require('../models/manager.model')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 
-const index = (req, res) => {
-    Manager.find().then((result) => {
-        if (result.length > 0) {
-            res.status(200).json(result)
+const index = async (req, res) => {
+    try {
+        const result = await Manager.find()
+        if (result) {
+          return  res.status(200).json(result)
         } else {
-            res.status(404).json({ error: "No manager Found" })
+          return  res.status(400).json({ message: "No managers found" })
         }
-    }).catch((err) => {
-        res.status(400).json({ error: err.message })
-    })
+    } catch (error) {
+        res.status(400).json({ error: error.message })
+    }
+
 }
 
 const show = async (req, res) => {
@@ -39,6 +41,10 @@ const loginManager = async (req, res) => {
 
         const token = jwt.sign({ id: existingManager._id, email: existingManager.email }, `${process.env.JWT_SECRET}`, { expiresIn: '1h' })
 
+        res.cookie('jwt', token, { httpOnly: true })
+        res.cookie('role', existingManager.role, { httpOnly: true })
+        res.cookie('id', existingManager._id, { httpOnly: true })
+
         res.status(200).json({ existingManager, token })
 
     } catch (error) {
@@ -61,7 +67,7 @@ const store = async (req, res) => {
 
         const token = jwt.sign({ id: newManager._id, email: newManager.email }, `${process.env.JWT_SECRET}`, { expiresIn: '1h' })
 
-        res.status(200).json({newManager, token})
+        res.status(200).json({ newManager, token })
 
     } catch (err) {
         res.status(400).json({ error: err.message })
@@ -78,7 +84,7 @@ const destroy = async (req, res) => {
         const result = await Manager.deleteOne(record)
         res.status(200).json(result)
     } catch (err) {
-        res.status(400).json({error: err.message })
+        res.status(400).json({ error: err.message })
     }
 }
 
