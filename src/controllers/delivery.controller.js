@@ -2,6 +2,7 @@ const Delivery = require("../models/delivery.model");
 const Driver = require("../models/driver.model");
 const NodeGeocoder = require("node-geocoder");
 const sendMail = require("../utils/mail");
+const jwt = require("jsonwebtoken");
 
 const index = async (req, res) => {
     Delivery.find()
@@ -35,8 +36,8 @@ const store = async (req, res) => {
         let createdBy = '61e4808f735f6f5a37b2fa3b'
         let price = 0
 
+        // calculate price based on weight
         const Nw = parseInt(req.body.weight);
-
         if (region === 'national') {
             if (Nw <= 3) {
                 price = Nw * 40
@@ -55,9 +56,6 @@ const store = async (req, res) => {
         }
 
 
-        // res.status(200).json({price : price})
-
-
         // find drivers
         const drivers = await Driver.find();
 
@@ -71,6 +69,7 @@ const store = async (req, res) => {
             return driver.license === "truck" && driver.verified === true;
         });
 
+        // check the weight of the shipment and send mail to the driver accordingly
         if (Nw <= 200) {
             if (carDrivers.length === 0) return res.status(400).json({ error: "No car driver available" });
             await Delivery.create({ delivery, weight, from, to, distance: distance, price: price, shipmentMethod: "Car", createdBy: createdBy, region })
@@ -117,28 +116,28 @@ const destroy = async (req, res) => {
 };
 
 const AcceptDelivery = async (req, res) => {
-    const { id } = req.params;
-    const record = { _id: id };
-    const driverId = { _id: "61e730f9bc266a6e407bb0f3" };
+    const deliveryId = { _id:  req.params.id };
 
+    const token = await req.headers.authorization.split(" ")[1]
+    let decodeData =  jwt.verify(token, `${process.env.JWT_SECRET}`)
 
     try {
-        const delivery = await Delivery.findById(id);
+        const delivery = await Delivery.findById(deliveryId);
         if (delivery.Available === false) return res.status(400).json({ message: "Delivery already accepted" });
-        await Delivery.findByIdAndUpdate(record, {
+        await Delivery.findByIdAndUpdate(deliveryId, {
             $set: {
                 Available: false,
-                AcceptedBy: driverId,
+                AcceptedBy: decodeData.id,
             },
         })
-        await Driver.findByIdAndUpdate(driverId,
+        await Driver.findByIdAndUpdate({ _id : decodeData.id},
             {
-                $push: { AcceptedDeliveries: record },
+                $push: { AcceptedDeliveries: deliveryId },
             });
         return res.status(200).json({ message: "delivery has been accepted" });
 
     } catch (err) {
-        res.status(400).json({ message: err });
+        res.status(400).json({ error: err });
     }
 };
 
