@@ -2,6 +2,7 @@ const Driver = require("../models/driver.model");
 const Delivery = require("../models/delivery.model");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const Dayjs = require("dayjs");
 const sendMail = require("../utils/mail");
 
 const index = (req, res) => {
@@ -139,18 +140,21 @@ const driverBonus = async (req, res) => {
 
     let allDeliveries = [];
     let totalTraveledDistance = 0
+    let deliveryDate;
     let price = 0
     let bonus = 0
-
+    const currentMonth = Dayjs().format("MM");
     // find all deliveries made by this driver
-    await Promise.all(driver.AcceptedDeliveries.map(async (delivery) => {
-      const deliveries = await Delivery.findById({ _id: delivery })
+    await Promise.all(driver.AcceptedDeliveries.map(async (deliveryId) => {
+      const deliveries = await Delivery.findById({ _id: deliveryId })
+      // get only deliveries made in current month
+      if (Dayjs(deliveries.createdAt).format("MM") === currentMonth ) 
       allDeliveries.push(deliveries)
     }));
 
     // update total traveled distance and price
     allDeliveries.map(delivery => {
-      totalTraveledDistance += delivery.distance
+      totalTraveledDistance += delivery.distance + 1000
       price += delivery.price
     })
 
@@ -162,13 +166,13 @@ const driverBonus = async (req, res) => {
         new: true,
       });
       res.json({ result, bonus })
-    } else if (totalTraveledDistance > 1000 && totalTraveledDistance < 2000) {
+    } else if (totalTraveledDistance > 1000 && totalTraveledDistance <= 2000) {
       bonus = price * 22 / 100
       const result = await Driver.updateOne({ driverId }, { bonus: bonus }, {
         new: true,
       });
       res.json({ result, bonus })
-    } else if (totalTraveledDistance > 2000 && totalTraveledDistance < 2500) {
+    } else if (totalTraveledDistance > 2000 && totalTraveledDistance <= 2500) {
       bonus = price * 30 / 100
       const result = await Driver.updateOne({ driverId }, { bonus: bonus }, {
         new: true,
@@ -176,7 +180,7 @@ const driverBonus = async (req, res) => {
       res.json({ result, bonus })
     }
 
-    res.status(200).json({ allDeliveries, totalTraveledDistance, price, bonus });
+    res.status(200).json({ allDeliveries, totalTraveledDistance, price, bonus, deliveryDate , currentMonth});
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
