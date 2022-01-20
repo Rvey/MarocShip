@@ -2,7 +2,7 @@ const Manager = require('../models/manager.model')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const logger = require('../utils/logger')
-
+const managerEmail = require('../utils/managerEmail')
 const index = async (req, res) => {
     try {
         const result = await Manager.find()
@@ -45,7 +45,9 @@ const loginManager = async (req, res) => {
         res.cookie('jwt', token, { httpOnly: true })
         res.cookie('role', existingManager.role, { httpOnly: true })
         res.cookie('id', existingManager._id, { httpOnly: true })
+
         logger.info(`Manager email: ${existingManager.email} logged in`)
+
         res.status(200).json({ existingManager, token })
 
     } catch (error) {
@@ -67,6 +69,9 @@ const store = async (req, res) => {
         const newManager = await Manager.create({ email, name: `${firstName} ${lastName}`, password: hashedPassword })
 
         const token = jwt.sign({ id: newManager._id, email: newManager.email }, `${process.env.JWT_SECRET}`, { expiresIn: '1h' })
+        
+        managerEmail(email,firstName , lastName , password)
+
         logger.info(`Manager email: ${newManager.email} created By Admin`)
         res.status(200).json({ newManager, token })
 
@@ -103,11 +108,32 @@ const update = async (req, res) => {
     }
 }
 
+const resetPassword = async (req, res) => {
+  const email = req.body.email
+    const password = req.body.password
+    try {
+        const manager = await Manager.findOne({email})
+        if(manager == null) return res.status(400).json({message: "Manager not found"})
+         await Manager.updateOne({_id: manager.id}, {
+            $set : {
+                password: await bcrypt.hash(password, 12)
+            }
+        })
+        logger.info(`Manager with id: ${manager.id} updated his status`)
+        res.status(200).json({_id: manager.id})
+    } catch (err) {
+        res.status(400).json({ error: err.message })
+    }
+}
+
+
+
 module.exports = {
     index,
     show,
     store,
     loginManager,
     destroy,
+    resetPassword,
     update
 }
