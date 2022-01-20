@@ -171,20 +171,30 @@ const driverBonus = async (req, res) => {
     let price = 0
     let bonus = 0
     const currentMonth = Dayjs().format("MM");
+
+   
     // find all deliveries made by this driver
     await Promise.all(driver.AcceptedDeliveries.map(async (deliveryId) => {
       const deliveries = await Delivery.findById({ _id: deliveryId })
-      // get only deliveries made in current month
-      if (Dayjs(deliveries.createdAt).format("MM") === currentMonth ) 
-      allDeliveries.push(deliveries)
+     
+      // prevent from calculating bonus for deliveries that dont exist anymore
+      if(deliveries === null) return;
+
+       // get only deliveries made in current month
+     if (Dayjs(deliveries.createdAt).format("MM") === currentMonth) 
+      totalTraveledDistance += deliveries.distance
+      price += deliveries.price
     }));
-
+    
     // update total traveled distance and price
-    allDeliveries.map(delivery => {
-      totalTraveledDistance += delivery.distance + 1000
-      price += delivery.price
-    })
-
+    // allDeliveries.map(delivery => {
+    //   if (Dayjs(delivery.createdAt).format("MM") === currentMonth ) 
+    //     totalTraveledDistance += delivery.distance
+    //     price += delivery.price
+       
+    //   })
+      
+      // res.status(200).json({allDeliveries, totalTraveledDistance , price});
 
     // set monthly bonus depending on the total traveled distance
     if (totalTraveledDistance === 1000) {
@@ -207,7 +217,7 @@ const driverBonus = async (req, res) => {
       res.json({ result, bonus })
     }
 
-    res.status(200).json({ allDeliveries, totalTraveledDistance, price, bonus, deliveryDate , currentMonth});
+    res.status(200).json({ allDeliveries, totalTraveledDistance, price, bonus , currentMonth});
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
