@@ -182,6 +182,7 @@ const driverBonus = async (req, res) => {
 
        // get only deliveries made in current month
      if (Dayjs(deliveries.createdAt).format("MM") === currentMonth) 
+     
       totalTraveledDistance += deliveries.distance
       price += deliveries.price
     }));
