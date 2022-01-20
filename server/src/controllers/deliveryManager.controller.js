@@ -1,6 +1,7 @@
 const DeliveryManager = require('../models/deliveryManger.model')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
+const logger = require('../utils/logger')
 
 const index = (req, res) => {
     DeliveryManager.find().then((result) => {
@@ -42,7 +43,7 @@ const loginDeliveryManager = async (req, res) => {
         res.cookie('jwt', token, { httpOnly: true })
         res.cookie('role', existingDeliveryManager.role, { httpOnly: true })
         res.cookie('id', existingDeliveryManager._id, { httpOnly: true })
-
+        logger.info(`DeliveryManager email: ${existingDeliveryManager.email} logged in`)
         res.status(200).json({ existingDeliveryManager, token})
 
     } catch (error) {
@@ -64,7 +65,7 @@ const store = async (req, res) => {
         const newDeliveryManager = await DeliveryManager.create({ email, name: `${firstName} ${lastName}`, password: hashedPassword })
 
         const token = jwt.sign({ id: newDeliveryManager._id, email: newDeliveryManager.email }, `${process.env.JWT_SECRET}`, { expiresIn: '1h' })
-        
+        logger.info(`DeliveryManager email: ${newDeliveryManager.email} created by ${req.cookies.role} - ${req.cookies.id}`)
         res.status(200).json({newDeliveryManager, token})
 
     } catch (err) {
@@ -78,6 +79,7 @@ const destroy = async (req, res) => {
     const record = { _id: id }
     try {
         const result = await DeliveryManager.deleteOne(record)
+        logger.info(`DeliveryManager id: ${id} deleted by ${req,cookies.role} - ${req.cookies.id}`)
         res.status(200).json(result)
     } catch (err) {
         res.status(400).json({ error: err.message })
@@ -92,6 +94,7 @@ const update = async (req, res) => {
         const result = await DeliveryManager.updateOne(record, updatedData , {
             new: true,
         })
+        logger.info(`DeliveryManager id: ${id} updated by ${req,cookies.role} - ${req.cookies.id}`)
         res.status(200).json(result)
     } catch (err) {
         res.status(400).json({ error: err.message })

@@ -2,7 +2,7 @@ const express = require('express')
 const router = express()
 const manager = require('./manager.routes')
 const admin = require('./admin.routes')
-const driver = require('./driver.routes')
+const driver = require('./driver.routes.js')
 const delivery = require('./delivery.routes')
 const deliveryManager = require('./deliveryManager.routes')
 

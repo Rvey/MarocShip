@@ -4,6 +4,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const Dayjs = require("dayjs");
 const sendMail = require("../utils/mail");
+const logger = require("../utils/logger");
 
 const index = (req, res) => {
   Driver.find()
@@ -55,7 +56,7 @@ const loginDriver = async (req, res) => {
     res.cookie('jwt', token, { httpOnly: true })
     res.cookie('role', existingDriver.role, { httpOnly: true })
     res.cookie('id', existingDriver._id, { httpOnly: true })
-    
+    logger.info(`driver ${existingDriver.email} logged in`);
     res.status(200).json({ existingDriver, token });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -88,7 +89,7 @@ const store = async (req, res, next) => {
       `${process.env.JWT_SECRET}`,
       { expiresIn: "1h" }
     );
-
+    logger.info(`New driver ${firstName} ${lastName} submitted for a job , license : ${license}`);
     res.status(200).json({ newDriver, token });
   } catch (err) {
     res.status(400).json({ error: err.message });
@@ -104,7 +105,7 @@ const validateDriver = async (req, res, next) => {
       new: true,
     });
     await sendMail(result.email);
-
+    logger.info(`driver ${req.params.id} validated by ${req,cookies.role} - ${req.cookies.id} `);
     res.status(200).json(result);
   } catch (err) {
     res.status(400).json({ error: err.message });
@@ -116,6 +117,7 @@ const destroy = async (req, res) => {
   const record = { _id: id };
   try {
     const result = await Driver.deleteOne(record);
+    logger.info(`driver ${req.params.id} deleted by ${req,cookies.role} - id : ${req.cookies.id} `);
     res.status(200).json(result);
   } catch (err) {
     res.status(400).json({ error: err.message });
@@ -130,6 +132,7 @@ const update = async (req, res) => {
     const result = await Driver.updateOne(record, updatedData, {
       new: true,
     });
+    logger.info(`driver ${req.params.id} updated by ${req,cookies.role} - ${req.cookies.id} `);
     res.status(200).json(result);
   } catch (err) {
     res.status(400).json({ error: err.message });

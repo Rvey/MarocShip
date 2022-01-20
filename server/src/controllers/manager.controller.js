@@ -1,6 +1,7 @@
 const Manager = require('../models/manager.model')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
+const logger = require('../utils/logger')
 
 const index = async (req, res) => {
     try {
@@ -44,7 +45,7 @@ const loginManager = async (req, res) => {
         res.cookie('jwt', token, { httpOnly: true })
         res.cookie('role', existingManager.role, { httpOnly: true })
         res.cookie('id', existingManager._id, { httpOnly: true })
-
+        logger.info(`Manager email: ${existingManager.email} logged in`)
         res.status(200).json({ existingManager, token })
 
     } catch (error) {
@@ -66,7 +67,7 @@ const store = async (req, res) => {
         const newManager = await Manager.create({ email, name: `${firstName} ${lastName}`, password: hashedPassword })
 
         const token = jwt.sign({ id: newManager._id, email: newManager.email }, `${process.env.JWT_SECRET}`, { expiresIn: '1h' })
-
+        logger.info(`Manager email: ${newManager.email} created By Admin`)
         res.status(200).json({ newManager, token })
 
     } catch (err) {
@@ -82,6 +83,7 @@ const destroy = async (req, res) => {
     const record = { _id: id }
     try {
         const result = await Manager.deleteOne(record)
+        logger.info(`Manager with id: ${id} deleted by Admin`)
         res.status(200).json(result)
     } catch (err) {
         res.status(400).json({ error: err.message })
@@ -94,6 +96,7 @@ const update = async (req, res) => {
     const updatedData = { ...req.body }
     try {
         const result = await Manager.updateOne(record, updatedData)
+        logger.info(`Manager with id: ${id} updated by Admin`)
         res.status(200).json(result)
     } catch (err) {
         res.status(400).json({ error: err.message })

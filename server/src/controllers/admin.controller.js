@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 const Admin = require('../models/admin.model')
+const logger = require('../utils/logger')
 
 const loginAdmin = async (req, res) => {
 
@@ -20,7 +21,7 @@ const loginAdmin = async (req, res) => {
         res.cookie('jwt', token, { httpOnly: true })
         res.cookie('role', existingAdmin.role, { httpOnly: true })
         
-
+        logger.info(`GAdmin email: ${existingAdmin.email} logged in`)
         res.status(200).json({ existingAdmin, token })
 
     } catch (error) {

@@ -3,7 +3,7 @@ const driver = express.Router()
 const { index, show, store, destroy, update, loginDriver, validateDriver, driverBonus } = require('../controllers/driver.controller')
 const deliveryManager = require('../middleware/deliveryManager.middleware')
 const adminAuth = require('../middleware/adminAuth.middleware')
-const driverAuth = require('../middleware/driverAuth.middleware')
+const driverAuth = require('../middleware/driverAuth.middleware.js')
 const upload = require('../middleware/upload.middleware')
 
 driver.get('/',deliveryManager, index);

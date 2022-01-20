@@ -2,7 +2,7 @@ const express = require('express')
 const delivery = express.Router()
 const { index , show , store , destroy , update, AcceptDelivery  } = require('../controllers/delivery.controller')
 const deliveryManager = require('../middleware/deliveryManager.middleware')
-const driverAuth = require('../middleware/driverAuth.middleware')
+const driverAuth = require('../middleware/driverAuth.middleware.js')
 delivery.get('/', index);
 delivery.get('/:id', show);
 delivery.put('/acceptDelivery/:id',driverAuth, AcceptDelivery);
