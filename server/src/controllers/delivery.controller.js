@@ -18,8 +18,6 @@ const index = async (req, res) => {
         res.status(400).json({ error: error.message })
         logger.error(`${error.message}`);
     }
- 
-
 };
 
 const show = async (req, res) => {

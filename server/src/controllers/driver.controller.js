@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken");
 const Dayjs = require("dayjs");
 const sendMail = require("../utils/mail");
 const logger = require("../utils/logger");
+const acceptDriverMail = require("../utils/AcceptDriverMail");
 
 const index = (req, res) => {
   Driver.find()
@@ -99,14 +100,16 @@ const store = async (req, res, next) => {
 const validateDriver = async (req, res, next) => {
   const { id } = req.params;
   const record = { _id: id };
-  const updatedData = { ...req.body };
   try {
-    const result = await Driver.findOneAndUpdate(record, updatedData, {
-      new: true,
-    });
-    await sendMail(result.email);
-    logger.info(`driver ${req.params.id} validated by ${req,cookies.role} - ${req.cookies.id} `);
-    res.status(200).json(result);
+  const driver =  await Driver.findByIdAndUpdate(record, {
+      $set: {
+        verified: true,
+      },
+  })
+  if (driver.verified === true) return res.status(200).json({ message: "Driver is already verified" });
+    await acceptDriverMail(driver.email , driver.name);
+    logger.info(`driver ${req.params.id} validated by Admin `);
+    res.status(200).json({ message: "Driver is verified" });
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
@@ -117,7 +120,7 @@ const destroy = async (req, res) => {
   const record = { _id: id };
   try {
     const result = await Driver.deleteOne(record);
-    logger.info(`driver ${req.params.id} deleted by ${req,cookies.role} - id : ${req.cookies.id} `);
+    logger.info(`driver ${req.params.id} deleted by ${req.cookies.role} - id : ${req.cookies.id} `);
     res.status(200).json(result);
   } catch (err) {
     res.status(400).json({ error: err.message });
@@ -132,7 +135,7 @@ const update = async (req, res) => {
     const result = await Driver.updateOne(record, updatedData, {
       new: true,
     });
-    logger.info(`driver ${req.params.id} updated by ${req,cookies.role} - ${req.cookies.id} `);
+    logger.info(`driver ${req.params.id} updated by ${req.cookies.role} - ${req.cookies.id} `);
     res.status(200).json(result);
   } catch (err) {
     res.status(400).json({ error: err.message });

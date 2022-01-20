@@ -79,7 +79,7 @@ const destroy = async (req, res) => {
     const record = { _id: id }
     try {
         const result = await DeliveryManager.deleteOne(record)
-        logger.info(`DeliveryManager id: ${id} deleted by ${req,cookies.role} - ${req.cookies.id}`)
+        logger.info(`DeliveryManager id: ${id} deleted by ${req.cookies.role} - ${req.cookies.id}`)
         res.status(200).json(result)
     } catch (err) {
         res.status(400).json({ error: err.message })
@@ -94,7 +94,7 @@ const update = async (req, res) => {
         const result = await DeliveryManager.updateOne(record, updatedData , {
             new: true,
         })
-        logger.info(`DeliveryManager id: ${id} updated by ${req,cookies.role} - ${req.cookies.id}`)
+        logger.info(`DeliveryManager id: ${id} updated by ${req.cookies.role} - ${req.cookies.id}`)
         res.status(200).json(result)
     } catch (err) {
         res.status(400).json({ error: err.message })
