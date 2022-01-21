@@ -12,11 +12,12 @@ app.use(cookieParser())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(express.static(`${__dirname}/src`))
-app.use('/api/', routes)
+
+require('./routes/routes')(app)
 
 
 mongoose.connect(process.env.DB_CONNECTION, { useNewUrlParser: true, useUnifiedTopology: true ,  useUnifiedTopology: true  }, () => {
-    console.log('Database Connected')
+    console.log('Database Connected') 
 })
 
 app.listen(process.env.PORT, () => {
