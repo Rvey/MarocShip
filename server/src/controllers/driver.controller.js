@@ -160,10 +160,10 @@ const resetPassword = async (req, res) => {
 }
 
 const driverBonus = async (req, res) => {
-  const { driverId } = req.params.id;
+  const  driverId  = req.params.id;
   try {
     // find driver by id
-    const driver = await Driver.findOne(driverId);
+    const driver = await Driver.findById({ _id :driverId});
 
     let allDeliveries = [];
     let totalTraveledDistance = 0
@@ -181,8 +181,7 @@ const driverBonus = async (req, res) => {
       if(deliveries === null) return;
 
        // get only deliveries made in current month
-     if (Dayjs(deliveries.createdAt).format("MM") === currentMonth) 
-     
+    //  if (Dayjs(deliveries.createdAt).format("MM") === currentMonth) 
       totalTraveledDistance += deliveries.distance
       price += deliveries.price
     }));
@@ -218,7 +217,7 @@ const driverBonus = async (req, res) => {
       res.json({ result, bonus })
     }
 
-    res.status(200).json({ allDeliveries, totalTraveledDistance, price, bonus , currentMonth});
+    res.status(200).json({ allDeliveries, totalTraveledDistance, price, bonus , currentMonth ,driver});
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
