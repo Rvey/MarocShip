@@ -1,9 +1,7 @@
 import { Link } from 'react-router-dom';
 import Logo from '../../assets/logo';
 
-interface NavigationProps {}
-
-const Navigation: React.FC<NavigationProps> = () => {
+const Navigation = () => {
     return (
         <nav className=" bg-ehe-900 w-[14em] z-10  h-screen items-center fixed justify-between py-5 dark:bg-gray-800 mr-10">
             <div className="flex flex-col flex-wrap justify-between items-center mx-auto">
@@ -18,6 +16,18 @@ const Navigation: React.FC<NavigationProps> = () => {
                         className=" text-gray-700 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
                     >
                         Dashboard
+                    </Link>
+                    <Link
+                        to="/Managers"
+                        className=" text-gray-700 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+                    >
+                        Managers
+                    </Link>
+                    <Link
+                        to="/Drivers"
+                        className=" text-gray-700 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+                    >
+                        Drivers
                     </Link>
 
                     <Link

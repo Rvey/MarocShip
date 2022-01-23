@@ -1,8 +1,8 @@
-import Routers from './routes/routers';
+import Routers from './routing/routers';
 
 const App: React.FC = () => {
     return (
-        <div >
+        <div>
             <Routers />
         </div>
     );
