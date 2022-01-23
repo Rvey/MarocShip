@@ -1,13 +1,9 @@
-import { FunctionComponent } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Navigation from '../layouts/navBar';
-import AdminDash from '../pages/admin/dashAdmin';
-import AdminLogin from '../pages/admin/login';
-import Statistics from '../pages/admin/statistics';
+import Navigation from '../layouts/navigation';
+import AdminDash from '../pages/admin';
+import AdminLogin from '../pages/Auth/adminLogin';
 
-interface IRoutersProps {}
-
-const Routers: FunctionComponent<IRoutersProps> = () => {
+const Routers = () => {
     return (
         <BrowserRouter>
             <Navigation />
@@ -15,7 +11,6 @@ const Routers: FunctionComponent<IRoutersProps> = () => {
                 <Routes>
                     <Route path="/" element={<AdminDash />} />
                     <Route path="/adminLogin" element={<AdminLogin />} />
-                    <Route path="/statistics" element={<Statistics />} />
                 </Routes>
             </div>
         </BrowserRouter>

@@ -1,8 +1,4 @@
-interface TopDriversProps {
-    
-}
- 
-const TopDrivers: React.FC<TopDriversProps> = () => {
+const TopDrivers = () => {
     return ( 
         <div className="p-4 w-[27em] bg-white rounded-lg border shadow-md sm:p-6 dark:bg-gray-800 dark:border-gray-700">
     <div className="flex justify-between items-center mb-4">
