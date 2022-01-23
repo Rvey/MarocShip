@@ -4,9 +4,9 @@ interface TopDriversProps {
  
 const TopDrivers: React.FC<TopDriversProps> = () => {
     return ( 
-        <div className="p-4 max-w-md bg-white rounded-lg border shadow-md sm:p-8 dark:bg-gray-800 dark:border-gray-700">
+        <div className="p-4 w-[27em] bg-white rounded-lg border shadow-md sm:p-6 dark:bg-gray-800 dark:border-gray-700">
     <div className="flex justify-between items-center mb-4">
-        <h3 className="text-xl font-bold leading-none text-gray-900 dark:text-white">Latest Customers</h3>
+        <h3 className="text-xl font-bold leading-none text-gray-900 dark:text-white">Top Driver</h3>
         <button  className="text-sm font-medium text-blue-600 hover:underline dark:text-blue-500">
             Download full list
         </button>

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { MouseEvent, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 // interface AdminLoginProps {
@@ -8,14 +8,14 @@ import { Link } from 'react-router-dom';
 
 const AdminLogin: React.FC = () => {
  
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [email, setEmail] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
 
     const admin = {
         email: email,
         password: password
     };
-    const Submit = (e: any) => {
+    const Submit = (e: MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         console.log(admin);
     };

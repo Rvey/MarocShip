@@ -1,19 +1,23 @@
-import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import StatsCards from '../../components/adminStats/statsCards';
+import TopDrivers from '../../components/adminStats/topDrivers';
 
-interface AdminDashProps {}
-
-const AdminDash: React.FC<AdminDashProps> = () => {
-    const [message, setMessage] = useState('');
-    const { number } = useParams();
-
-    useEffect(() => {
-      number ? setMessage(`the number is ${number}`) : setMessage('yikes')
-    },[number])
+const AdminDash: React.FC = () => {
     return (
         <div>
             <h1>Admin Dashboard</h1>
-            <p>{message}</p>
+            <div className="flex gap-6 flex-col lg:flex-row lg:justify-between">
+
+                <div>
+                    <div className="flex gap-4 flex-col xl:flex-row">
+                        <StatsCards title="Total Handled Deliveries" icon="icon" stats="Delivery" />
+                        <StatsCards title="Total Drivers" icon="icon" stats="Driver" />
+                        <StatsCards title="Total Managers" icon="icon" stats="Manager" />
+                    </div>
+
+                </div>
+
+                <TopDrivers />
+            </div>
         </div>
     );
 };

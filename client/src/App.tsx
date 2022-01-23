@@ -1,17 +1,11 @@
-import Routers from "./routes/routers";
+import Routers from './routes/routers';
 
-interface Props {
-  
-}
- 
-const App: React.FC<Props> = () => {
-  return ( 
-    <div>
+const App: React.FC = () => {
+    return (
+        <div >
+            <Routers />
+        </div>
+    );
+};
 
-      <Routers/>
-
-    </div>
-   );
-}
- 
 export default App;
