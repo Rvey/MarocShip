@@ -1,6 +1,6 @@
-import AddManger from "../Modals/addManager";
+import UpdateManager from "../Modals/updateManager";
 
-interface ManagerTableProps {}
+interface ManagerTableProps { }
 
 const ManagerTable: React.FC<ManagerTableProps> = () => {
     return (
@@ -25,13 +25,13 @@ const ManagerTable: React.FC<ManagerTableProps> = () => {
                             <td className="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">Apple Imac 27"</td>
                             <td className="py-4 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">White</td>
                             <td className="py-4 px-6 text-sm font-medium text-right whitespace-nowrap">
-                                <button className="text-blue-600 hover:text-blue-900 dark:text-blue-500 dark:hover:underline">Edit</button>
+                                <button type="button" className="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-600 dark:focus:ring-blue-800" data-modal-toggle="update-manager">Edit</button>
                             </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
-           
+            <UpdateManager toggle="update-manager" />
         </div>
     );
 };
