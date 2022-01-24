@@ -18,7 +18,7 @@ module.exports = (app) => {
      * Manager Routes
      */
     app.post('/api/manager/resetPassword', ManagerController.resetPassword)
-    app.get('/api/manager/', adminAuth, ManagerController.index);
+    app.get('/api/manager/', ManagerController.index);
     app.get('/api/manager/:id', adminAuth, ManagerController.show);
     app.post('/api/manager/', adminAuth, ManagerController.store);
     app.post('/api/manager/login', ManagerController.loginManager);

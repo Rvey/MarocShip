@@ -2,11 +2,11 @@ const express = require('express')
 const mongoose = require('mongoose')
 const cookieParser = require('cookie-parser')
 const logger = require('./utils/logger')
-
+const cors = require('cors')
 const app = express()
 
 require('dotenv').config();
-
+app.use(cors())
 app.use(cookieParser())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))

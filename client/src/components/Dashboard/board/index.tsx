@@ -1,6 +1,6 @@
 const TopDrivers = () => {
     return ( 
-        <div className="p-4 w-[27em] bg-white rounded-lg border shadow-md sm:p-6 dark:bg-gray-800 dark:border-gray-700">
+        <div className="p-4 w-[27em] bg-slate-300 rounded-lg border shadow-md sm:p-4 dark:bg-gray-800 dark:border-gray-700">
     <div className="flex justify-between items-center mb-4">
         <h3 className="text-xl font-bold leading-none text-gray-900 dark:text-white">Top Driver</h3>
         <button  className="text-sm font-medium text-blue-600 hover:underline dark:text-blue-500">
@@ -8,8 +8,8 @@ const TopDrivers = () => {
         </button>
    </div>
    <div className="flow-root">
-        <ul className="divide-y divide-gray-200 dark:divide-gray-700">
-            <li className="py-3 sm:py-4">
+        <ul className="divide-y divide-gray-200 dark:divide-gray-700 ">
+            <li className="p-3 sm:py-4 bg-gray-400 dark:bg-gray-700 rounded-md">
                 <div className="flex items-center space-x-4">
                     <div className="flex-shrink-0">
                         <img className="w-8 h-8 rounded-full" src="" alt=""/>
