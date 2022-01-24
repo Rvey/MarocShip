@@ -1,10 +1,9 @@
-import TopDrivers from '../../components/board/driversBoard';
-import StatsCards from '../../components/cards/stats';
-import LineChart from '../../components/charts/line';
-import PieChart from '../../components/charts/Pie';
-import ManagerTable from '../../components/tables/managersTable';
+import TopDrivers from '../../components/Dashboard/board';
+import StatsCards from '../../components/Dashboard/cards';
+import LineChart from '../../components/Dashboard/charts/line';
+import PieChart from '../../components/Dashboard/charts/Pie';
 
-const AdminDash = () => {
+const AdminDashboard = () => {
 
     return (
         <div>
@@ -31,4 +30,4 @@ const AdminDash = () => {
     );
 };
 
-export default AdminDash;
+export default AdminDashboard;

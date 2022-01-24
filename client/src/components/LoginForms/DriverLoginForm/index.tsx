@@ -11,7 +11,6 @@ const DriverLoginForm: React.FunctionComponent<DriverLoginFormProps> = () => {
     const Submit = (e:React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
         console.log(e.target);
-        
     }
     return (
        

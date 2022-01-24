@@ -1,4 +1,4 @@
-import UpdateModal from '../Modals/updateManager';
+import UpdateModal from '../../ModalContent/updateManagerModal/updateManager';
 
 interface DeliveriesTableProps {}
 

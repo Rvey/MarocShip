@@ -1,15 +1,27 @@
-import { useAppSelector, useAppDispatch } from './../store/hook';
-import { decrement, increment } from './../store/features/counter/counterSlice';
-interface BombFieldProps {}
+import { useAppSelector, useAppDispatch } from '../Redux/hook';
+import { decrement, increment, selectCount } from '../Redux/features/counter/counterSlice';
+import { useGetPokemonByNameQuery } from './../Redux/services/pokemon';
 
-const BombField: React.FunctionComponent<BombFieldProps> = () => {
-    const count = useAppSelector((state) => state.counter.value)
-    const dispatch = useAppDispatch()
-
-    return <div>
-        <button onClick={() => dispatch(increment())}>increment</button>
-        <button onClick={() => dispatch(decrement())}>decrement</button>
-    </div>;
+const BombField = () => {
+    const count = useAppSelector(selectCount);
+    const dispatch = useAppDispatch();
+    const { data, error, isLoading } = useGetPokemonByNameQuery('bulbasaur');
+    return (
+        <div>
+            {error ? (
+                <>Oh no, there was an error</>
+            ) : isLoading ? (
+                <>Loading...</>
+            ) : data ? (
+                <>
+                    <h3>{data.species.name}</h3>
+                    <img src={data.sprites.front_shiny} alt={data.species.name} />
+                </>
+            ) : null}
+            <button onClick={() => dispatch(increment())}>increment</button>
+            <button onClick={() => dispatch(decrement())}>decrement</button>
+        </div>
+    );
 };
 
 export default BombField;

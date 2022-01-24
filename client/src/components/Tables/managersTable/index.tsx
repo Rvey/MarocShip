@@ -1,4 +1,4 @@
-import UpdateManager from "../Modals/updateManager";
+import UpdateManager from "../../ModalContent/updateManagerModal/updateManager";
 
 interface ManagerTableProps { }
 

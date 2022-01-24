@@ -1,11 +1,11 @@
-import AdminLoginForm from '../../components/forms/Auth/adminLogin';
+import AdminLoginForm from '../../components/LoginForms/AdminLoginForm/adminLogin';
 
 // interface AdminLoginProps {
 //     email: string;
 //     password: string;
 // }
 
-const AdminLogin: React.FC = () => {
+const AdminLogin = () => {
  
     return (
         <div className="min-h-screen  flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 dark:bg-gray-800">

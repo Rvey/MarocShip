@@ -1,4 +1,4 @@
-import ManagerLoginForm from "../../components/forms/Auth/managerLogin";
+import ManagerLoginForm from "../../components/LoginForms/ManagerLoginForm";
 
 const ManagerLogin = () => {
     return ( 

@@ -1,7 +1,7 @@
-import AddManger from '../../components/Modals/addManager';
-import ManagerTable from '../../components/tables/managersTable';
+import AddManger from '../../components/ModalContent/addManagerModal';
+import ManagerTable from '../../components/Tables/managersTable';
 
-const HandleManagers = () => {
+const ManageManagers = () => {
     return (
         <div>
             <div className="flex justify-between items-center">
@@ -20,4 +20,4 @@ const HandleManagers = () => {
     );
 };
 
-export default HandleManagers;
+export default ManageManagers;

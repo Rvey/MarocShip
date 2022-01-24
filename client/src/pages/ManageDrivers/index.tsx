@@ -1,6 +1,6 @@
-import DriversTable from '../../components/tables/driversTable';
+import DriversTable from '../../components/Tables/DriverTable';
 
-const HandleDrivers = () => {
+const ManageDrivers = () => {
     return (
         <div>
             <h1 className="text-4xl font-black dark:text-white py-14">Drivers</h1>
@@ -9,4 +9,4 @@ const HandleDrivers = () => {
     );
 };
 
-export default HandleDrivers;
+export default ManageDrivers;
