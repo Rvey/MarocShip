@@ -1,4 +1,4 @@
-import AdminLoginForm from '../../../components/forms/adminLogin';
+import AdminLoginForm from '../../components/forms/Auth/adminLogin';
 
 // interface AdminLoginProps {
 //     email: string;

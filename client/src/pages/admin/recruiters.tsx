@@ -1,4 +1,4 @@
-import AcceptDrivers from "../../../components/tables/acceptDriversTables";
+import AcceptDrivers from "../../components/tables/recruiterTable";
 
 const DriversRecruiting = () => {
     return <div>

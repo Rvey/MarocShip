@@ -1,3 +1,5 @@
+import AddManger from "../Modals/addManager";
+
 interface ManagerTableProps {}
 
 const ManagerTable: React.FC<ManagerTableProps> = () => {
@@ -29,6 +31,7 @@ const ManagerTable: React.FC<ManagerTableProps> = () => {
                     </tbody>
                 </table>
             </div>
+           
         </div>
     );
 };

@@ -1,8 +1,8 @@
-import TopDrivers from '../../../components/board/driversBoard';
-import StatsCards from '../../../components/cards/stats';
-import LineChart from '../../../components/charts/line';
-import PieChart from '../../../components/charts/Pie';
-import ManagerTable from '../../../components/tables/managersTable';
+import TopDrivers from '../../components/board/driversBoard';
+import StatsCards from '../../components/cards/stats';
+import LineChart from '../../components/charts/line';
+import PieChart from '../../components/charts/Pie';
+import ManagerTable from '../../components/tables/managersTable';
 
 const AdminDash = () => {
 
