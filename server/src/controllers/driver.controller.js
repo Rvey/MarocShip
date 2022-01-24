@@ -186,15 +186,6 @@ const driverBonus = async (req, res) => {
       price += deliveries.price
     }));
     
-    // update total traveled distance and price
-    // allDeliveries.map(delivery => {
-    //   if (Dayjs(delivery.createdAt).format("MM") === currentMonth ) 
-    //     totalTraveledDistance += delivery.distance
-    //     price += delivery.price
-       
-    //   })
-      
-      // res.status(200).json({allDeliveries, totalTraveledDistance , price});
 
     // set monthly bonus depending on the total traveled distance
     if (totalTraveledDistance === 1000) {

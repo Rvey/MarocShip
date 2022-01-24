@@ -12,9 +12,9 @@ const AdminDash = () => {
             <div className="flex gap-6 flex-col lg:flex-row lg:justify-between">
                 <div className="w-[70%]">
                     <div className="flex gap-4 flex-col xl:flex-row">
-                        <StatsCards title="Total Handled Deliveries" icon="icon" stats="Delivery" />
-                        <StatsCards title="Total Drivers" icon="icon" stats="Driver" />
-                        <StatsCards title="Total Managers" icon="icon" stats="Manager" />
+                        <StatsCards title="Total Handled Deliveries" icon="*" stats="Delivery" />
+                        <StatsCards title="Total Drivers" icon="*" stats="Driver" />
+                        <StatsCards title="Total Managers" icon="*" stats="Manager" />
                     </div>
                     <h2 className="text-3xl font-medium py-6 dark:text-white">Statistics</h2>
 
