@@ -1,4 +1,10 @@
-const TopDrivers = () => {
+import Avatar, { genConfig } from 'react-nice-avatar'
+interface TopDriversProps {
+    AvatarConfig: string
+}
+const TopDrivers: React.FC<TopDriversProps> = () => {
+    const AvatarConfig = 'className'
+    const config = genConfig(AvatarConfig)
     return ( 
         <div className="p-4 w-[27em] bg-slate-300 rounded-lg border shadow-md sm:p-4 dark:bg-gray-800 dark:border-gray-700">
     <div className="flex justify-between items-center mb-4">
@@ -12,7 +18,7 @@ const TopDrivers = () => {
             <li className="p-3 sm:py-4 bg-gray-400 dark:bg-gray-700 rounded-md">
                 <div className="flex items-center space-x-4">
                     <div className="flex-shrink-0">
-                        <img className="w-8 h-8 rounded-full" src="" alt=""/>
+                    <Avatar className="w-10 h-10" {...config} />
                     </div>
                     <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium text-gray-900 truncate dark:text-white">

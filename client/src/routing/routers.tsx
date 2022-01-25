@@ -18,7 +18,7 @@ const Routers = () => {
                     <Route path="/deliveryManagerLogin" element={<DeliveryManagerLogin />} />
                     <Route path="/driverLogin" element={<DriverLogin />} />
                     <Route path="/deliveries" element={<ManageDeliveries />} />
-                    <Route path="/bomb" element={<BombField />} />
+                    <Route path="/bomb" element={<BombField name={''} />} />
                 </Routes>
             </div>
         </BrowserRouter>

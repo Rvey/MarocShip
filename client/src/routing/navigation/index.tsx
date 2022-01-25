@@ -1,14 +1,14 @@
 import { Link } from 'react-router-dom';
 import Logo from '../../assets/logo';
 import { useAppSelector } from '../../Redux/hook';
-import { selectCount } from '../../Redux/features/counter/counterSlice';
+import { selectCount } from '../../Redux/features/counter/counterSlice'
 const Navigation = () => {
-    const count = useAppSelector(selectCount);
+const count = useAppSelector(selectCount)
     return (
         <nav className=" bg-ehe-900 w-[14em] z-10  h-screen items-center fixed justify-between py-5 dark:bg-gray-800 mr-10">
             <div className="flex flex-col flex-wrap justify-between items-center mx-auto">
                 <div className="flex">
-                    <Logo />
+                    {/* <Logo /> */} logo
                     <span className="self-center text-lg font-semibold whitespace-nowrap dark:text-white">MarocShip{count}</span>
                 </div>
 

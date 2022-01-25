@@ -1,4 +1,5 @@
 import AddManger from '../../components/ModalContent/addManagerModal';
+import MyModal from '../../components/ModalContent/updateManagerModal/updateManager';
 import ManagerTable from '../../components/Tables/managersTable';
 
 const ManageManagers = () => {
