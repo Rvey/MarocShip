@@ -19,11 +19,11 @@ module.exports = (app) => {
      */
     app.post('/api/manager/resetPassword', ManagerController.resetPassword)
     app.get('/api/manager/', ManagerController.index);
-    app.get('/api/manager/:id', adminAuth, ManagerController.show);
+    app.get('/api/manager/:id', ManagerController.show);
     app.post('/api/manager/', adminAuth, ManagerController.store);
     app.post('/api/manager/login', ManagerController.loginManager);
-    app.delete('/api/manager/:id', adminAuth, ManagerController.destroy);
-    app.put('/api/manager/:id', adminAuth, ManagerController.update)
+    app.delete('/api/manager/:id', ManagerController.destroy);
+    app.put('/api/manager/:id', ManagerController.update)
 
     /**
      * Delivery Manager Routes

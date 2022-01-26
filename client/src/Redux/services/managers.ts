@@ -46,25 +46,21 @@ export const managerApi = createApi({
         getManager: build.query<Manager, number>({
             query: (id) => `manager/${id}`
         }),
-        updatePost: build.mutation<Manager, Partial<Manager>>({
-            query(data) {
-                const { id, ...body } = data;
-                return {
-                    url: `manager/${id}`,
-                    method: 'PUT',
-                    body
-                };
-            }
+        updateManager: build.mutation<Manager, Partial<Manager>>({
+            query: ({ id, ...patch }) => ({
+                url: `manager/${id}`,
+                method: "PUT",
+                body: patch,
+              }),
         }),
-        deletePost: build.mutation<{ success: boolean; id: number }, number>({
+        deleteManager: build.mutation<{ success: boolean; id: number }, number>({
             query(id) {
                 return {
                     url: `manager/${id}`,
                     method: 'DELETE'
                 };
             },
-            invalidatesTags: (result, error, id) => [{ type: 'Managers', id }]
         })
     })
 });
-export const { useGetManagersQuery, useGetManagerQuery, useUpdatePostMutation, useDeletePostMutation, useLoginManagerMutation } = managerApi;
+export const { useGetManagersQuery, useGetManagerQuery, useUpdateManagerMutation, useDeleteManagerMutation, useLoginManagerMutation } = managerApi;
