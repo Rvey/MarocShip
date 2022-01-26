@@ -1,13 +1,14 @@
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { useGetManagersQuery } from '../../../Redux/services/managers';
-interface UpdateManagerFormProps {
+import { useAddManagerMutation, useGetManagersQuery } from '../../../Redux/services/managers';
+interface AddManagerFormProps {
     setIsOpen: (val: boolean) => void;
-    manager: number;
 }
 
-const UpdateManagerForm: React.FC<UpdateManagerFormProps> = ({ setIsOpen }) => {
+const AddManagerForm: React.FC<AddManagerFormProps> = ({ setIsOpen }) => {
     const { refetch } = useGetManagersQuery();
+    const [addModal ] = useAddManagerMutation()
+    // const [addManager] = 
 
     const formik = useFormik({
         initialValues: {
@@ -22,7 +23,8 @@ const UpdateManagerForm: React.FC<UpdateManagerFormProps> = ({ setIsOpen }) => {
             email: Yup.string().email('Invalid email address').required('Required')
         }),
         onSubmit: async (values: any) => {
-            console.log(values);
+            // console.log(values);
+            addModal(values).then(() => setIsOpen(false)).then(() => refetch())
         }     
     });
 
@@ -69,7 +71,7 @@ const UpdateManagerForm: React.FC<UpdateManagerFormProps> = ({ setIsOpen }) => {
                     type="submit"
                     className="inline-flex justify-center px-4 py-2 text-sm font-medium text-green-900 bg-green-100 border border-transparent rounded-md hover:bg-green-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-green-500 dark:bg-green-300"
                 >
-                    update
+                    save
                 </button>
                 <button
                     type="button"
@@ -82,4 +84,4 @@ const UpdateManagerForm: React.FC<UpdateManagerFormProps> = ({ setIsOpen }) => {
         </form>
     );
 };
-export default UpdateManagerForm;
+export default AddManagerForm;

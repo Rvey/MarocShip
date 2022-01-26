@@ -56,7 +56,7 @@ const loginManager = async (req, res) => {
 }
 
 const store = async (req, res) => {
-    const { email, firstName, lastName, password } = req.body
+    const { email, firstName, lastName } = req.body
     try {
         if (!email || !firstName || !lastName) return res.status(400).json({ message: "Please fill all the fields" })
 
@@ -64,6 +64,8 @@ const store = async (req, res) => {
 
         if (existingManager) return res.status(400).json({ message: "Manager already exists" })
 
+        let password =  Math.random().toString(20).substring(2, 10)
+        
         const hashedPassword = await bcrypt.hash(password, 12)
 
         const newManager = await Manager.create({ email, firstName , lastName , password: hashedPassword })
@@ -71,12 +73,11 @@ const store = async (req, res) => {
         const token = jwt.sign({ id: newManager._id, email: newManager.email }, `${process.env.JWT_SECRET}`, { expiresIn: '1h' })
         
 
-        req.body.password =  Math.random().toString(20).substring(2, 10)
 
         managerEmail(email,firstName , lastName , password)
 
         logger.info(`Manager email: ${newManager.email} created By Admin`)
-        res.status(200).json({ newManager, token })
+        res.status(200).json({ newManager })
 
     } catch (err) {
         res.status(400).json({ error: err.message })

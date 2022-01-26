@@ -10,9 +10,7 @@ const ManagerTable = () => {
     const [manager, setManager] = useState('');
 
     let [isOpen, setIsOpen] = useState(false);
-    function openModal() {
-        setIsOpen(true);
-    }
+  
 
     return (
         <div className="inline-block py-2 min-w-full sm:px-6 lg:px-8">

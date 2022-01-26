@@ -43,8 +43,16 @@ export const managerApi = createApi({
         getManagers: build.query<ManagersResponse, void>({
             query: () => ({ url: 'Manager' })
         }),
+
         getManager: build.query<Manager, string>({
             query: (id) => `manager/${id}`
+        }),
+        addManager: build.mutation<Manager, Partial<Manager>>({
+            query: (body) => ({
+                url: `manager`,
+                method: 'POST',
+                body
+            })
         }),
         updateManager: build.mutation<Manager, Partial<Manager>>({
             query: ({ id, ...patch }) => ({
@@ -63,4 +71,4 @@ export const managerApi = createApi({
         })
     })
 });
-export const { useGetManagersQuery, useGetManagerQuery, useUpdateManagerMutation, useDeleteManagerMutation, useLoginManagerMutation } = managerApi;
+export const { useGetManagersQuery, useGetManagerQuery, useUpdateManagerMutation, useDeleteManagerMutation, useAddManagerMutation, useLoginManagerMutation } = managerApi;
