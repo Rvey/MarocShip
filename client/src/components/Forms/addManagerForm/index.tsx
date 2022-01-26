@@ -7,8 +7,7 @@ interface AddManagerFormProps {
 
 const AddManagerForm: React.FC<AddManagerFormProps> = ({ setIsOpen }) => {
     const { refetch } = useGetManagersQuery();
-    const [addModal ] = useAddManagerMutation()
-    // const [addManager] = 
+    const [addModal] = useAddManagerMutation();
 
     const formik = useFormik({
         initialValues: {
@@ -24,8 +23,10 @@ const AddManagerForm: React.FC<AddManagerFormProps> = ({ setIsOpen }) => {
         }),
         onSubmit: async (values: any) => {
             // console.log(values);
-            addModal(values).then(() => setIsOpen(false)).then(() => refetch())
-        }     
+            addModal(values)
+                .then(() => setIsOpen(false))
+                .then(() => refetch());
+        }
     });
 
     return (
@@ -66,16 +67,16 @@ const AddManagerForm: React.FC<AddManagerFormProps> = ({ setIsOpen }) => {
                     {...formik.getFieldProps('email')}
                 />
             </div>
-            <div className="mt-4 space-x-2">
+            <div className="mt-4 flex justify-between">
                 <button
                     type="submit"
-                    className="inline-flex justify-center px-4 py-2 text-sm font-medium text-green-900 bg-green-100 border border-transparent rounded-md hover:bg-green-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-green-500 dark:bg-green-300"
+                    className="text-green-900 bg-white border border-green-300 hover:bg-gray-100 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-green-500 dark:text-white dark:border-green-600 dark:hover:bg-green-700 dark:hover:border-gray-700 dark:focus:ring-green-800"
                 >
                     save
                 </button>
                 <button
                     type="button"
-                    className="inline-flex justify-center px-4 py-2 text-sm font-medium text-red-900 bg-red-100 border border-transparent rounded-md hover:bg-red-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500 dark:bg-red-300"
+                    className="text-gray-900 bg-white border border-gray-300 hover:bg-gray-100 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-gray-600 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-700 dark:focus:ring-gray-800"
                     onClick={() => setIsOpen(false)}
                 >
                     cancel
