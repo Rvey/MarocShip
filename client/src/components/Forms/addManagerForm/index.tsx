@@ -1,25 +1,19 @@
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { useDeleteManagerMutation, useGetManagerQuery, useGetManagersQuery, useUpdateManagerMutation } from '../../../Redux/services/managers';
+import { useGetManagersQuery } from '../../../Redux/services/managers';
 interface UpdateManagerFormProps {
     setIsOpen: (val: boolean) => void;
-    manager: string;
+    manager: number;
 }
 
-const UpdateManagerForm: React.FC<UpdateManagerFormProps> = ({ setIsOpen, manager }) => {
-    // Pass the useFormik() hook initial form values and a submit function that will
-    // be called when the form is submitted
+const UpdateManagerForm: React.FC<UpdateManagerFormProps> = ({ setIsOpen }) => {
     const { refetch } = useGetManagersQuery();
-    const { data, error, isLoading, refetch: re } = useGetManagerQuery(manager);
-    const [updateManager, { isLoading: isUpdating }] = useUpdateManagerMutation();
-    const [deleteManager] = useDeleteManagerMutation();
 
     const formik = useFormik({
         initialValues: {
-            id: data?._id,
-            email: data?.email || '',
-            lastName: data?.lastName || '',
-            firstName: data?.firstName || ''
+            email: '',
+            lastName: '',
+            firstName: ''
         },
         enableReinitialize: true,
         validationSchema: Yup.object({
@@ -27,19 +21,10 @@ const UpdateManagerForm: React.FC<UpdateManagerFormProps> = ({ setIsOpen, manage
             lastName: Yup.string().max(20, 'Must be 20 characters or less').required('Required'),
             email: Yup.string().email('Invalid email address').required('Required')
         }),
-        onSubmit: async (values: any, id: any) => {
-            await updateManager({ id, ...values })
-                .then(() => setIsOpen(false))
-                .then(() => refetch())
-                .then(() => re());
-        }
+        onSubmit: async (values: any) => {
+            console.log(values);
+        }     
     });
-
-    const DeleteManager = (id: any) => {
-        deleteManager(id)
-            .then(() => setIsOpen(false))
-            .then(() => refetch());
-    };
 
     return (
         <form onSubmit={formik.handleSubmit}>
@@ -89,9 +74,9 @@ const UpdateManagerForm: React.FC<UpdateManagerFormProps> = ({ setIsOpen, manage
                 <button
                     type="button"
                     className="inline-flex justify-center px-4 py-2 text-sm font-medium text-red-900 bg-red-100 border border-transparent rounded-md hover:bg-red-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500 dark:bg-red-300"
-                    onClick={() => DeleteManager(manager)}
+                    onClick={() => setIsOpen(false)}
                 >
-                    delete
+                    cancel
                 </button>
             </div>
         </form>

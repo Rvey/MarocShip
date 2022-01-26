@@ -1,12 +1,11 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { useState, Fragment } from 'react';
-import { useGetManagerQuery } from '../../../Redux/services/managers';
-import SignupForm from '../../Forms/UpdateManagerForm';
+import UpdateManagerForm from '../../Forms/UpdateManagerForm';
 
 interface UpdateManagerProps {
     isOpen: boolean;
     setIsOpen: (val: boolean) => void;
-    manager: number;
+    manager: string;
 }
 
 const UpdateManager: React.FC<UpdateManagerProps> = ({ isOpen, setIsOpen, manager }) => {
@@ -36,7 +35,7 @@ const UpdateManager: React.FC<UpdateManagerProps> = ({ isOpen, setIsOpen, manage
                             <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900 dark:text-white">
                                 Update Manager
                             </Dialog.Title>
-                            <SignupForm setIsOpen={setIsOpen} manager={manager}  />
+                            <UpdateManagerForm setIsOpen={setIsOpen} manager={manager}  />
                         </div>
                     </Transition.Child>
                 </div>

@@ -1,11 +1,11 @@
 import { createApi, fetchBaseQuery, retry } from '@reduxjs/toolkit/query/react';
-import { RootState } from '../store';
-
 interface Manager {
+    lastName: string;
+    firstName: string;
     id: number;
-    _id:string;
+    _id: string;
     name: string;
-    email:string;
+    email: string;
     fetched_at: string;
 }
 type ManagersResponse = Manager[];
@@ -43,15 +43,15 @@ export const managerApi = createApi({
         getManagers: build.query<ManagersResponse, void>({
             query: () => ({ url: 'Manager' })
         }),
-        getManager: build.query<Manager, number>({
+        getManager: build.query<Manager, string>({
             query: (id) => `manager/${id}`
         }),
         updateManager: build.mutation<Manager, Partial<Manager>>({
             query: ({ id, ...patch }) => ({
                 url: `manager/${id}`,
-                method: "PUT",
-                body: patch,
-              }),
+                method: 'PUT',
+                body: patch
+            })
         }),
         deleteManager: build.mutation<{ success: boolean; id: number }, number>({
             query(id) {
@@ -59,7 +59,7 @@ export const managerApi = createApi({
                     url: `manager/${id}`,
                     method: 'DELETE'
                 };
-            },
+            }
         })
     })
 });

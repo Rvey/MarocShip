@@ -394,6 +394,11 @@
   resolved "https://registry.yarnpkg.com/@headlessui/react/-/react-1.4.3.tgz#f77c6bb5cb4a614a5d730fb880cab502d48abf37"
   integrity sha512-n2IQkaaw0aAAlQS5MEXsM4uRK+w18CrM72EqnGRl/UBOQeQajad8oiKXR9Nk15jOzTFQjpxzrZMf1NxHidFBiw==
 
+"@hookform/resolvers@^2.8.8":
+  version "2.8.8"
+  resolved "https://registry.yarnpkg.com/@hookform/resolvers/-/resolvers-2.8.8.tgz#17cf806485435877fdafce9f3bee6ff68f7f87b6"
+  integrity sha512-meAEDur1IJBfKyTo9yPYAuzjIfrxA7m9Ov+1nxaW/YupsqMeseWifoUjWK03+hz/RJizsVQAaUjVxFEkyu0GWg==
+
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
   resolved "https://registry.yarnpkg.com/@nodelib/fs.scandir/-/fs.scandir-2.1.5.tgz#7619c2eb21b25483f6d167548b4cfd5a7488c3d5"
@@ -1358,6 +1363,11 @@ react-fast-compare@^2.0.1:
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/react-fast-compare/-/react-fast-compare-2.0.4.tgz#e84b4d455b0fec113e0402c329352715196f81f9"
   integrity sha512-suNP+J1VU1MWFKcyt7RtjiSWUjvidmQSlqu+eHslq+342xCbGTYmC0mEhPCOHxlW0CywylOC1u2DFAT+bv4dBw==
+
+react-hook-form@^7.25.1:
+  version "7.25.1"
+  resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-7.25.1.tgz#7ec58505078760134b1c6efdfe07b4b5c4bdb8e3"
+  integrity sha512-AVE/kFtOQ6GEC5TBDNzZrVO8k4QRMi5RNhUWeBq6Koc9V/luBrP1xybWByl4n1yLFL8/2H3p0VM7wp3CW7t8JQ==
 
 react-is@^16.13.1, react-is@^16.7.0:
   version "16.13.1"

@@ -21,7 +21,10 @@ const ManagerTable = () => {
                     <thead className="bg-gray-50 dark:bg-gray-700">
                         <tr>
                             <th scope="col" className="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">
-                                Name
+                                FirstName
+                            </th>
+                            <th scope="col" className="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">
+                                LastName
                             </th>
                             <th scope="col" className="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">
                                 email
@@ -35,7 +38,8 @@ const ManagerTable = () => {
                         {data &&
                             data.map((manager, index) => (
                                 <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                    <td className="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">{manager.name}</td>
+                                    <td className="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">{manager.firstName}</td>
+                                    <td className="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">{manager.lastName}</td>
                                     <td className="py-4 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">{manager.email}</td>
                                     <td className="py-4 px-6 text-sm font-medium text-right whitespace-nowrap">
                                         <button
