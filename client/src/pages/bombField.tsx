@@ -1,12 +1,13 @@
 import { useAppSelector, useAppDispatch } from '../Redux/hook';
 import { decrement, increment, selectCount } from '../Redux/features/counter/counterSlice';
 import { useGetManagersQuery } from '../Redux/services/managers';
-import { userData, selectUser } from '../Redux/features/auth/userSlice';
+import { userData, selectUser, clearData } from '../Redux/features/auth/userSlice';
 import { useCookies } from 'react-cookie';
 
 interface BombFieldProps {
     name: string;
 }
+// let persistor = persistStore(store);
 const BombField: React.FC<BombFieldProps> = () => {
     const count = useAppSelector(selectCount);
     const user = useAppSelector(selectUser);
@@ -26,12 +27,19 @@ const BombField: React.FC<BombFieldProps> = () => {
             <button onClick={() => dispatch(increment())}>increment</button>
             <button onClick={() => dispatch(decrement())}>decrement</button>
             <button
+                onClick={() => {
+                    dispatch(clearData());
+                }}
+            >
+                purge state
+            </button>
+            <button
                 className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                 onClick={() =>
                     dispatch(
                         userData({
-                            name: 'test',
-                            email: 'rredouane@gmail.com',
+                            name: cookies.name,
+                            email: cookies.name,
                             token: 'test'
                         })
                     )
@@ -40,12 +48,25 @@ const BombField: React.FC<BombFieldProps> = () => {
                 add user to store
             </button>
 
-            {user.name && <p>{user.name}</p>}
-            {user.email && <p>{user.email}</p>}
-            {user.token && <p>{user.token}</p>}
+            <button
+                className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                onClick={() =>
+                    dispatch(
+                        userData({
+                            name: cookies.name,
+                            email: cookies.name,
+                            token: 'test'
+                        })
+                    )
+                }
+            >
+                REMOVE user from store
+            </button>
 
-            cookie :{cookies.name && <p>{cookies.name}</p>}
-            
+            {user.name && <p>{JSON.stringify(user)}</p>}
+            {/* {user.email && <p>{user.email}</p>} */}
+            {/* {user.token && <p>{user.token}</p>} */}
+            {/* cookie :{cookies.name && <p>{cookies.name}</p>} */}
         </div>
     );
 };

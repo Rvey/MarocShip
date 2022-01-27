@@ -1,4 +1,4 @@
-import AdminLoginForm from "../../components/LoginForms/AdminLoginForm";
+import AdminLoginForm from "../../components/LoginForms/ManagerLoginForm";
 
 const AdminLogin = () => {
  

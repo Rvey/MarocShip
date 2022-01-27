@@ -1,76 +1,85 @@
-import { useState } from "react";
-import { Link } from 'react-router-dom'
-interface ManagerLoginFormProps {}
+import { useFormik } from 'formik';
+import { Link } from 'react-router-dom';
+import * as Yup from 'yup';
+import { useLoginManagerMutation } from '../../../Redux/services/managers';
+// import { useCookies } from 'react-cookie';
+import { useAppDispatch } from '../../../Redux/hook';
+import { userData } from '../../../Redux/features/auth/userSlice';
+interface ManagerLoginFormProps {
+    values?: {
+        email: string;
+        password: string;
+    };
+}
 
-const ManagerLoginForm: React.FunctionComponent<ManagerLoginFormProps> = () => {
-    const [email , setEmail] = useState('')
-    const [password , setPassword] = useState('')
+const ManagerLoginForm: React.FC<ManagerLoginFormProps> = () => {
+    // const [cookies, setCookie] = useCookies(['role']);
+    const [ManagerLogin] = useLoginManagerMutation();
+    const dispatch = useAppDispatch();
+    const formik = useFormik({
+        initialValues: {
+            email: '',
+            password: ''
+        },
+        enableReinitialize: true,
+        validationSchema: Yup.object({
+            password: Yup.string().min(2, 'Must be 6 characters at least').required('Required'),
+            email: Yup.string().email('Invalid email address').required('Required')
+        }),
+        onSubmit: async (values) => {
+            await ManagerLogin(values).then((data: any) =>
+            // console.log(data)
+            
+                dispatch(
+                    userData({
+                        token: data.data.token,
+                        role: data.data.role,
+                        email: data.data.email
+                    })
+                )
+            );
+        }
+    });
 
-    const Submit = (e:React.MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault()
-        console.log(e.target);
-        
-    }
     return (
-        <form className="space-y-8 " action="#">
-            <h3 className="text-xl font-medium text-gray-900 dark:text-white">Sign in</h3>
-            <div>
+        <form onSubmit={formik.handleSubmit}>
+            <h3 className="text-xl font-medium text-gray-900 dark:text-white mb-8">Manager Sign in</h3>
+            <div className="mb-6">
                 <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
-                    Your email
+                    Email
                 </label>
+                {formik.touched.email && formik.errors.email ? <div className="text-red-400 p-1">{formik.errors.email}</div> : null}
                 <input
+                    id="email"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     type="email"
-                    name="email"
-                    onChange={(e) => setEmail(e.target.value)}
-                    value={email}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                    placeholder="name@company.com"
-                    required
+                    {...formik.getFieldProps('email')}
                 />
             </div>
-            <div>
+            <div className="mb-6">
                 <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
-                    Your password
+                    Password
                 </label>
+                {formik.touched.password && formik.errors.password ? <div className="text-red-400 p-1">{formik.errors.password}</div> : null}
                 <input
+                    id="password"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     type="password"
-                    onChange={(e) => setPassword(e.target.value)}
-                    value={password}
-                    placeholder="••••••••"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                    required
+                    {...formik.getFieldProps('password')}
                 />
             </div>
-            <div className="flex items-start">
-                <div className="flex items-start">
-                    <div className="flex items-center h-5">
-                        <input
-                            id="remember"
-                            aria-describedby="remember"
-                            type="checkbox"
-                            className="w-4 h-4 bg-gray-50 rounded border border-gray-300 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800"
-                            required
-                        />
-                    </div>
-                    <div className="ml-3 text-sm">
-                        <label htmlFor="remember" className="font-medium text-gray-900 dark:text-gray-300">
-                            Remember me
-                        </label>
-                    </div>
-                </div>
-                <Link to="" className="ml-auto text-sm text-blue-700 hover:underline dark:text-blue-500">
-                    reset Password?
-                </Link>
+            <Link to="" className="ml-auto text-sm text-blue-700 hover:underline dark:text-blue-500">
+                reset Password?
+            </Link>
+            <div className="mt-4">
+                <button
+                    type="submit"
+                    className="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                >
+                    Login to your account
+                </button>
             </div>
-            <button
-                type="submit"
-                onClick={(e) => Submit(e)}
-                className="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-            >
-                Login to your account
-            </button>
         </form>
     );
 };
-
 export default ManagerLoginForm;

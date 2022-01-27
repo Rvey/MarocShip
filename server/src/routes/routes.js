@@ -5,6 +5,7 @@ const DriverController = require('../controllers/driver.controller')
 const DeliveryController = require('../controllers/delivery.controller')
 
 const { adminAuth, managerAuth, deliveryManager, driverAuth } = require('../middleware/permission.middleware')
+const verifyJwt = require('../middleware/manager.middleware')
 const upload = require('../middleware/upload.middleware')
 
 module.exports = (app) => {
@@ -18,7 +19,7 @@ module.exports = (app) => {
      * Manager Routes
      */
     app.post('/api/manager/resetPassword', ManagerController.resetPassword)
-    app.get('/api/manager/', ManagerController.index);
+    app.get('/api/manager/',verifyJwt ,ManagerController.index);
     app.get('/api/manager/:id', ManagerController.show);
     app.post('/api/manager/', ManagerController.store);
     app.post('/api/manager/login', ManagerController.loginManager);

@@ -8,6 +8,7 @@ const adminAuth = (req, res, next ) => {
         if (err) {
          res.json({ error: err.message });
         } else {
+
             next();
         }
     });
@@ -32,8 +33,8 @@ const deliveryManager = (req, res, next ) => {
   };
   const managerAuth = (req, res, next ) => {
     const token = req.cookies.jwt;
-    const role = req.cookies.role;
-    if (token && role == 'manager') {
+    // const role = req.cookies.role;
+    if (token) {
       jwt.verify(token, `${process.env.JWT_SECRET_KEY}`, (err, decodedToken) => {
         if (err) {
          res.json({ error: err.message });

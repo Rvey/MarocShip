@@ -9,7 +9,9 @@ import userReducer from './features/auth/userSlice';
 const persistConfig = {
     key: 'root',
     version: 1,
-    storage
+    storage,
+    blacklist: [managerApi.reducerPath],
+
 };
 
 const persistedReducer = persistReducer(persistConfig, userReducer);
