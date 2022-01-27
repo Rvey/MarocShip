@@ -2,7 +2,6 @@ import { useFormik } from 'formik';
 import { Link } from 'react-router-dom';
 import * as Yup from 'yup';
 import { useLoginManagerMutation } from '../../../Redux/services/managers';
-// import { useCookies } from 'react-cookie';
 import { useAppDispatch } from '../../../Redux/hook';
 import { userData } from '../../../Redux/features/auth/userSlice';
 interface ManagerLoginFormProps {
@@ -13,7 +12,6 @@ interface ManagerLoginFormProps {
 }
 
 const ManagerLoginForm: React.FC<ManagerLoginFormProps> = () => {
-    // const [cookies, setCookie] = useCookies(['role']);
     const [ManagerLogin] = useLoginManagerMutation();
     const dispatch = useAppDispatch();
     const formik = useFormik({
@@ -27,17 +25,17 @@ const ManagerLoginForm: React.FC<ManagerLoginFormProps> = () => {
             email: Yup.string().email('Invalid email address').required('Required')
         }),
         onSubmit: async (values) => {
-            await ManagerLogin(values).then((data: any) =>
-            // console.log(data)
-            
-                dispatch(
-                    userData({
-                        token: data.data.token,
-                        role: data.data.role,
-                        email: data.data.email
-                    })
+            await ManagerLogin(values)
+                .then((data: any) =>
+                    dispatch(
+                        userData({
+                            token: data.data.token,
+                            role: data.data.role,
+                            email: data.data.email
+                        })
+                    )
                 )
-            );
+                .then(() => location.replace('/bomb'));
         }
     });
 

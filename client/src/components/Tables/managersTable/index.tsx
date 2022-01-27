@@ -1,12 +1,10 @@
 import { useState, Fragment } from 'react';
 import UpdateManager from '../../ModalContent/updateManagerModal/updateManager';
-// import MyModal from '../../ModalContent/updateManagerModal/updateManager';
-// import UpdateManager from '../../ModalContent/updateManagerModal/updateManager';
 import { useGetManagersQuery } from './../../../Redux/services/managers';
 
 
 const ManagerTable = () => {
-    const { data, error, isLoading } = useGetManagersQuery();
+    const { data, error, isLoading  } = useGetManagersQuery();
     const [manager, setManager] = useState('');
 
     let [isOpen, setIsOpen] = useState(false);
@@ -14,7 +12,6 @@ const ManagerTable = () => {
 
     return (
         <div className="inline-block py-2 min-w-full sm:px-6 lg:px-8">
-            {data && JSON.stringify(data)}
             <div className="overflow-hidden shadow-md sm:rounded-lg">
                 <table className="min-w-full">
                     <thead className="bg-gray-50 dark:bg-gray-700">
@@ -34,8 +31,8 @@ const ManagerTable = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {/* {
-                            data?.map((manager, index) => (
+                        {data &&
+                            data.map((manager, index) => (
                                 <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                     <td className="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">{manager.firstName}</td>
                                     <td className="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">{manager.lastName}</td>
@@ -54,12 +51,11 @@ const ManagerTable = () => {
                                         </button>
                                     </td>
                                 </tr>
-                            ))} */}
+                            ))}
                     </tbody>
                 </table>
             </div>
             
-            {/* <UpdateManager isOpen={isOpen} setIsOpen={setIsOpen} manager={manager} /> */}
         </div>
     );
 };

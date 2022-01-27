@@ -1,7 +1,6 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { useState, Fragment } from 'react';
 import AddManagerForm from '../../Forms/addManagerForm';
-import UpdateManagerForm from '../../Forms/UpdateManagerForm';
 
 interface AddManagerModalProps {
     setIsOpen: (val: boolean) => void;
@@ -9,7 +8,6 @@ interface AddManagerModalProps {
 }
 
 const AddManagerModal: React.FC<AddManagerModalProps> = ({ isOpen, setIsOpen }) => {
-    
     return (
         <Transition show={isOpen} as={Fragment}>
             <Dialog as="div" className="fixed inset-0 z-10 overflow-y-auto bg-gray-700 bg-opacity-50" onClose={() => setIsOpen(false)}>
@@ -36,7 +34,7 @@ const AddManagerModal: React.FC<AddManagerModalProps> = ({ isOpen, setIsOpen }) 
                                 Register Manager
                             </Dialog.Title>
 
-                            <AddManagerForm setIsOpen={setIsOpen}/>
+                            <AddManagerForm setIsOpen={setIsOpen} />
                         </div>
                     </Transition.Child>
                 </div>

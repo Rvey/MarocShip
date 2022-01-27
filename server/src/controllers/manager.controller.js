@@ -54,12 +54,13 @@ const loginManager = async (req, res) => {
                         email: existingManager.email,
                         role: existingManager.role
                     }
-                    jwt.sign(payload, `${process.env.JWT_SECRET_KEY}`, { expiresIn: '2h' }, (err, token) => {
+                    jwt.sign(payload, `${process.env.JWT_SECRET_KEY}`, { expiresIn: '1h' }, (err, token) => {
                         if (err) return res.json({ message: err.message })
                         return res.json({
                             token: token,
                             role: existingManager.role,
-                            email: existingManager.email
+                            email: existingManager.email,
+                         
                         })
                     })
                 } else {
