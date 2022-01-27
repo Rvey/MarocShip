@@ -2,9 +2,11 @@ import { createApi, fetchBaseQuery, retry } from '@reduxjs/toolkit/query/react';
 import { RootState } from '../store';
 interface Delivery{
     from: string;
+    name:string
     to:string
     delivery: string;
-    weight: number;
+    location:string
+    weight: string;
     token:string
     id: number;
     _id: string;

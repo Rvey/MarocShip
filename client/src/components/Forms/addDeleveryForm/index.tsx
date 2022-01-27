@@ -1,47 +1,49 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-
-import { useGetManagersQuery } from '../../../Redux/services/managers';
+import { useAddDeliveryMutation, useGetDeliveriesQuery } from '../../../Redux/services/deliveries';
 interface AddDeliveryFormProps {
     setIsOpen: (val: boolean) => void;
 }
 
 const DeliverySchema = Yup.object().shape({
-    name: Yup.string().min(2, 'Too Short!').required('Required'),
-    location: Yup.string().required('Required'),
+    delivery: Yup.string().min(2, 'Too Short!').required('Required'),
+    region: Yup.string().required('Required'),
     weight: Yup.number().required('Required')
 });
 const AddDeliveryForm: React.FC<AddDeliveryFormProps> = ({ setIsOpen }) => {
-    const { refetch } = useGetManagersQuery();
+    const { refetch } = useGetDeliveriesQuery();
+    const [addDelivery] = useAddDeliveryMutation()
 
     return (
         <Formik
          
             initialValues={{
-                location: '',
-                name: '',
-                shipmentMethod: 'car',
+                region: '',
+                delivery: '',
                 weight: '',
                 from: '',
                 to: ''
             }}
             validationSchema={DeliverySchema}
             onSubmit={(values) => {
-                console.log(values);
+                addDelivery(values).then(() => setIsOpen(false)).then(() => refetch())
+                // console.log(values);
+                
             }}
         >
             {({ errors, touched, values }) => (
                 <Form>
                     <div className="mt-4">
-                        <label htmlFor="firstName" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                        <label htmlFor="delivery" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
                             Delivery
                         </label>
                         <Field
                             type="text"
-                            className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@flowbite.com'
-                            name="name"
+                            id="delivery"
+                            className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                            name="delivery"
                         />
-                        {errors.name && touched.name ? <div className="text-red-500 font-semibold dark:text-red-400">{errors.name}</div> : null}
+                        {errors.delivery && touched.delivery ? <div className="text-red-500 font-semibold dark:text-red-400">{errors.delivery}</div> : null}
                     </div>
                     <div className="mt-4">
                         <label htmlFor="weight" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
@@ -54,7 +56,7 @@ const AddDeliveryForm: React.FC<AddDeliveryFormProps> = ({ setIsOpen }) => {
                         />
                         {errors.weight && touched.weight ? <div className="text-red-500 font-semibold dark:text-red-400">{errors.weight}</div> : null}
                     </div>
-                    <div className="mt-4">
+                    {/* <div className="mt-4">
                         <label htmlFor="firstName" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
                             shipmentMethod
                         </label>
@@ -68,25 +70,25 @@ const AddDeliveryForm: React.FC<AddDeliveryFormProps> = ({ setIsOpen }) => {
                             <option value="van">van</option>
                             <option value="truck">truck</option>
                         </Field>
-                    </div>
+                    </div> */}
                     <div className="mt-4">
                         <label htmlFor="firstName" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
                             region
                         </label>
                         <Field
                             component="select"
-                            id="location"
-                            name="location"
+                            id="region"
+                            name="region"
                             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         >
                             <option value="Europe">Europe</option>
-                            <option value="National">National</option>
+                            <option value="national">national</option>
                             <option value="America">America</option>
                             <option value="Asia">Asia</option>
                             <option value="Australia">Australia</option>
                         </Field>
                     </div>
-                    {values.location === 'National' && (
+                    {values.region === 'national' && (
                         <div className="mt-4 flex w-full gap-4">
                             <div className="w-[50%]">
                                 <label htmlFor="from" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
@@ -98,11 +100,9 @@ const AddDeliveryForm: React.FC<AddDeliveryFormProps> = ({ setIsOpen }) => {
                                     name="from"
                                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                 >
-                                    <option value="National">National</option>
-                                    <option value="Europe">Europe</option>
-                                    <option value="America">America</option>
-                                    <option value="Asia">Asia</option>
-                                    <option value="Australia">Australia</option>
+                                    <option value="Safi">Safi</option>
+                                    <option value="Tanger">Tanger</option>
+                                    <option value="Essaouira">Essaouira</option>
                                 </Field>
                             </div>
                             <div className="w-[50%]">
@@ -115,11 +115,9 @@ const AddDeliveryForm: React.FC<AddDeliveryFormProps> = ({ setIsOpen }) => {
                                     name="to"
                                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                 >
-                                    <option value="National">National</option>
-                                    <option value="Europe">Europe</option>
-                                    <option value="America">America</option>
-                                    <option value="Asia">Asia</option>
-                                    <option value="Australia">Australia</option>
+                                    <option value="Casablanca">Casablanca</option>
+                                    <option value="Tanger">Tanger</option>
+                                    <option value="Essaouira">Essaouira</option>
                                 </Field>
                             </div>
                         </div>

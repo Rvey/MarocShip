@@ -33,7 +33,7 @@ const show = async (req, res) => {
 const store = async (req, res) => {
     const { delivery, weight, from, to, shipmentMethod, region } = req.body;
     try {
-        if (!delivery || !weight || !from || !to || !shipmentMethod || !region) return res.status(400).json({ message: "Please fill all the fields" })
+        if (!delivery || !weight || !region) return res.status(400).json({ message: "Please fill all the fields" })
         let distance = '100'
         let createdBy = req.cookies.id
         let price = 0
@@ -78,7 +78,7 @@ const store = async (req, res) => {
         });
 
         // check the weight of the shipment and send mail to the driver accordingly
-        if (parsedWeight <= 200) {
+        if (parsedWeight <= 200 && region === 'national') {
            
             // check if there is a car driver available
             if (carDrivers.length === 0) return res.status(400).json({ error: "No car driver available" });
@@ -94,7 +94,7 @@ const store = async (req, res) => {
 
                 return res.status(200).send({ message: "email has been sent to car the drivers" });
             });
-        } else if (parsedWeight <= 800 && parsedWeight > 200) {
+        } else if (parsedWeight <= 800 && parsedWeight > 200 && region === 'national') {
             if (vanDrivers.length === 0) return res.status(400).json({ error: "No van driver available" });
             await Delivery.create({ delivery, weight, from, to, distance: distance, price: price, shipmentMethod: "Van", createdBy: createdBy, region })
             vanDrivers?.forEach((driver) => {
@@ -104,7 +104,7 @@ const store = async (req, res) => {
 
                 return res.status(200).send({ message: "email has been send to van the drivers" });
             });
-        } else if (parsedWeight <= 1600 && parsedWeight > 800) {
+        } else if (parsedWeight <= 1600 && parsedWeight > 800 && region === 'national') {
             if (truckDrivers.length === 0) return res.status(400).json({ error: "No truck driver available" });
             await Delivery.create({ delivery, weight, from, to, distance: distance, price: price, shipmentMethod: "Truck", createdBy: createdBy, region })
             truckDrivers?.forEach((driver) => {
@@ -113,6 +113,7 @@ const store = async (req, res) => {
                 return res.status(200).json({ message: "email has been send to truck the drivers" });
                 
             });
+
         } else {
             res.status(200).json({ error: "A problem occurred" });
         }
