@@ -4,6 +4,7 @@ import { setupListeners } from '@reduxjs/toolkit/query';
 import { persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import { managerApi } from './services/managers';
+import { deliveryApi } from './services/deliveries';
 import userReducer from './features/auth/userSlice';
 
 const persistConfig = {
@@ -20,14 +21,15 @@ export const store = configureStore({
     reducer: {
         counter: counterReducer,
         user: persistedReducer,
-        [managerApi.reducerPath]: managerApi.reducer
+        [managerApi.reducerPath]: managerApi.reducer,
+        [deliveryApi.reducerPath]: deliveryApi.reducer
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
             serializableCheck: {
                 ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER]
             }
-        }).concat(managerApi.middleware)
+        }).concat(managerApi.middleware , deliveryApi.middleware)
 });
 
 export type RootState = ReturnType<typeof store.getState>;

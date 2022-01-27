@@ -36,8 +36,6 @@ const loginManager = async (req, res) => {
 
         if (!existingManager) return res.status(400).json({ message: "Manager not found" })
 
-        const isPasswordMatch = await bcrypt.compare(password, existingManager.password);
-
         // if (!isPasswordMatch) return res.status(400).json({ message: "Password is incorrect" })
 
         // const token = jwt.sign({ id: existingManager._id, email: existingManager.email }, `${process.env.JWT_SECRET}`, { expiresIn: '1h' })

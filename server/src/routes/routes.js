@@ -40,24 +40,24 @@ module.exports = (app) => {
     /**
      * Driver Routes
     */
-    app.get('/api/driver/', deliveryManager, DriverController.index);
-    app.get('/api/driver/:id', deliveryManager, DriverController.show);
+    app.get('/api/driver/', DriverController.index);
+    app.get('/api/driver/:id', DriverController.show);
     app.post('/api/driver/', upload, DriverController.store);
     app.post('/api/driver/login', DriverController.loginDriver);
-    app.delete('/api/driver/:id', deliveryManager, DriverController.destroy);
-    app.put('/api/driver/validateDriver/:id', adminAuth, DriverController.validateDriver);
-    app.put('/api/driver/driverBonus/:id', driverAuth, DriverController.driverBonus);
-    app.put('/api/driver/:id', deliveryManager, DriverController.update)
+    app.delete('/api/driver/:id', DriverController.destroy);
+    app.put('/api/driver/validateDriver/:id', DriverController.validateDriver);
+    app.put('/api/driver/driverBonus/:id', DriverController.driverBonus);
+    app.put('/api/driver/:id', DriverController.update)
     app.post('/api/driver/resetPassword', DriverController.resetPassword)
 
     /**
      * Delivery Routes
         */
-    app.get('/api/delivery/', deliveryManager, DeliveryController.index);
-    app.get('/api/delivery/:id', deliveryManager, DeliveryController.show);
-    app.post('/api/delivery/', deliveryManager, DeliveryController.store);
-    app.put('/api/delivery/acceptDelivery/:id', driverAuth, DeliveryController.AcceptDelivery);
-    app.delete('/api/delivery/:id', deliveryManager, DeliveryController.destroy);
-    app.put('/api/delivery/:id', deliveryManager, DeliveryController.update)
+    app.get('/api/delivery/', DeliveryController.index);
+    app.get('/api/delivery/:id', DeliveryController.show);
+    app.post('/api/delivery/', DeliveryController.store);
+    app.put('/api/delivery/acceptDelivery/:id', DeliveryController.AcceptDelivery);
+    app.delete('/api/delivery/:id', DeliveryController.destroy);
+    app.put('/api/delivery/:id', DeliveryController.update)
 
 }
