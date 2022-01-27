@@ -2,6 +2,8 @@ import { useAppSelector, useAppDispatch } from '../Redux/hook';
 import { decrement, increment, selectCount } from '../Redux/features/counter/counterSlice';
 import { useGetManagersQuery } from '../Redux/services/managers';
 import { userData, selectUser } from '../Redux/features/auth/userSlice';
+import { useCookies } from 'react-cookie';
+
 interface BombFieldProps {
     name: string;
 }
@@ -10,6 +12,7 @@ const BombField: React.FC<BombFieldProps> = () => {
     const user = useAppSelector(selectUser);
     const dispatch = useAppDispatch();
     const { data, error, isLoading } = useGetManagersQuery();
+    const [cookies, setCookie] = useCookies(['name']);
 
     return (
         <div>
@@ -40,6 +43,9 @@ const BombField: React.FC<BombFieldProps> = () => {
             {user.name && <p>{user.name}</p>}
             {user.email && <p>{user.email}</p>}
             {user.token && <p>{user.token}</p>}
+
+            cookie :{cookies.name && <p>{cookies.name}</p>}
+            
         </div>
     );
 };
