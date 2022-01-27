@@ -12,7 +12,6 @@ const UpdateManagerForm: React.FC<UpdateManagerFormProps> = ({ setIsOpen, manage
     const { refetch } = useGetManagersQuery();
     const { data, error, isLoading, refetch: re } = useGetManagerQuery(manager);
     const [updateManager, { isLoading: isUpdating }] = useUpdateManagerMutation();
-    const [deleteManager] = useDeleteManagerMutation();
 
     const formik = useFormik({
         initialValues: {
@@ -34,12 +33,6 @@ const UpdateManagerForm: React.FC<UpdateManagerFormProps> = ({ setIsOpen, manage
                 .then(() => re());
         }
     });
-
-    const DeleteManager = (id: any) => {
-        deleteManager(id)
-            .then(() => setIsOpen(false))
-            .then(() => refetch());
-    };
 
     return (
         <form onSubmit={formik.handleSubmit}>
@@ -85,13 +78,6 @@ const UpdateManagerForm: React.FC<UpdateManagerFormProps> = ({ setIsOpen, manage
                     className="inline-flex justify-center px-4 py-2 text-sm font-medium text-green-900 bg-green-100 border border-transparent rounded-md hover:bg-green-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-green-500 dark:bg-green-300"
                 >
                     update
-                </button>
-                <button
-                    type="button"
-                    className="inline-flex justify-center px-4 py-2 text-sm font-medium text-red-900 bg-red-100 border border-transparent rounded-md hover:bg-red-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500 dark:bg-red-300"
-                    onClick={() => DeleteManager(manager)}
-                >
-                    delete
                 </button>
             </div>
         </form>

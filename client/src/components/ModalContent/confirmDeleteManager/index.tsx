@@ -1,18 +1,18 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { useState, Fragment } from 'react';
-import { useDeleteDeliveryMutation, useGetDeliveriesQuery } from '../../../Redux/services/deliveries';
+import { useDeleteManagerMutation, useGetManagersQuery } from '../../../Redux/services/managers';
 
 interface ConfirmDDProps {
     isOpen: boolean;
     setIsOpen: (val: boolean) => void;
-    deliveryId: string;
+    managerId: string;
 }
 
-const ConfirmDeleteDelivery: React.FC<ConfirmDDProps> = ({ isOpen, setIsOpen, deliveryId }) => {
-    const [deleteDelivery] = useDeleteDeliveryMutation();
-    const { refetch } = useGetDeliveriesQuery();
-    const DeleteDelivery = (deliveryId: any) => {
-        deleteDelivery(deliveryId)
+const ConfirmDeleteManager: React.FC<ConfirmDDProps> = ({ isOpen, setIsOpen, managerId }) => {
+    const [deleteManager] = useDeleteManagerMutation();
+    const { refetch } = useGetManagersQuery();
+    const DeleteManager = (managerId: any) => {
+        deleteManager(managerId)
             .then(() => setIsOpen(false))
             .then(() => refetch());
     };
@@ -43,9 +43,9 @@ const ConfirmDeleteDelivery: React.FC<ConfirmDDProps> = ({ isOpen, setIsOpen, de
                                     <svg className="mx-auto my-5 w-14 h-14 text-gray-400 dark:text-gray-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                     </svg>
-                                    <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Are you sure you want to delete this Delivery?</h3>
+                                    <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Are you sure you want to delete this Manager?</h3>
                                     <button
-                                        onClick={() => DeleteDelivery(deliveryId)}
+                                        onClick={() => DeleteManager(managerId)}
                                         type="button"
                                         className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2"
                                     >
@@ -68,4 +68,4 @@ const ConfirmDeleteDelivery: React.FC<ConfirmDDProps> = ({ isOpen, setIsOpen, de
     );
 };
 
-export default ConfirmDeleteDelivery;
+export default ConfirmDeleteManager;

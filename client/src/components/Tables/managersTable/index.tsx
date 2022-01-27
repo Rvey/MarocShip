@@ -1,4 +1,5 @@
 import { useState, Fragment } from 'react';
+import ConfirmDeleteManager from '../../ModalContent/confirmDeleteManager';
 import UpdateManager from '../../ModalContent/updateManagerModal/updateManager';
 import { useGetManagersQuery } from './../../../Redux/services/managers';
 
@@ -8,6 +9,7 @@ const ManagerTable = () => {
     const [manager, setManager] = useState('');
 
     let [isOpen, setIsOpen] = useState(false);
+    let [isOpenConfirm, setIsOpenConfirm] = useState(false);
   
 
     return (
@@ -38,6 +40,8 @@ const ManagerTable = () => {
                                     <td className="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">{manager.lastName}</td>
                                     <td className="py-4 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">{manager.email}</td>
                                     <td className="py-4 px-6 text-sm font-medium text-right whitespace-nowrap">
+                                      <div className='space-x-3'>
+                                          
                                         <button
                                             type="button"
                                             onClick={() => {
@@ -49,6 +53,18 @@ const ManagerTable = () => {
                                         >
                                             Edit
                                         </button>
+                                        <button
+                                            type="button"
+                                            onClick={() => {
+                                                setIsOpenConfirm(true);
+                                                setManager(manager._id);
+                                            }}
+                                            className=" text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-800"
+                                            data-modal-toggle="popup-modal"
+                                        >
+                                            delete
+                                        </button>
+                                      </div>
                                     </td>
                                 </tr>
                             ))}
@@ -56,7 +72,7 @@ const ManagerTable = () => {
                 </table>
             </div>
             <UpdateManager isOpen={isOpen} setIsOpen={setIsOpen} manager={manager} />
-            
+            <ConfirmDeleteManager isOpen={isOpenConfirm} setIsOpen={setIsOpenConfirm} managerId={manager} />
         </div>
     );
 };
