@@ -26,9 +26,7 @@ const AddDeliveryForm: React.FC<AddDeliveryFormProps> = ({ setIsOpen }) => {
             }}
             validationSchema={DeliverySchema}
             onSubmit={(values) => {
-                // addDelivery(values).then(() => setIsOpen(false)).then(() => refetch())
-                console.log(values);
-                
+                addDelivery(values).then(() => setIsOpen(false)).then(() => refetch())  
             }}
         >
             {({ errors, touched, values }) => (

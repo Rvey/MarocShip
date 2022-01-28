@@ -2,7 +2,7 @@ import DeliveriesTable from '../../components/Tables/DeliveriesTable';
 import { useState } from 'react';
 import AddDeliveryModal from '../../components/ModalContent/addDeliveryModal';
 interface ManagerDeliveriesProps {
-    setIsOpen: (val: boolean) => void;
+    setIsOpen?: (val: boolean) => void;
 }
 const ManageDeliveries: React.FC<ManagerDeliveriesProps> = () => {
     const [isOpen, setIsOpen] = useState(false);

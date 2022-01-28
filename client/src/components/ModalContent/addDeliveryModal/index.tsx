@@ -1,6 +1,6 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { useState, Fragment } from 'react';
-import AddDeliveryForm from '../../Forms/addDeleveryForm';
+import AddDeliveryForm from '../../Forms/addDeliveryForm';
 
 interface AddDeliveryModalProps {
     setIsOpen: (val: boolean) => void;

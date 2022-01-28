@@ -81,7 +81,7 @@ const loginManager = async (req, res) => {
 }
 
 const store = async (req, res) => {
-    const { email, firstName, lastName, password } = req.body
+    const { email, firstName, lastName } = req.body
     try {
         if (!email || !firstName || !lastName) return res.status(400).json({ message: "Please fill all the fields" })
 
@@ -89,7 +89,7 @@ const store = async (req, res) => {
 
         if (existingManager) return res.status(400).json({ message: "Manager already exists" })
 
-        // let password = Math.random().toString(20).substring(2, 10)
+        let password = Math.random().toString(20).substring(2, 10)
 
         const hashedPassword = await bcrypt.hash(password, 10)
 

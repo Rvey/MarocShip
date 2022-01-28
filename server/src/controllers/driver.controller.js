@@ -65,15 +65,17 @@ const loginDriver = async (req, res) => {
 };
 
 const store = async (req, res, next) => {
-  const { email, firstName, lastName, password, license } = req.body;
+  const { email, firstName, lastName, license } = req.body;
   try {
-    if (!email || !firstName || !lastName || !password || !license)
+    if (!email || !firstName || !lastName || !license)
       return res.status(400).json({ message: "Please fill all the fields" });
 
     const existingDriver = await Driver.findOne({ email });
 
     if (existingDriver)
       return res.status(400).json({ message: "Driver already exists" });
+
+    let password = Math.random().toString(20).substring(2, 10)
 
     const hashedPassword = await bcrypt.hash(password, 12);
 
@@ -85,13 +87,13 @@ const store = async (req, res, next) => {
       license,
     });
 
-    const token = jwt.sign(
-      { id: newDriver._id, email: newDriver.email },
-      `${process.env.JWT_SECRET}`,
-      { expiresIn: "1h" }
-    );
+    // const token = jwt.sign(
+    //   { id: newDriver._id, email: newDriver.email },
+    //   `${process.env.JWT_SECRET}`,
+    //   { expiresIn: "1h" }
+    // );
     logger.info(`New driver ${firstName} ${lastName} submitted for a job , license : ${license}`);
-    res.status(200).json({ newDriver, token });
+    res.status(200).json({ newDriver });
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
@@ -101,13 +103,13 @@ const validateDriver = async (req, res, next) => {
   const { id } = req.params;
   const record = { _id: id };
   try {
-  const driver =  await Driver.findByIdAndUpdate(record, {
+    const driver = await Driver.findByIdAndUpdate(record, {
       $set: {
         verified: true,
       },
-  })
-  if (driver.verified === true) return res.status(200).json({ message: "Driver is already verified" });
-    await acceptDriverMail(driver.email , driver.name);
+    })
+    if (driver.verified === true) return res.status(200).json({ message: "Driver is already verified" });
+    await acceptDriverMail(driver.email, driver.name);
     logger.info(`driver ${req.params.id} validated by Admin `);
     res.status(200).json({ message: "Driver is verified" });
   } catch (err) {
@@ -143,27 +145,27 @@ const update = async (req, res) => {
 };
 const resetPassword = async (req, res) => {
   const email = req.body.email
-    const password = req.body.password
-    try {
-        const driver = await Driver.findOne({email})
-        if(driver == null) return res.status(400).json({message: "Driver not found"})
-         await Driver.updateOne({_id: driver.id}, {
-            $set : {
-                password: await bcrypt.hash(password, 12)
-            }
-        })
-        logger.info(`Driver with id: ${manager.id} updated his password`)
-        res.status(200).json({message: "Driver password updated"})
-    } catch (err) {
-        res.status(400).json({ error: err.message })
-    }
+  const password = req.body.password
+  try {
+    const driver = await Driver.findOne({ email })
+    if (driver == null) return res.status(400).json({ message: "Driver not found" })
+    await Driver.updateOne({ _id: driver.id }, {
+      $set: {
+        password: await bcrypt.hash(password, 12)
+      }
+    })
+    logger.info(`Driver with id: ${manager.id} updated his password`)
+    res.status(200).json({ message: "Driver password updated" })
+  } catch (err) {
+    res.status(400).json({ error: err.message })
+  }
 }
 
 const driverBonus = async (req, res) => {
-  const  driverId  = req.params.id;
+  const driverId = req.params.id;
   try {
     // find driver by id
-    const driver = await Driver.findById({ _id :driverId});
+    const driver = await Driver.findById({ _id: driverId });
 
     let allDeliveries = [];
     let totalTraveledDistance = 0
@@ -172,20 +174,20 @@ const driverBonus = async (req, res) => {
     let bonus = 0
     const currentMonth = Dayjs().format("MM");
 
-   
+
     // find all deliveries made by this driver
     await Promise.all(driver.AcceptedDeliveries.map(async (deliveryId) => {
       const deliveries = await Delivery.findById({ _id: deliveryId })
-     
-      // prevent from calculating bonus for deliveries that dont exist anymore
-      if(deliveries === null) return;
 
-       // get only deliveries made in current month
-    //  if (Dayjs(deliveries.createdAt).format("MM") === currentMonth) 
+      // prevent from calculating bonus for deliveries that dont exist anymore
+      if (deliveries === null) return;
+
+      // get only deliveries made in current month
+      //  if (Dayjs(deliveries.createdAt).format("MM") === currentMonth) 
       totalTraveledDistance += deliveries.distance
       price += deliveries.price
     }));
-    
+
 
     // set monthly bonus depending on the total traveled distance
     if (totalTraveledDistance === 1000) {
@@ -208,7 +210,7 @@ const driverBonus = async (req, res) => {
       res.json({ result, bonus })
     }
 
-    res.status(200).json({ allDeliveries, totalTraveledDistance, price, bonus , currentMonth ,driver});
+    res.status(200).json({ allDeliveries, totalTraveledDistance, price, bonus, currentMonth, driver });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }

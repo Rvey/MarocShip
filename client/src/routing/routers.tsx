@@ -1,6 +1,6 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Navigation from './navigation';
-import { AdminDashboard, AdminLogin, ManagerLogin, DriverLogin, DeliveryManagerLogin, ManageCandidate, ManageDriver, ManageDeliveries, ManageManagers } from './../pages'
+import { AdminDashboard, AdminLogin, ManagerLogin, DriverLogin, DeliveryManagerLogin, ManageCandidate, ManageDriver, ManageDeliveries, ManageManagers, DriverRegister } from './../pages'
 import BombField from '../pages/bombField';
 
 const Routers = () => {
@@ -18,6 +18,7 @@ const Routers = () => {
                     <Route path="/deliveryManagerLogin" element={<DeliveryManagerLogin />} />
                     <Route path="/driverLogin" element={<DriverLogin />} />
                     <Route path="/deliveries" element={<ManageDeliveries />} />
+                    <Route path="/driverRegister" element={<DriverRegister />} />
                     <Route path="/bomb" element={<BombField name={''} />} />
                 </Routes>
             </div>
