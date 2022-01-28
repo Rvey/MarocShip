@@ -14,11 +14,11 @@ const deliverySchema = new Schema({
     },
     from: {
         type: String,
-        required: true,
+       
     },
     to: {
         type: String,
-        required: true,
+     
     },
     distance: {
         type: Number,

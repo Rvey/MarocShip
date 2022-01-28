@@ -34,7 +34,7 @@ const store = async (req, res) => {
     const { delivery, weight, from, to, shipmentMethod, region } = req.body;
     try {
         if (!delivery || !weight || !region) return res.status(400).json({ message: "Please fill all the fields" })
-        let distance = '100'
+        let distance = 0
         let createdBy = req.cookies.id
         let price = 0
 
@@ -79,13 +79,13 @@ const store = async (req, res) => {
 
         // check the weight of the shipment and send mail to the driver accordingly
         if (parsedWeight <= 200 && region === 'national') {
-           
+
             // check if there is a car driver available
             if (carDrivers.length === 0) return res.status(400).json({ error: "No car driver available" });
-            
+
             // store the delivery
             await Delivery.create({ delivery, weight, from, to, distance: distance, price: price, shipmentMethod: "Car", createdBy: createdBy, region })
-          
+
             // send mail to the driver who matched the shipmentMethod
             carDrivers.forEach((driver) => {
                 sendMail(driver.email);
@@ -111,11 +111,12 @@ const store = async (req, res) => {
                 sendMail(driver.email, driver.name, from, to, weight);
                 logger.info(`Delivery is added and an email has been send to truck the drivers by ${req.cookies.role} - id:${req.cookies.id}`);
                 return res.status(200).json({ message: "email has been send to truck the drivers" });
-                
-            });
+
+            })
 
         } else {
-            res.status(200).json({ error: "A problem occurred" });
+            await Delivery.create({ delivery, weight, from: 'Morocco', to: region, price: price, shipmentMethod: "Plan", createdBy: createdBy, region  })
+            return res.json({ delivery, weight })
         }
 
     } catch (err) {
@@ -149,7 +150,7 @@ const AcceptDelivery = async (req, res) => {
             $set: {
                 Available: false,
                 AcceptedBy: decodeData.id,
-                updatedAt : Date.now()
+                updatedAt: Date.now()
             },
         })
         await Driver.findByIdAndUpdate({ _id: decodeData.id },

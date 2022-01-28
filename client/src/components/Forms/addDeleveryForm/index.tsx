@@ -26,8 +26,8 @@ const AddDeliveryForm: React.FC<AddDeliveryFormProps> = ({ setIsOpen }) => {
             }}
             validationSchema={DeliverySchema}
             onSubmit={(values) => {
-                addDelivery(values).then(() => setIsOpen(false)).then(() => refetch())
-                // console.log(values);
+                // addDelivery(values).then(() => setIsOpen(false)).then(() => refetch())
+                console.log(values);
                 
             }}
         >
@@ -56,21 +56,6 @@ const AddDeliveryForm: React.FC<AddDeliveryFormProps> = ({ setIsOpen }) => {
                         />
                         {errors.weight && touched.weight ? <div className="text-red-500 font-semibold dark:text-red-400">{errors.weight}</div> : null}
                     </div>
-                    {/* <div className="mt-4">
-                        <label htmlFor="firstName" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
-                            shipmentMethod
-                        </label>
-                        <Field
-                            component="select"
-                            id="shipmentMethod"
-                            name="shipmentMethod"
-                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        >
-                            <option value="car">car</option>
-                            <option value="van">van</option>
-                            <option value="truck">truck</option>
-                        </Field>
-                    </div> */}
                     <div className="mt-4">
                         <label htmlFor="firstName" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
                             region
@@ -81,6 +66,7 @@ const AddDeliveryForm: React.FC<AddDeliveryFormProps> = ({ setIsOpen }) => {
                             name="region"
                             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         >
+                            <option value="" disabled>Select region</option>
                             <option value="Europe">Europe</option>
                             <option value="national">national</option>
                             <option value="America">America</option>
@@ -100,6 +86,7 @@ const AddDeliveryForm: React.FC<AddDeliveryFormProps> = ({ setIsOpen }) => {
                                     name="from"
                                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                 >
+                                    <option value="">Select City</option>
                                     <option value="Safi">Safi</option>
                                     <option value="Tanger">Tanger</option>
                                     <option value="Essaouira">Essaouira</option>
@@ -115,6 +102,7 @@ const AddDeliveryForm: React.FC<AddDeliveryFormProps> = ({ setIsOpen }) => {
                                     name="to"
                                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                 >
+                                    <option value="">Select City</option>
                                     <option value="Casablanca">Casablanca</option>
                                     <option value="Tanger">Tanger</option>
                                     <option value="Essaouira">Essaouira</option>
