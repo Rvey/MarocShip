@@ -81,7 +81,8 @@ const store = async (req, res, next) => {
 
     const newDriver = await Driver.create({
       email,
-      name: `${firstName} ${lastName}`,
+      firstName: firstName,
+      lastName: lastName,
       password: hashedPassword,
       file: req.file.filename,
       license,

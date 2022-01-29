@@ -4,15 +4,18 @@ const {
 } = mongoose;
 
 const driverSchema = new Schema({
-    name: {
+    firstName: {
+        type: String,
+        required: true
+    },
+    lastName: {
         type: String,
         required: true
     },
     email: {
         type: String,
         unique: true,
-        required: true,
-        match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
+        required: true
     },
     password: {
         type: String,
@@ -56,10 +59,5 @@ const driverSchema = new Schema({
         default: Date.now
     }
 });
-
-driverSchema.pre('update', function(doc , next) {
-    doc.verifiedAt = new Date();
-    next();
-})
 
 module.exports = mongoose.model('driver', driverSchema)

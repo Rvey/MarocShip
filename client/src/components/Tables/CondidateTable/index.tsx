@@ -1,17 +1,13 @@
-import { useAcceptDriverMutation, useGetDriversQuery } from '../../../Redux/services/driver';
-import { useUpdateManagerMutation } from '../../../Redux/services/managers';
+import { useState } from 'react';
+import { useGetDriversQuery } from '../../../Redux/services/driver';
+import ConfirmAcceptDriver from '../../ModalContent/ConfirmAcceptDriverModal';
 
-interface AcceptDriversTableProps {
-}
+interface AcceptDriversTableProps {}
 
 const AcceptDriversTable: React.FunctionComponent<AcceptDriversTableProps> = () => {
     const { data, isLoading, error } = useGetDriversQuery();
-    const [acceptDriver] = useAcceptDriverMutation()
-    const Recruits = (id: any) => {
-        // console.log(id);
-        acceptDriver({id :id})
-    }
-
+    const [isOpen, setIsOpen] = useState(false);
+    const [condidateId, setCandidateId] = useState('');
     return (
         <div className="inline-block py-2 min-w-full sm:px-6 lg:px-8">
             {isLoading && 'lOADING ...'}
@@ -44,7 +40,7 @@ const AcceptDriversTable: React.FunctionComponent<AcceptDriversTableProps> = () 
                             (driver, index) =>
                                 !driver.verified && (
                                     <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                        <td className="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">{driver.name}</td>
+                                        <td className="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">{driver.firstName} {driver.lastName}</td>
                                         <td className="py-4 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">{driver.email}</td>
                                         <td className="py-4 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">{driver.license}</td>
                                         <td className="py-4 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">{driver.createdAt}</td>
@@ -52,7 +48,10 @@ const AcceptDriversTable: React.FunctionComponent<AcceptDriversTableProps> = () 
                                         <td className="py-4 px-6 text-sm font-medium text-right whitespace-nowrap">
                                             <button
                                                 type="button"
-                                                onClick={() => Recruits(driver._id)}
+                                                onClick={() => {
+                                                    setIsOpen(!isOpen);
+                                                    setCandidateId(driver._id);
+                                                }}
                                                 className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                                             >
                                                 recruit
@@ -64,6 +63,7 @@ const AcceptDriversTable: React.FunctionComponent<AcceptDriversTableProps> = () 
                     </tbody>
                 </table>
             </div>
+            <ConfirmAcceptDriver isOpen={isOpen} setIsOpen={setIsOpen} condidateId={condidateId} />
         </div>
     );
 };
