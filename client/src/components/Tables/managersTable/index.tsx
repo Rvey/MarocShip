@@ -1,6 +1,6 @@
 import { useState, Fragment } from 'react';
-import ConfirmDeleteManager from '../../ModalContent/confirmDeleteManager';
-import UpdateManager from '../../ModalContent/updateManagerModal/updateManager';
+import ConfirmDeleteManager from '../../ModalContent/ConfirmDeleteManager';
+import UpdateManager from '../../ModalContent/UpdateManagerModal/updateManager';
 import { useGetManagersQuery } from './../../../Redux/services/managers';
 
 

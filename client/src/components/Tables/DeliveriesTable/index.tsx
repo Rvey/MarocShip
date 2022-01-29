@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useDeleteDeliveryMutation, useGetDeliveriesQuery } from '../../../Redux/services/deliveries';
-import ConfirmDeleteDelivery from '../../ModalContent/confirmDeleteDelivery';
+import ConfirmDeleteDelivery from '../../ModalContent/ConfirmDeleteDelivery';
 
 interface DeliveriesTableProps {}
 

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import AddManagerModal from '../../components/ModalContent/addManagerModal';
+import AddManagerModal from '../../components/ModalContent/AddManagerModal';
 import ManagerTable from '../../components/Tables/managersTable';
 
 const ManageManagers = () => {

@@ -7,21 +7,20 @@ const DriverSchema = Yup.object().shape({
     lastName: Yup.string().required('Required'),
     license: Yup.string().required('Required'),
     email: Yup.string().email('Invalid email address').required('Required'),
-    filename: Yup.string().required('Required'),
+    // filename: Yup.string().required('Required'),
     // filename:Yup.array().min(1,"select at least 1 file"
 });
 const DriverRegisterForm = () => {
     // const { refetch } = useGetDriversQuery();
     const [addDriver] = useAddDriverMutation();
     return (
-        <Formik
+        <Formik 
             initialValues={{
                 firstName: '',
                 lastName: '',
                 license: '',
                 email: '',
-                filename: 'ajshasdaskjd',
-                
+                file:''
                 
             }}
             validationSchema={DriverSchema}
@@ -30,11 +29,17 @@ const DriverRegisterForm = () => {
                 // values.profile.forEach((photo, index) => {
                 //     data.append(`photo${index}`, values.profile[index]);
                 // });
-                addDriver(values)
-                // console.log(values);
+                // addDriver(values)
+                let data = new FormData()
+                data.append('file' , values.file)
+                data.append('firstName' , values.firstName)
+                data.append('lastName' , values.lastName)
+                data.append('license' , values.license)
+                data.append('email' , values.email)
+                addDriver(data)
             }}
         >
-            {({ errors, touched }) => (
+            {({ errors, touched , handleChange, setFieldValue}) => (
                 <Form>
                     <div className="mt-4">
                         <label htmlFor="firstName" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
@@ -96,15 +101,11 @@ const DriverRegisterForm = () => {
                             </label>
                             <input
                             className="block w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" 
-                                id="filename"
-                                name="filename"
+                                id="file"
+                                name="file"
                                 type="file"
-                                onChange={(e) => {
-                                    const file: any = e.target.files;
-                                }}
+                                onChange={(e) => setFieldValue("file" , e.target.files[0])}
                             />
-                            <ErrorMessage name="profile" />
-                            {errors.filename && touched.filename ? <div className="text-red-500 font-semibold dark:text-red-400">{errors.filename}</div> : null}
                         </div>
                     </div>
                     <div className="mt-8 flex justify-between">

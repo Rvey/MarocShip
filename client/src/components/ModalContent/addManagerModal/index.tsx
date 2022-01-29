@@ -1,6 +1,6 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { useState, Fragment } from 'react';
-import AddManagerForm from '../../Forms/addManagerForm';
+import AddManagerForm from '../../Forms/AddManagerForm';
 
 interface AddManagerModalProps {
     setIsOpen: (val: boolean) => void;

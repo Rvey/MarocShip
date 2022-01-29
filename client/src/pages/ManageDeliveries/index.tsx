@@ -1,6 +1,6 @@
 import DeliveriesTable from '../../components/Tables/DeliveriesTable';
 import { useState } from 'react';
-import AddDeliveryModal from '../../components/ModalContent/addDeliveryModal';
+import AddDeliveryModal from '../../components/ModalContent/AddDeliveryModal';
 interface ManagerDeliveriesProps {
     setIsOpen?: (val: boolean) => void;
 }

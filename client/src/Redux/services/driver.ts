@@ -11,6 +11,7 @@ interface Driver {
     file:string
     verified:string
     _id:string
+    data:FormData
 }
 type DriverResponse = Driver[];
 
