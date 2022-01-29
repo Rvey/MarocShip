@@ -1,6 +1,7 @@
 import { useState, Fragment } from 'react';
+import UpdateManagerForm from '../../Forms/UpdateManagerForm';
 import ConfirmDeleteManager from '../../ModalContent/ConfirmDeleteManager';
-import UpdateManager from '../../ModalContent/UpdateManagerModal/updateManager';
+import Modal from '../../ModalContent/Modal';
 import { useGetManagersQuery } from './../../../Redux/services/managers';
 
 
@@ -70,8 +71,8 @@ const ManagerTable = () => {
                     </tbody>
                 </table>
             </div>
-            <UpdateManager isOpen={isOpen} setIsOpen={setIsOpen} manager={manager} />
             <ConfirmDeleteManager isOpen={isOpenConfirm} setIsOpen={setIsOpenConfirm} managerId={manager} />
+            <Modal isOpen={isOpen} setIsOpen={setIsOpen} component={<UpdateManagerForm setIsOpen={setIsOpen} manager={manager}  />} title={'Update Manager'} />
         </div>
     );
 };

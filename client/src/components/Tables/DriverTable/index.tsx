@@ -1,7 +1,8 @@
 import { useGetDriversQuery } from '../../../Redux/services/driver';
 import { useState } from 'react';
 import ConfirmDeleteDriver from '../../ModalContent/ConfirmDeleteDriverModal';
-import UpdateDriver from '../../ModalContent/EditDriverModal';
+import UpdateDriverFrom from '../../Forms/UpdateDriverForm';
+import Modal from '../../ModalContent/Modal';
 interface DriversTableProps {}
 
 const DriversTable: React.FunctionComponent<DriversTableProps> = () => {
@@ -78,7 +79,8 @@ const DriversTable: React.FunctionComponent<DriversTableProps> = () => {
                 </table>
             </div>
             <ConfirmDeleteDriver isOpen={isOpenConfirm} setIsOpen={setIsOpenConfirm} driverId={driverId} />
-            <UpdateDriver isOpen={isOpen} setIsOpen={setIsOpen} driverId={driverId} />
+            <Modal isOpen={isOpen} setIsOpen={setIsOpen} component={<UpdateDriverFrom setIsOpen={setIsOpen} driverId={driverId}  />} title={'Update Driver'} />
+
         </div>
     );
 };
