@@ -1,46 +1,54 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { useState } from 'react';
 import * as Yup from 'yup';
+import { useNavigate } from 'react-router-dom';
+
 import { useAddDriverMutation, useGetDriversQuery } from '../../../Redux/services/driver';
 
 const DriverSchema = Yup.object().shape({
     firstName: Yup.string().min(2, 'Too Short!').required('Required'),
     lastName: Yup.string().required('Required'),
     license: Yup.string().required('Required'),
-    email: Yup.string().email('Invalid email address').required('Required'),
+    email: Yup.string().email('Invalid email address').required('Required')
     // filename: Yup.string().required('Required'),
     // filename:Yup.array().min(1,"select at least 1 file"
 });
 const DriverRegisterForm = () => {
-    // const { refetch } = useGetDriversQuery();
     const [addDriver] = useAddDriverMutation();
+    let navigate = useNavigate();
+    const [error, setError] = useState('');
     return (
-        <Formik 
+        <Formik
             initialValues={{
                 firstName: '',
                 lastName: '',
                 license: '',
                 email: '',
-                file:''
-                
+                file: ''
             }}
             validationSchema={DriverSchema}
             onSubmit={(values) => {
-                // let data = new FormData();
-                // values.profile.forEach((photo, index) => {
-                //     data.append(`photo${index}`, values.profile[index]);
-                // });
-                // addDriver(values)
-                let data = new FormData()
-                data.append('file' , values.file)
-                data.append('firstName' , values.firstName)
-                data.append('lastName' , values.lastName)
-                data.append('license' , values.license)
-                data.append('email' , values.email)
+                let data = new FormData();
+                data.append('file', values.file);
+                data.append('firstName', values.firstName);
+                data.append('lastName', values.lastName);
+                data.append('license', values.license);
+                data.append('email', values.email);
+                // @ts-ignore
                 addDriver(data)
+                    .unwrap()
+                    .then(() => navigate('/bomb'))
+                    .catch((error) => setError(error?.data.message));
             }}
         >
-            {({ errors, touched , handleChange, setFieldValue}) => (
+            {({ errors, touched, setFieldValue }) => (
                 <Form>
+                    {error && (
+                        <div className="py-2 px-3 bg-red-500 w-full text-white rounded-md flex justify-between">
+                            {error} <button onClick={() => setError('')}>X</button>
+                        </div>
+                    )}
+
                     <div className="mt-4">
                         <label htmlFor="firstName" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
                             FirstName
@@ -100,11 +108,13 @@ const DriverRegisterForm = () => {
                                 Upload your resume
                             </label>
                             <input
-                            className="block w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" 
+                                className="block w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
                                 id="file"
                                 name="file"
                                 type="file"
-                                onChange={(e) => setFieldValue("file" , e.target.files[0])}
+                                onChange={(e) => {
+                                    e.target.files && setFieldValue('file', e.target.files[0]);
+                                }}
                             />
                         </div>
                     </div>

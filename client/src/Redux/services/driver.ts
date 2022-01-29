@@ -11,7 +11,6 @@ interface Driver {
     file:string
     verified:string
     _id:string
-    data:FormData
 }
 type DriverResponse = Driver[];
 
@@ -28,22 +27,22 @@ const baseQuery = fetchBaseQuery({
     }
 });
 
-const baseQueryWithRetry = retry(baseQuery, { maxRetries: 6 });
+// const baseQueryWithRetry = retry(baseQuery, { maxRetries: 6 });
 
 // Define a service using a base URL and expected endpoints
 export const driverApi = createApi({
     reducerPath: 'driverApi',
-    baseQuery: baseQueryWithRetry,
+    baseQuery: baseQuery,
     tagTypes: ['Driver'],
     endpoints: (build) => ({
         loginDriverManager: build.mutation<{ token?: string; data?: Driver }, any>({
             query: (credentials: any) => ({ url: 'driver/login', method: 'POST', body: credentials }),
-            extraOptions: {
-                backoff: () => {
-                    // We intentionally error once on login, and this breaks out of retrying. The next login attempt will succeed.
-                    retry.fail({ fake: 'error' });
-                }
-            }
+            // extraOptions: {
+            //     backoff: () => {
+            //         // We intentionally error once on login, and this breaks out of retrying. The next login attempt will succeed.
+            //         retry.fail({ fake: 'error' });
+            //     }
+            // }
         }),
         getDrivers: build.query<DriverResponse, void>({
             query: () => ({ url: 'driver' })
