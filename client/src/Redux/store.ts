@@ -6,6 +6,7 @@ import storage from 'redux-persist/lib/storage';
 import { managerApi } from './services/managers';
 import { deliveryApi } from './services/deliveries';
 import { driverApi } from './services/driver';
+import { deliveryManagerApi } from './services/deliveryManager';
 import userReducer from './features/auth/userSlice';
 
 const persistConfig = {
@@ -25,13 +26,14 @@ export const store = configureStore({
         [managerApi.reducerPath]: managerApi.reducer,
         [deliveryApi.reducerPath]: deliveryApi.reducer,
         [driverApi.reducerPath]: driverApi.reducer,
+        [deliveryManagerApi.reducerPath]: deliveryManagerApi.reducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
             serializableCheck: {
                 ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER]
             }
-        }).concat(managerApi.middleware , deliveryApi.middleware , driverApi.middleware)
+        }).concat(managerApi.middleware , deliveryApi.middleware , driverApi.middleware , deliveryManagerApi.middleware)
 });
 
 export type RootState = ReturnType<typeof store.getState>;

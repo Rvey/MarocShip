@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import AddManagerModal from '../../components/ModalContent/AddManagerModal';
+import AddManagerForm from '../../components/Forms/AddManagerForm';
+import Modal from '../../components/ModalContent/Modal';
 import ManagerTable from '../../components/Tables/managersTable';
 
 const ManageManagers = () => {
@@ -17,8 +18,8 @@ const ManageManagers = () => {
 
                 </button>
             </div>
-            <ManagerTable />
-            <AddManagerModal isOpen={isOpen} setIsOpen={setIsOpen}  />
+            <ManagerTable />        
+            <Modal isOpen={isOpen} setIsOpen={setIsOpen} component={<AddManagerForm setIsOpen={setIsOpen} />} title={'Add Manager'} />
         </div>
     );
 };

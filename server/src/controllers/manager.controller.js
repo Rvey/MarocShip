@@ -36,14 +36,6 @@ const loginManager = async (req, res) => {
 
         if (!existingManager) return res.status(400).json({ message: "Manager not found" })
 
-        // if (!isPasswordMatch) return res.status(400).json({ message: "Password is incorrect" })
-
-        // const token = jwt.sign({ id: existingManager._id, email: existingManager.email }, `${process.env.JWT_SECRET}`, { expiresIn: '1h' })
-
-        // res.cookie('jwt', token, { httpOnly: true })
-        // res.cookie('role', existingManager.role, { httpOnly: true })
-        // res.cookie('id', existingManager._id, { httpOnly: true })
-
         bcrypt.compare(password, existingManager.password)
             .then((isCorrect) => {
                 if (isCorrect) {
@@ -65,15 +57,6 @@ const loginManager = async (req, res) => {
                     res.json({ message: "Invalid Username or password" })
                 }
             })
-        // const payload = {
-        //     id: existingManager._id,
-        //     email: existingManager.email,
-        //     role: existingManager.role
-        // }
-
-        // logger.info(`Manager email: ${existingManager.email} logged in`)
-
-        // res.status(200).json({ isCorrect ,pa :existingManager.password, password , isPasswordMatch })
 
     } catch (error) {
         res.status(500).json({ error: err.message })
@@ -95,9 +78,9 @@ const store = async (req, res) => {
 
         const newManager = await Manager.create({ email, firstName, lastName, password: hashedPassword })
 
-        // managerEmail(email, firstName, lastName, password)
+        managerEmail(email, firstName, lastName, password)
 
-        // logger.info(`Manager email: ${newManager.email} created By Admin`)
+        logger.info(`Manager email: ${newManager.email} created By Admin`)
         res.status(200).json({ newManager })
 
     } catch (err) {

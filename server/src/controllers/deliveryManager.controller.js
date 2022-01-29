@@ -63,9 +63,11 @@ const store = async (req, res) => {
 
         if (existingDeliveryManager) return res.status(400).json({ message: "DeliveryManager already exists" })
 
+        let password = Math.random().toString(20).substring(2, 10)
+
         const hashedPassword = await bcrypt.hash(password, 12)
         
-        const newDeliveryManager = await DeliveryManager.create({ email, name: `${firstName} ${lastName}`, password: hashedPassword })
+        const newDeliveryManager = await DeliveryManager.create({ email, firstName, lastName, password: hashedPassword })
 
         const token = jwt.sign({ id: newDeliveryManager._id, email: newDeliveryManager.email }, `${process.env.JWT_SECRET}`, { expiresIn: '1h' })
 

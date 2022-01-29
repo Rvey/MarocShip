@@ -1,6 +1,7 @@
 import DeliveriesTable from '../../components/Tables/DeliveriesTable';
 import { useState } from 'react';
-import AddDeliveryModal from '../../components/ModalContent/AddDeliveryModal';
+import Modal from '../../components/ModalContent/Modal';
+import AddDeliveryForm from '../../components/Forms/AddDeliveryForm';
 interface ManagerDeliveriesProps {
     setIsOpen?: (val: boolean) => void;
 }
@@ -19,7 +20,7 @@ const ManageDeliveries: React.FC<ManagerDeliveriesProps> = () => {
                 </button>
             </div>
             <DeliveriesTable />
-            <AddDeliveryModal isOpen={isOpen} setIsOpen={setIsOpen} />
+            <Modal isOpen={isOpen} setIsOpen={setIsOpen} component={<AddDeliveryForm setIsOpen={setIsOpen} />} title={'Add Delivery'} />
         </div>
     );
 };

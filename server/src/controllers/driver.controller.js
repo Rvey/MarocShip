@@ -88,11 +88,6 @@ const store = async (req, res, next) => {
       license,
     });
 
-    // const token = jwt.sign(
-    //   { id: newDriver._id, email: newDriver.email },
-    //   `${process.env.JWT_SECRET}`,
-    //   { expiresIn: "1h" }
-    // );
     logger.info(`New driver ${firstName} ${lastName} submitted for a job , license : ${license}`);
     res.status(200).json({ newDriver });
   } catch (err) {

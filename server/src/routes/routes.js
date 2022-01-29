@@ -29,12 +29,12 @@ module.exports = (app) => {
     /**
      * Delivery Manager Routes
      */
-    app.get('/api/deliveryManager/', managerAuth, DeliveryManager.index);
-    app.get('/api/deliveryManager/:id', managerAuth, DeliveryManager.show);
-    app.post('/api/deliveryManager/', managerAuth, DeliveryManager.store);
+    app.get('/api/deliveryManager/', DeliveryManager.index);
+    app.get('/api/deliveryManager/:id', DeliveryManager.show);
+    app.post('/api/deliveryManager/', DeliveryManager.store);
     app.post('/api/deliveryManager/login', DeliveryManager.loginDeliveryManager);
-    app.delete('/api/deliveryManager/:id', managerAuth, DeliveryManager.destroy);
-    app.put('/api/deliveryManager/:id', managerAuth, DeliveryManager.update)
+    app.delete('/api/deliveryManager/:id', DeliveryManager.destroy);
+    app.put('/api/deliveryManager/:id', DeliveryManager.update)
     app.post('/api/deliveryManager/resetPassword', DeliveryManager.resetPassword)
 
     /**
