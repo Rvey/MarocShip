@@ -6,6 +6,7 @@ import storage from 'redux-persist/lib/storage';
 import { managerApi } from './services/managers';
 import { deliveryApi } from './services/deliveries';
 import { driverApi } from './services/driver';
+import { adminApi } from './services/admin';
 import { deliveryManagerApi } from './services/deliveryManager';
 import userReducer from './features/auth/userSlice';
 
@@ -13,8 +14,7 @@ const persistConfig = {
     key: 'root',
     version: 1,
     storage,
-    blacklist: [managerApi.reducerPath],
-
+    blacklist: [managerApi.reducerPath]
 };
 
 const persistedReducer = persistReducer(persistConfig, userReducer);
@@ -27,13 +27,14 @@ export const store = configureStore({
         [deliveryApi.reducerPath]: deliveryApi.reducer,
         [driverApi.reducerPath]: driverApi.reducer,
         [deliveryManagerApi.reducerPath]: deliveryManagerApi.reducer,
+        [adminApi.reducerPath]: adminApi.reducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
             serializableCheck: {
                 ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER]
             }
-        }).concat(managerApi.middleware , deliveryApi.middleware , driverApi.middleware , deliveryManagerApi.middleware)
+        }).concat(managerApi.middleware, deliveryApi.middleware, driverApi.middleware, deliveryManagerApi.middleware, adminApi.middleware)
 });
 
 export type RootState = ReturnType<typeof store.getState>;

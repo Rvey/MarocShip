@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const logger = require('../utils/logger')
 const managerEmail = require('../utils/managerEmail')
+const { comparePassword } = require('../validation/validation')
 const index = async (req, res) => {
     try {
         const result = await Manager.find()
@@ -36,30 +37,11 @@ const loginManager = async (req, res) => {
 
         if (!existingManager) return res.status(400).json({ message: "Manager not found" })
 
-        bcrypt.compare(password, existingManager.password)
-            .then((isCorrect) => {
-                if (isCorrect) {
-                    const payload = {
-                        id: existingManager._id,
-                        email: existingManager.email,
-                        role: existingManager.role
-                    }
-                    jwt.sign(payload, `${process.env.JWT_SECRET_KEY}`, { expiresIn: '1h' }, (err, token) => {
-                        if (err) return res.json({ message: err.message })
-                        return res.json({
-                            token: token,
-                            role: existingManager.role,
-                            email: existingManager.email,
-                         
-                        })
-                    })
-                } else {
-                    res.json({ message: "Invalid Username or password" })
-                }
-            })
+        comparePassword(password, existingManager, res)
 
+        logger.info(`Manager -  email: ${existingManager.email} logged in`)
     } catch (error) {
-        res.status(500).json({ error: err.message })
+        res.status(500).json({ error: error.message })
     }
 }
 

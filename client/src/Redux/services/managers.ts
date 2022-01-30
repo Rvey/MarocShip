@@ -23,25 +23,20 @@ const baseQuery = fetchBaseQuery({
             headers.set('authorization', `Bearer ${token}`);
         }
         return headers;
-    }
+    },
+    credentials: 'include'
 });
 
-const baseQueryWithRetry = retry(baseQuery, { maxRetries: 6 });
 
 // Define a service using a base URL and expected endpoints
 export const managerApi = createApi({
     reducerPath: 'managerApi',
-    baseQuery: baseQueryWithRetry,
+    baseQuery,
     tagTypes: ['Managers'],
     endpoints: (build) => ({
         loginManager: build.mutation<{ token?: string; data?: Manager }, any>({
             query: (credentials: any) => ({ url: 'manager/login', method: 'POST', body: credentials }),
-            extraOptions: {
-                backoff: () => {
-                    // We intentionally error once on login, and this breaks out of retrying. The next login attempt will succeed.
-                    retry.fail({ fake: 'error' });
-                }
-            }
+            
         }),
         getManagers: build.query<ManagersResponse, void>({
             query: () => ({ url: 'Manager' })

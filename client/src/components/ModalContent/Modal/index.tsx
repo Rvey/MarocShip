@@ -1,7 +1,5 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { useState, Fragment } from 'react';
-import UpdateDriverFrom from '../../Forms/UpdateDriverForm';
-
 
 interface ModalProps {
     isOpen: boolean;

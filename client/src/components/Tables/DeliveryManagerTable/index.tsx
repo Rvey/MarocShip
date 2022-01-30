@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { useDeleteDeliveryManagerMutation, useGetDeliveryManagersQuery } from '../../../Redux/services/deliveryManager';
+import UpdateDeliveryManagerFrom from '../../Forms/UpdateDeliveryManager';
+import UpdateDriverFrom from '../../Forms/UpdateDriverForm';
 import ConfirmDeleteDelivery from '../../ModalContent/ConfirmDeleteDelivery';
 import Modal from '../../ModalContent/Modal';
 
@@ -45,7 +47,17 @@ const DeliveryManagerTable = () => {
                                             }}
                                             className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900"
                                         >
-                                            Delete
+                                            edit
+                                        </button>
+                                        <button
+                                            type="button"
+                                            onClick={() => {
+                                                setDManagerID(deliveryManager._id)
+                                                setIsOpen(!isOpen)
+                                            }}
+                                            className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900"
+                                        >
+                                            delete
                                         </button>
                                     </td>
                                 </tr>
@@ -53,8 +65,8 @@ const DeliveryManagerTable = () => {
                     </tbody>
                 </table>
             </div>
-            <Modal isOpen={isOpen} setIsOpen={setIsOpen} driverId={DManagerID}/>
-            {/* <ConfirmDeleteDelivery isOpen={isOpen} setIsOpen={setIsOpen} driverId={DManagerID}  /> */}
+            <Modal isOpen={isOpen} setIsOpen={setIsOpen} component={<UpdateDeliveryManagerFrom setIsOpen={setIsOpen} dManagerId={DManagerID}/>} title='Update Delivery Manager'/>
+            {/* <ConfirmDeleteDelivery isOpen={isOpen} setIsOpen={setIsOpen}  driverId={DManagerID}  /> */}
         </div>
     );
 };

@@ -1,22 +1,25 @@
 import { Field, Form, Formik } from 'formik';
 import { Link } from 'react-router-dom';
 import * as Yup from 'yup';
-import { useLoginManagerMutation } from '../../../Redux/services/managers';
 import { useAppDispatch } from '../../../Redux/hook';
 import { userData } from '../../../Redux/features/auth/userSlice';
-interface ManagerLoginFormProps {
+import { useLoginDriverManagerMutation } from '../../../Redux/services/driver';
+import { useLoginAdminMutation } from '../../../Redux/services/admin';
+
+interface AdminLoginFormProps {
     values?: {
         email: string;
         password: string;
     };
 }
+
 const DriverSchema = Yup.object().shape({
     email: Yup.string().email('Invalid email address').required('Required'),
     password: Yup.string().min(2, 'Too Short!').required('Required')
 });
 
-const ManagerLoginForm: React.FC<ManagerLoginFormProps> = () => {
-    const [ManagerLogin, { error }] = useLoginManagerMutation();
+const AdminLoginForm: React.FC<AdminLoginFormProps> = () => {
+    const [adminLogin, { error }] = useLoginAdminMutation();
     const dispatch = useAppDispatch();
 
     return (
@@ -27,7 +30,7 @@ const ManagerLoginForm: React.FC<ManagerLoginFormProps> = () => {
             }}
             validationSchema={DriverSchema}
             onSubmit={async (values) => {
-                await ManagerLogin(values)
+                await adminLogin(values)
                     .then((data: any) =>
                         dispatch(
                             userData({
@@ -42,7 +45,7 @@ const ManagerLoginForm: React.FC<ManagerLoginFormProps> = () => {
         >
             {({ errors, touched }) => (
                 <Form>
-                    <div>Manager Login</div>
+                    <div>Admin Login</div>
                     <div className="mt-4">
                         <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
                             Email
@@ -80,4 +83,4 @@ const ManagerLoginForm: React.FC<ManagerLoginFormProps> = () => {
         </Formik>
     );
 };
-export default ManagerLoginForm;
+export default AdminLoginForm;

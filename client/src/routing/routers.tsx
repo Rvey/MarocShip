@@ -3,6 +3,7 @@ import Navigation from './navigation';
 import { AdminDashboard, AdminLogin, ManagerLogin, DriverLogin, DeliveryManagerLogin, ManageCandidate, ManageDriver, ManageDeliveries, ManageManagers, DriverRegister } from './../pages'
 import BombField from '../pages/bombField';
 import ManageDeliveryManger from '../pages/ManageDeliveryManager';
+import AcceptDeliveries from '../pages/AcceptDeliveries';
 
 const Routers = () => {
     return (
@@ -20,12 +21,16 @@ const Routers = () => {
                     <Route path="/Recruit" element={<ManageCandidate />} />
                     <Route path="/driverLogin" element={<DriverLogin />} />
                     <Route path="/driverRegister" element={<DriverRegister />} />
-
+                    <Route path="/AcceptDeliveries" element={<AcceptDeliveries />} />
 
                     <Route path="/deliveryManagerLogin" element={<DeliveryManagerLogin />} />
                     <Route path="/DeliveryMangers" element={<ManageDeliveryManger />} />
 
                     <Route path="/deliveries" element={<ManageDeliveries />} />
+
+                    <Route path="/adminLogin" element={<AdminLogin />} />
+
+
 
                     <Route path="/bomb" element={<BombField name={''} />} />
                 </Routes>

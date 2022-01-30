@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 const Admin = require('../models/admin.model')
 const logger = require('../utils/logger')
+const { comparePassword } = require('../validation/validation')
 
 const loginAdmin = async (req, res) => {
 
@@ -12,20 +13,19 @@ const loginAdmin = async (req, res) => {
 
         if (!existingAdmin) return res.status(400).json({ message: "Admin not found" })
 
-        const isPasswordMatch = password === existingAdmin.password;
+        // const isPasswordMatch = password === existingAdmin.password;
 
-        if (!isPasswordMatch) return res.status(400).json({ message: "Password is incorrect" })
+        // if (!isPasswordMatch) return res.status(400).json({ message: "Password is incorrect" })
 
-        const token = jwt.sign({ id: existingAdmin._id, email: existingAdmin.email }, `${process.env.JWT_SECRET}`, { expiresIn: '1h' })
-
-        res.cookie('jwt', token, { httpOnly: true })
-        res.cookie('role', existingAdmin.role, { httpOnly: true })
+        // const token = jwt.sign({ id: existingAdmin._id, email: existingAdmin.email }, `${process.env.JWT_SECRET}`, { expiresIn: '1h' })
         
-        logger.info(`GAdmin email: ${existingAdmin.email} logged in`)
-        res.status(200).json({ existingAdmin, token })
+        comparePassword(password, existingAdmin, res)
+        
+        logger.info(`GAdmin - email: ${existingAdmin.email} logged in`)
+        // return res.json({ role: existingAdmin.role, email: existingAdmin.email })
 
     } catch (error) {
         res.status(500).json({ message: error.message })
     }
 }
-module.exports = {loginAdmin}
+module.exports = { loginAdmin }

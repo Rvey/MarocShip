@@ -20,9 +20,6 @@ const ManageDeliveryManger: React.FC<ManagerDeliveriesProps> = () => {
                 </button>
             </div>
             <DeliveryManagerTable />
-
-            {/* <DeliveryManagerTable /> */}
-            {/* <AddDeliveryManagerModal isOpen={isOpen} setIsOpen={setIsOpen} /> */}
             <Modal isOpen={isOpen} setIsOpen={setIsOpen} component={<AddManagerForm setIsOpen={setIsOpen} />} title={'Add Delivery Manager'} />
         </div>
     );
