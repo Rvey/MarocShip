@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const logger = require('../utils/logger')
 const managerEmail = require('../utils/managerEmail')
-const { comparePassword } = require('../validation/validation')
+const { comparePassword } = require('../helpers/JwtValidation')
 
 const index = (req, res) => {
     DeliveryManager.find().then((result) => {

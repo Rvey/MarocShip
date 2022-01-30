@@ -11,15 +11,12 @@ const comparePassword = async (password, user, res) => {
                 }
                 jwt.sign(payload, `${process.env.JWT_SECRET_KEY}`, { expiresIn: '1h' }, (err, token) => {
                     if (err) return res.json({ message: err.message })
-                    res.cookie('jwt', token, { httpOnly: true })
-                    res.cookie('role', user.role, { httpOnly: true })
-                    res.cookie('id', user._id, { httpOnly: true })
                     return res.json({
                         token: token,
                         role: user.role,
                         email: user.email,
                     })
-                    
+
                 })
             } else {
                 res.json({ message: "Invalid Username or password" })
@@ -27,6 +24,22 @@ const comparePassword = async (password, user, res) => {
         })
 }
 
-module.exports = { comparePassword }
+const verifyToken = (req, res, next, user) => {
+    const token = req.headers['authorization']?.split(' ')[1]
+    if (token) {
+        jwt.verify(token, `${process.env.JWT_SECRET_KEY}`, (err, decoded) => {
+            if (err) return res.json({ message: "Failed To Authenticate" })
+            if (decoded.role === `${user}`) {
+                next()
+            } else {
+                res.status(400).json({ message: `You need to be ${user} to access` })
+            }
+        })
+    } else {
+        res.json({ message: "Unauthorized" })
+    }
+}
+
+module.exports = { comparePassword, verifyToken }
 
 

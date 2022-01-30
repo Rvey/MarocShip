@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 const Admin = require('../models/admin.model')
 const logger = require('../utils/logger')
-const { comparePassword } = require('../validation/validation')
+const { comparePassword } = require('../helpers/JwtValidation')
 
 const loginAdmin = async (req, res) => {
 

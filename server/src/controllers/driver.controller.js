@@ -6,7 +6,7 @@ const Dayjs = require("dayjs");
 const sendMail = require("../utils/mail");
 const logger = require("../utils/logger");
 const acceptDriverMail = require("../utils/AcceptDriverMail");
-const { comparePassword } = require("../validation/validation");
+const { comparePassword } = require("../helpers/JwtValidation");
 
 const index = (req, res) => {
   Driver.find()
