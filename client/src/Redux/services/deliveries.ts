@@ -34,22 +34,15 @@ const baseQuery = fetchBaseQuery({
     }
 });
 
-const baseQueryWithRetry = retry(baseQuery, { maxRetries: 6 });
 
 // Define a service using a base URL and expected endpoints
 export const deliveryApi = createApi({
     reducerPath: 'deliveryApi',
-    baseQuery: baseQueryWithRetry,
+    baseQuery,
     tagTypes: ['Deliveries'],
     endpoints: (build) => ({
         loginDeliveryManager: build.mutation<{ token?: string; data?: Delivery }, any>({
             query: (credentials: any) => ({ url: 'deliveryManager/login', method: 'POST', body: credentials }),
-            extraOptions: {
-                backoff: () => {
-                    // We intentionally error once on login, and this breaks out of retrying. The next login attempt will succeed.
-                    retry.fail({ fake: 'error' });
-                }
-            }
         }),
         getDeliveries: build.query<DeliveryResponse, void>({
             query: () => ({ url: 'delivery' })

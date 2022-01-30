@@ -32,17 +32,11 @@ const baseQuery = fetchBaseQuery({
 // Define a service using a base URL and expected endpoints
 export const driverApi = createApi({
     reducerPath: 'driverApi',
-    baseQuery: baseQuery,
+    baseQuery,
     tagTypes: ['Driver'],
     endpoints: (build) => ({
         loginDriverManager: build.mutation<{ token?: string; data?: Driver }, any>({
             query: (credentials: any) => ({ url: 'driver/login', method: 'POST', body: credentials }),
-            // extraOptions: {
-            //     backoff: () => {
-            //         // We intentionally error once on login, and this breaks out of retrying. The next login attempt will succeed.
-            //         retry.fail({ fake: 'error' });
-            //     }
-            // }
         }),
         getDrivers: build.query<DriverResponse, void>({
             query: () => ({ url: 'driver' })

@@ -27,7 +27,7 @@ const baseQuery = fetchBaseQuery({
 // Define a service using a base URL and expected endpoints
 export const deliveryManagerApi = createApi({
     reducerPath: 'deliveryManagerApi',
-    baseQuery: baseQuery,
+    baseQuery,
     tagTypes: ['DeliveryManager'],
     endpoints: (build) => ({
         loginDeliveryManagerManager: build.mutation<{ token?: string; data?: DeliveryManager }, any>({
