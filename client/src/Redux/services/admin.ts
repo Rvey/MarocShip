@@ -15,8 +15,7 @@ const baseQuery = fetchBaseQuery({
             headers.set('authorization', `Bearer ${token}`);
         }
         return headers;
-    },
-    credentials: 'include'
+    }
 });
 
 // Define a service using a base URL and expected endpoints
@@ -26,7 +25,7 @@ export const adminApi = createApi({
     endpoints: (build) => ({
         loginAdmin: build.mutation<{ token?: string; data?: Admin }, any>({
             query: (credentials: any) => ({ url: 'admin/login', method: 'POST', body: credentials })
-        })
+        }),
     })
 });
 export const { useLoginAdminMutation } = adminApi;

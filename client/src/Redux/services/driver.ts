@@ -24,8 +24,7 @@ const baseQuery = fetchBaseQuery({
             headers.set('authorization', `Bearer ${token}`);
         }
         return headers;
-    },
-    credentials: 'include'
+    }
 });
 
 // const baseQueryWithRetry = retry(baseQuery, { maxRetries: 6 });

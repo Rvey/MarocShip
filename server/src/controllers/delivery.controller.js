@@ -138,10 +138,10 @@ const destroy = async (req, res) => {
 
 const AcceptDelivery = async (req, res) => {
     const deliveryId = { _id: req.params.id };
-
+    const driverId = {_id : req.body.driverId}
     // get current authenticated driver
-    const token = await req.headers.authorization.split(" ")[1]
-    let decodeData = jwt.verify(token, `${process.env.JWT_SECRET}`)
+    // const token = await req.headers.authorization.split(" ")[1]
+    // let decodeData = jwt.verify(token, `${process.env.JWT_SECRET}`)
 
     try {
         const delivery = await Delivery.findById(deliveryId);
@@ -149,11 +149,11 @@ const AcceptDelivery = async (req, res) => {
         await Delivery.findByIdAndUpdate(deliveryId, {
             $set: {
                 Available: false,
-                AcceptedBy: decodeData.id,
+                AcceptedBy: driverId,
                 updatedAt: Date.now()
             },
         })
-        await Driver.findByIdAndUpdate({ _id: decodeData.id },
+        await Driver.findByIdAndUpdate(driverId,
             {
                 $push: { AcceptedDeliveries: deliveryId },
             });

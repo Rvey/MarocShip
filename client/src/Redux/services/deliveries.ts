@@ -17,6 +17,7 @@ interface Delivery{
     Available:string
     fetched_at: string;
     data:any
+    driverId:string
 }
 type DeliveryResponse = Delivery[];
 
@@ -30,8 +31,7 @@ const baseQuery = fetchBaseQuery({
             headers.set('authorization', `Bearer ${token}`);
         }
         return headers;
-    },
-    credentials: 'include'
+    }
 });
 
 const baseQueryWithRetry = retry(baseQuery, { maxRetries: 6 });
@@ -79,7 +79,14 @@ export const deliveryApi = createApi({
                     method: 'DELETE'
                 };
             }
+        }),
+        acceptDelivery: build.mutation<Delivery, Partial<Delivery>>({
+            query: ({ id ,...patch }) => ({
+                url: `delivery/acceptDelivery/${id}`,
+                method: 'PUT',
+                body: patch
+            })
         })
     })
 });
-export const { useGetDeliveriesQuery, useGetDeliveryQuery, useAddDeliveryMutation, useDeleteDeliveryMutation, useUpdateDeliveryMutation, useLoginDeliveryManagerMutation } = deliveryApi;
+export const { useGetDeliveriesQuery, useGetDeliveryQuery, useAddDeliveryMutation, useDeleteDeliveryMutation, useUpdateDeliveryMutation, useLoginDeliveryManagerMutation , useAcceptDeliveryMutation} = deliveryApi;

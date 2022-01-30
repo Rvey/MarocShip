@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useDeleteDeliveryMutation, useGetDeliveriesQuery } from '../../../Redux/services/deliveries';
+import ConfirmAcceptDelivery from '../../ModalContent/ConfirmAcceptDelivery';
 import ConfirmDeleteDelivery from '../../ModalContent/ConfirmDeleteDelivery';
 
 interface DeliveriesTableProps {}
@@ -7,8 +8,8 @@ interface DeliveriesTableProps {}
 const DeliveriesTable: React.FunctionComponent<DeliveriesTableProps> = () => {
     const { data, error, isLoading, refetch } = useGetDeliveriesQuery();
     const [deleteManager] = useDeleteDeliveryMutation();
-    const [isOpen , setIsOpen] = useState(false)
-    const [deliveryId , setDeliveryId] = useState('')
+    const [isOpen, setIsOpen] = useState(false);
+    const [deliveryId, setDeliveryId] = useState('');
     // const DeleteDelivery = (id: any) => {
     //     deleteManager(id)
     //         // .then(() => setIsOpen(false))
@@ -56,37 +57,38 @@ const DeliveriesTable: React.FunctionComponent<DeliveriesTableProps> = () => {
                     </thead>
                     <tbody>
                         {data &&
-                            data.map((delivery, index) => (
-                                delivery.region == 'national'   && (
-                                <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                    <td className="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">{delivery.delivery}</td>
-                                    <td className="py-4 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">{delivery.weight}</td>
-                                    <td className="py-4 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">{delivery.from}</td>
-                                    <td className="py-4 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">{delivery.to}</td>
-                                    <td className="py-4 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">{delivery.distance}</td>
-                                    <td className="py-4 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">{delivery.shipmentMethod}</td>
-                                    <td className="py-4 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">{delivery.createdBy}</td>
-                                    <td className="py-4 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">{delivery.region}</td>
-                                    <td className="py-4 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">{delivery.Available ? 'true' : 'false'}</td>
-                                    <td className="py-4 px-6 text-sm font-medium text-right whitespace-nowrap">
-                                        <button
-                                            type="button"
-                                            onClick={() => {
-                                                setDeliveryId(delivery._id)
-                                                setIsOpen(!isOpen)
-                                            }}
-                                            className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900"
-                                        >
-                                            Accept
-                                        </button>
-                                    </td>
-                                </tr>
-                                )
-                            ))}
+                            data.map(
+                                (delivery, index) =>
+                                    delivery.region == 'national' && (
+                                        <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                            <td className="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">{delivery.delivery}</td>
+                                            <td className="py-4 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">{delivery.weight}</td>
+                                            <td className="py-4 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">{delivery.from}</td>
+                                            <td className="py-4 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">{delivery.to}</td>
+                                            <td className="py-4 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">{delivery.distance}</td>
+                                            <td className="py-4 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">{delivery.shipmentMethod}</td>
+                                            <td className="py-4 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">{delivery.createdBy}</td>
+                                            <td className="py-4 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">{delivery.region}</td>
+                                            <td className="py-4 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">{delivery.Available ? 'true' : 'false'}</td>
+                                            <td className="py-4 px-6 text-sm font-medium text-right whitespace-nowrap">
+                                                <button
+                                                    onClick={() => {
+                                                        setDeliveryId(delivery._id);
+                                                        setIsOpen(!isOpen);
+                                                    }}
+                                                    type="button"
+                                                    className="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+                                                >
+                                                    Accept
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    )
+                            )}
                     </tbody>
                 </table>
             </div>
-            <ConfirmDeleteDelivery isOpen={isOpen} setIsOpen={setIsOpen} deliveryId={deliveryId}  />
+            <ConfirmAcceptDelivery isOpen={isOpen} setIsOpen={setIsOpen} deliveryId={deliveryId} />
         </div>
     );
 };

@@ -7,18 +7,18 @@ const app = express()
 
 require('dotenv').config();
 
-const whitelist = ['http://localhost:4000', 'http://localhost:3000'];
-const corsOptions = {
-    credentials: true,
-    origin: (origin, callback) => {
-        if (whitelist.includes(origin))
-            return callback(null, true)
+// const whitelist = ['http://localhost:4000','http://localhost:3000'];
+// const corsOptions = {
+//     credentials: true,
+//     origin: (origin, callback) => {
+//         if (whitelist.includes(origin))
+//             return callback(null, true)
 
-        callback(new Error('Not allowed by CORS'));
-    }
-}
+//         callback(new Error('Not allowed by CORS'));
+//     }
+// }
 
-app.use(cors(corsOptions))
+app.use(cors())
 app.use(cookieParser())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))

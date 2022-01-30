@@ -21,8 +21,7 @@ const baseQuery = fetchBaseQuery({
             headers.set('authorization', `Bearer ${token}`);
         }
         return headers;
-    },
-    credentials: 'include'
+    }
 });
 
 // Define a service using a base URL and expected endpoints
