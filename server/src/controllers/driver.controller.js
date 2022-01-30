@@ -6,6 +6,7 @@ const Dayjs = require("dayjs");
 const sendMail = require("../utils/mail");
 const logger = require("../utils/logger");
 const acceptDriverMail = require("../utils/AcceptDriverMail");
+const { comparePassword } = require("../validation/validation");
 
 const index = (req, res) => {
   Driver.find()
@@ -37,28 +38,12 @@ const loginDriver = async (req, res) => {
   try {
     const existingDriver = await Driver.findOne({ email });
 
-    if (!existingDriver)
-      return res.status(400).json({ message: "Driver not found" });
+    if (!existingDriver) return res.status(400).json({ message: "Driver not found" });
 
-    const isPasswordMatch = await bcrypt.compare(
-      password,
-      existingDriver.password
-    );
+    comparePassword(password, existingDriver, res)
 
-    if (!isPasswordMatch)
-      return res.status(400).json({ message: "Password is incorrect" });
-
-    const token = jwt.sign(
-      { id: existingDriver._id, email: existingDriver.email },
-      `${process.env.JWT_SECRET}`,
-      { expiresIn: "1h" }
-    );
-
-    res.cookie('jwt', token, { httpOnly: true })
-    res.cookie('role', existingDriver.role, { httpOnly: true })
-    res.cookie('id', existingDriver._id, { httpOnly: true })
     logger.info(`driver ${existingDriver.email} logged in`);
-    res.status(200).json({ existingDriver, token });
+  
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

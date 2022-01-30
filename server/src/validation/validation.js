@@ -18,7 +18,6 @@ const comparePassword = async (password, user, res) => {
                         token: token,
                         role: user.role,
                         email: user.email,
-
                     })
                     
                 })

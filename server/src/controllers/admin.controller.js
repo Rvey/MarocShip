@@ -13,14 +13,8 @@ const loginAdmin = async (req, res) => {
 
         if (!existingAdmin) return res.status(400).json({ message: "Admin not found" })
 
-        // const isPasswordMatch = password === existingAdmin.password;
-
-        // if (!isPasswordMatch) return res.status(400).json({ message: "Password is incorrect" })
-
-        // const token = jwt.sign({ id: existingAdmin._id, email: existingAdmin.email }, `${process.env.JWT_SECRET}`, { expiresIn: '1h' })
-        
         comparePassword(password, existingAdmin, res)
-        
+
         logger.info(`GAdmin - email: ${existingAdmin.email} logged in`)
         // return res.json({ role: existingAdmin.role, email: existingAdmin.email })
 

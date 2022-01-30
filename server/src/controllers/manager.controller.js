@@ -38,7 +38,7 @@ const loginManager = async (req, res) => {
         if (!existingManager) return res.status(400).json({ message: "Manager not found" })
 
         comparePassword(password, existingManager, res)
-
+        
         logger.info(`Manager -  email: ${existingManager.email} logged in`)
     } catch (error) {
         res.status(500).json({ error: error.message })

@@ -1,9 +1,8 @@
 import { Field, Form, Formik } from 'formik';
-import { Link } from 'react-router-dom';
 import * as Yup from 'yup';
 import { useAppDispatch } from '../../../Redux/hook';
 import { userData } from '../../../Redux/features/auth/userSlice';
-import { useLoginDriverManagerMutation } from '../../../Redux/services/driver';
+import { useLoginDeliveryManagerMutation } from '../../../Redux/services/deliveries';
 
 interface ManagerLoginFormProps {
     values?: {
@@ -18,7 +17,7 @@ const DriverSchema = Yup.object().shape({
 });
 
 const ManagerLoginForm: React.FC<ManagerLoginFormProps> = () => {
-    const [DManager, { error }] = useLoginDriverManagerMutation();
+    const [DManager, { error }] = useLoginDeliveryManagerMutation();
     const dispatch = useAppDispatch();
 
     return (

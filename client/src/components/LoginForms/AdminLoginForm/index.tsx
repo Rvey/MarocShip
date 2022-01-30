@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import * as Yup from 'yup';
 import { useAppDispatch } from '../../../Redux/hook';
 import { userData } from '../../../Redux/features/auth/userSlice';
-import { useLoginDriverManagerMutation } from '../../../Redux/services/driver';
 import { useLoginAdminMutation } from '../../../Redux/services/admin';
 
 interface AdminLoginFormProps {
