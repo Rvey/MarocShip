@@ -47,9 +47,9 @@ const loginDeliveryManager = async (req, res) => {
 }
 
 const store = async (req, res) => {
-    const { email, firstName, lastName, password } = req.body
+    const { email, firstName, lastName } = req.body
     try {
-        if (!email || !firstName || !lastName || !password) return res.status(400).json({ message: "Please fill all the fields" })
+        if (!email || !firstName || !lastName) return res.status(400).json({ message: "Please fill all the fields" })
 
         const existingDeliveryManager = await DeliveryManager.findOne({ email })
 

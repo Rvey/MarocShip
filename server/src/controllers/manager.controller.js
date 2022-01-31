@@ -38,7 +38,7 @@ const loginManager = async (req, res) => {
         if (!existingManager) return res.status(400).json({ message: "Manager not found" })
 
         comparePassword(password, existingManager, res)
-        
+
         logger.info(`Manager -  email: ${existingManager.email} logged in`)
     } catch (error) {
         res.status(500).json({ error: error.message })
@@ -100,7 +100,7 @@ const update = async (req, res) => {
 
 const resetPassword = async (req, res) => {
     const email = req.body.email
-    const password = req.body.password
+    const password = req.body.Password
     try {
         const manager = await Manager.findOne({ email })
         if (manager == null) return res.status(400).json({ message: "Manager not found" })
@@ -110,7 +110,7 @@ const resetPassword = async (req, res) => {
             }
         })
         logger.info(`Manager with id: ${manager.id} updated his status`)
-        res.status(200).json({ _id: manager.id })
+        res.status(200).json({ message: "Password Successfully Changed" })
     } catch (err) {
         res.status(400).json({ error: err.message })
     }

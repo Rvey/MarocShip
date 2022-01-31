@@ -1,10 +1,10 @@
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '../../Redux/hook';
 import { selectCount } from '../../Redux/features/counter/counterSlice';
 import { clearData, selectUser } from '../../Redux/features/auth/userSlice';
 const Navigation = () => {
     const count = useAppSelector(selectCount);
-    const user = useAppSelector(selectUser);
+    const user = useAppSelector(selectUser).role;
     const dispatch = useAppDispatch();
     return (
         <nav className=" bg-ehe-900 w-[14em] z-10  h-screen items-center fixed justify-between py-5 dark:bg-gray-800 mr-10">
@@ -15,7 +15,7 @@ const Navigation = () => {
                 </div>
                 <div className="flex">
                     {/* <Logo /> */} User
-                    <span className="self-center text-lg font-semibold whitespace-nowrap dark:text-white">{JSON.stringify(user.email)}</span>
+                    <span className="self-center text-lg font-semibold whitespace-nowrap dark:text-white">{user}</span>
                 </div>
                 <div className="flex flex-col mt-4  md:mt-0 md:text-sm md:font-medium">
                     <Link
@@ -94,6 +94,12 @@ const Navigation = () => {
                         Driver Login
                     </Link>
                     <Link
+                        to="/restManagerPassword"
+                        className="  text-gray-700 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+                    >
+                        ResetManagerPassword
+                    </Link>
+                    <Link
                         to="/bomb"
                         className="  text-gray-700 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
                     >
@@ -104,7 +110,7 @@ const Navigation = () => {
                         type="button"
                         onClick={() => {
                             dispatch(clearData());
-                            location.replace('/bomb');
+                            <Navigate to={`/bomb`} />
                         }}
                         className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                     >

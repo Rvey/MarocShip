@@ -10,7 +10,6 @@ const index = async (req, res) => {
         const result = await Delivery.find()
         if (result) {
             res.status(200).json(result)
-            logger.info(`Delivery list fetched successfully by ${req.cookies.role} , id:${req.cookies.id}`);
         } else {
             res.status(400).json({ message: "No Delivery found" })
         }

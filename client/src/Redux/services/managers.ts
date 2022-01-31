@@ -65,7 +65,14 @@ export const managerApi = createApi({
                     method: 'DELETE'
                 };
             }
-        })
+        }),
+        resetManagerPwd: build.mutation<Manager, Partial<Manager>>({
+            query: (body) => ({
+                url: `/manager/resetPassword`,
+                method: 'POST',
+                body
+            })
+        }),
     })
 });
-export const { useGetManagersQuery, useGetManagerQuery, useUpdateManagerMutation, useDeleteManagerMutation, useAddManagerMutation, useLoginManagerMutation } = managerApi;
+export const { useGetManagersQuery, useGetManagerQuery, useUpdateManagerMutation, useDeleteManagerMutation, useAddManagerMutation, useLoginManagerMutation , useResetManagerPwdMutation } = managerApi;

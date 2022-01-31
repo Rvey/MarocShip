@@ -69,6 +69,7 @@ const AdminLoginForm: React.FC<AdminLoginFormProps> = () => {
                         />
                         {errors.password && touched.password ? <div className="text-red-500 font-semibold dark:text-red-400">{errors.password}</div> : null}
                     </div>
+         
                     <div className="mt-8 flex justify-between">
                         <button
                             type="submit"

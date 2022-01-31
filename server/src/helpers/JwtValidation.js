@@ -28,7 +28,7 @@ const verifyToken = (req, res, next, user) => {
     const token = req.headers['authorization']?.split(' ')[1]
     if (token) {
         jwt.verify(token, `${process.env.JWT_SECRET_KEY}`, (err, decoded) => {
-            if (err) return res.json({ message: "Failed To Authenticate" })
+            if (err) return res.status(401).json({ message: "Failed To Authenticate" })
             if (decoded.role === `${user}`) {
                 next()
             } else {
@@ -36,7 +36,7 @@ const verifyToken = (req, res, next, user) => {
             }
         })
     } else {
-        res.json({ message: "Unauthorized" })
+        res.status(401).json({ message: "Unauthorized" })
     }
 }
 
