@@ -30,7 +30,7 @@ export const deliveryManagerApi = createApi({
     baseQuery,
     tagTypes: ['DeliveryManager'],
     endpoints: (build) => ({
-        loginDeliveryManagerManager: build.mutation<{ token?: string; data?: DeliveryManager }, any>({
+        loginDeliveryManagerManager: build.mutation<{ token?: string; data?: DeliveryManager; error:DeliveryManager }, any>({
             query: (credentials: any) => ({ url: 'deliveryManager/login', method: 'POST', body: credentials }),
         }),
         getDeliveryManagers: build.query<DeliveryManagerResponse, void>({

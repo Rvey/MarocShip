@@ -1,14 +1,17 @@
 import { useFormik } from 'formik';
+import { useState } from 'react';
 import * as Yup from 'yup';
 import { useAddManagerMutation, useGetManagersQuery } from '../../../Redux/services/managers';
+import Alert from '../../Shared/Alert';
+import LoadingSpinner from '../../Shared/LoadingSpinner';
 interface AddManagerFormProps {
     setIsOpen: (val: boolean) => void;
 }
 
 const AddManagerForm: React.FC<AddManagerFormProps> = ({ setIsOpen }) => {
     const { refetch } = useGetManagersQuery();
-    const [addModal] = useAddManagerMutation();
-
+    const [addModal, { isError, isLoading }] = useAddManagerMutation();
+    const [error, setError] = useState('');
     const formik = useFormik({
         initialValues: {
             email: '',
@@ -24,13 +27,19 @@ const AddManagerForm: React.FC<AddManagerFormProps> = ({ setIsOpen }) => {
         onSubmit: async (values: any) => {
             // console.log(values);
             addModal(values)
-                .then(() => setIsOpen(false))
-                .then(() => refetch());
+                .unwrap()
+                .then(() => {
+                    setIsOpen(false);
+                    refetch();
+                })
+                .catch((error) => setError(error.data.error));
         }
     });
 
     return (
         <form onSubmit={formik.handleSubmit}>
+            {isLoading && <LoadingSpinner size="22" />}
+            {isError && <Alert error={error} />}
             <div className="mb-6">
                 <label htmlFor="firstName" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
                     First Name

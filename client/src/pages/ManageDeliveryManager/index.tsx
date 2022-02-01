@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import AddDeliveryMangerForm from '../../components/Forms/AddDeliveryManager';
 import AddManagerForm from '../../components/Forms/AddManagerForm';
 import Modal from '../../components/ModalContent/Modal';
 import DeliveryManagerTable from '../../components/Tables/DeliveryManagerTable';
@@ -20,7 +21,7 @@ const ManageDeliveryManger: React.FC<ManagerDeliveriesProps> = () => {
                 </button>
             </div>
             <DeliveryManagerTable />
-            <Modal isOpen={isOpen} setIsOpen={setIsOpen} component={<AddManagerForm setIsOpen={setIsOpen} />} title={'Add Delivery Manager'} />
+            <Modal isOpen={isOpen} setIsOpen={setIsOpen} component={<AddDeliveryMangerForm setIsOpen={setIsOpen} />} title={'Add Delivery Manager'} />
         </div>
     );
 };

@@ -1,7 +1,6 @@
 import ResetDriverPwdForm from '../../components/Forms/ResetPasswords/ResetDriverPassword';
 import { useNavigate } from 'react-router-dom';
 const ResetDriverPwdPage = () => {
-    let navigate = useNavigate()
     return (
         <div className="min-h-screen  flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 dark:bg-gray-800">
             

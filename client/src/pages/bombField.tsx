@@ -3,6 +3,7 @@ import { decrement, increment, selectCount } from '../Redux/features/counter/cou
 import { useGetManagersQuery } from '../Redux/services/managers';
 import { userData, selectUser, clearData } from '../Redux/features/auth/userSlice';
 import { useCookies } from 'react-cookie';
+import { useState } from 'react';
 
 interface BombFieldProps {
     name: string;
@@ -14,6 +15,24 @@ const BombField: React.FC<BombFieldProps> = () => {
     const dispatch = useAppDispatch();
     const { data, error, isLoading } = useGetManagersQuery();
     const [cookies, setCookie] = useCookies(['name']);
+
+
+
+
+
+
+
+    const [value , setValue] = useState('');
+    const [name, setName] = useState('');
+    const [password, setPassword] = useState('');
+    const [email, setEmail] = useState('');
+
+
+
+
+
+
+
 
     return (
         <div>
@@ -61,8 +80,52 @@ const BombField: React.FC<BombFieldProps> = () => {
             {/* {user.email && <p>{user.email}</p>} */}
             {/* {user.token && <p>{user.token}</p>} */}
             {/* cookie :{cookies.name && <p>{cookies.name}</p>} */}
+
+
+                {/* <form action="">
+                    <input type="text" value={value} onChange={() => setValue(e.sfsdf)} />
+                </form> */}
+
+
         </div>
     );
 };
 
 export default BombField;
+
+// class HelloMessage extends React.Component {
+//     render() {
+//       return (
+//         <div>
+//           Hello {this.props.name}
+//         </div>
+//       );
+//     }
+//   }
+  
+//   ReactDOM.render(
+//     <HelloMessage name="Taylor" />,
+//     document.getElementById('hello-example')
+//   );
+
+  
+
+//   const ParentbombField = ({name}) => {
+//     return <div>
+// <cHILDbOM name={name} LAST={lastaname} />
+//     </div>;
+//   };
+  
+//   export default bombField;
+
+
+
+
+//   const ChildbombField = ({name , laset}) => {
+//     return <div>
+// {name}
+//     </div>;
+//   };
+  
+//   export default bombField;
+  

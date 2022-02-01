@@ -1,16 +1,23 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-import  { useState } from 'react';
+import { useState } from 'react';
 import * as Yup from 'yup';
 import { useAddDeliveryManagerMutation, useGetDeliveryManagersQuery } from '../../../Redux/services/deliveryManager';
+import Alert from '../../Shared/Alert';
+import LoadingSpinner from '../../Shared/LoadingSpinner';
+
+interface AddDeliveryManagerFormProps {
+    setIsOpen: (val: boolean) => void;
+}
+
 
 const DriverSchema = Yup.object().shape({
     firstName: Yup.string().min(2, 'Too Short!').required('Required'),
     lastName: Yup.string().required('Required'),
-    email: Yup.string().email('Invalid email address').required('Required'),
+    email: Yup.string().email('Invalid email address').required('Required')
 });
 
-const AddDeliveryMangerForm = () => {
-    const [addDeliveryManager] = useAddDeliveryManagerMutation();
+const AddDeliveryMangerForm: React.FC<AddDeliveryManagerFormProps> = ({ setIsOpen }) => {
+    const [addDeliveryManager, { isLoading, isError }] = useAddDeliveryManagerMutation();
     const { data, refetch } = useGetDeliveryManagersQuery();
     const [error, setError] = useState('');
     return (
@@ -18,23 +25,23 @@ const AddDeliveryMangerForm = () => {
             initialValues={{
                 firstName: '',
                 lastName: '',
-                email: '',
+                email: ''
             }}
             validationSchema={DriverSchema}
             onSubmit={(values) => {
                 addDeliveryManager(values)
-                .then(() => refetch())
-                .catch((error) => setError(error?.data.message));
+                .unwrap()
+                .then(() => {
+                    setIsOpen(false);
+                    refetch();
+                })
+                .catch((error) => setError(error.data.error));
             }}
         >
             {({ errors, touched }) => (
                 <Form>
-                    {error && (
-                        <div className="py-2 px-3 bg-red-500 w-full text-white rounded-md flex justify-between">
-                            {error} <button onClick={() => setError('')}>X</button>
-                        </div>
-                    )}
-
+                    {isLoading && <LoadingSpinner size="22" />}
+                    {isError && <Alert error={error} />}
                     <div className="mt-4">
                         <label htmlFor="firstName" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
                             FirstName

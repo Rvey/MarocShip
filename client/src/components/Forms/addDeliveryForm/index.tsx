@@ -1,8 +1,12 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { useState } from 'react';
 import * as Yup from 'yup';
 import { useAddDeliveryMutation, useGetDeliveriesQuery } from '../../../Redux/services/deliveries';
+import Alert from '../../Shared/Alert';
+import LoadingSpinner from '../../Shared/LoadingSpinner';
 interface AddDeliveryFormProps {
     setIsOpen: (val: boolean) => void;
+    setError: (val: string) => void;
 }
 
 const DeliverySchema = Yup.object().shape({
@@ -12,11 +16,11 @@ const DeliverySchema = Yup.object().shape({
 });
 const AddDeliveryForm: React.FC<AddDeliveryFormProps> = ({ setIsOpen }) => {
     const { refetch } = useGetDeliveriesQuery();
-    const [addDelivery] = useAddDeliveryMutation()
+    const [addDelivery, { isError , isLoading }] = useAddDeliveryMutation();
+    const [error, setError] = useState();
 
     return (
         <Formik
-         
             initialValues={{
                 region: '',
                 delivery: '',
@@ -26,11 +30,19 @@ const AddDeliveryForm: React.FC<AddDeliveryFormProps> = ({ setIsOpen }) => {
             }}
             validationSchema={DeliverySchema}
             onSubmit={(values) => {
-                addDelivery(values).then(() => setIsOpen(false)).then(() => refetch())  
+                addDelivery(values)
+                    .unwrap()
+                    .then(() => {
+                        setIsOpen(false);
+                        refetch();
+                    })
+                    .catch((error) => setError(error.data.error));
             }}
         >
             {({ errors, touched, values }) => (
                 <Form>
+                    {isLoading && <LoadingSpinner size="22" />}
+                    {isError && <Alert error={error}/> }
                     <div className="mt-4">
                         <label htmlFor="delivery" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
                             Delivery
@@ -38,7 +50,7 @@ const AddDeliveryForm: React.FC<AddDeliveryFormProps> = ({ setIsOpen }) => {
                         <Field
                             type="text"
                             id="delivery"
-                            className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             name="delivery"
                         />
                         {errors.delivery && touched.delivery ? <div className="text-red-500 font-semibold dark:text-red-400">{errors.delivery}</div> : null}
@@ -64,7 +76,9 @@ const AddDeliveryForm: React.FC<AddDeliveryFormProps> = ({ setIsOpen }) => {
                             name="region"
                             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         >
-                            <option value="" disabled>Select region</option>
+                            <option value="" disabled>
+                                Select region
+                            </option>
                             <option value="Europe">Europe</option>
                             <option value="national">national</option>
                             <option value="America">America</option>
