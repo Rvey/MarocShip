@@ -8,5 +8,6 @@ import ManageDriver from './ManageDrivers';
 import ManageDeliveries from './ManageDeliveries';
 import ManageManagers from './ManageManagers';
 import DriverRegister from './DriverRegister';
+import ResetDriverPwdPage from './ResetDriverPwd';
 
-export { AdminDashboard, AdminLogin, ManagerLogin, DriverLogin, DeliveryManagerLogin, ManageCandidate, ManageDriver, ManageDeliveries, ManageManagers, DriverRegister };
+export { AdminDashboard, AdminLogin, ManagerLogin, DriverLogin, DeliveryManagerLogin, ManageCandidate, ManageDriver, ManageDeliveries, ManageManagers, DriverRegister, ResetDriverPwdPage };

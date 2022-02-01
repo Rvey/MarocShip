@@ -1,14 +1,14 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import { useResetPwdDriverMutation } from '../../../../Redux/services/driver';
+import { useResetDeliveryManagerPwdMutation } from '../../../../Redux/services/deliveryManager';
 
 const DriverSchema = Yup.object().shape({
     Password: Yup.string().min(4, 'Too Short!').required('Required'),
     email: Yup.string().email('Invalid email address').required('Required')
 });
 
-const ResetDriverPwdForm = () => {
-    const [updateMPwd] = useResetPwdDriverMutation();
+const ResetDMPwdForm = () => {
+    const [updateMPwd] = useResetDeliveryManagerPwdMutation();
     return (
         <Formik
             initialValues={{
@@ -22,7 +22,7 @@ const ResetDriverPwdForm = () => {
         >
             {({ errors, touched }) => (
                 <Form>
-                     <div className='font-medium text-2xl'>Reset Driver Password</div>
+                     <div className='font-medium text-2xl'>Reset delivery Manager Password</div>
                     <div className="mt-4">
                         <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
                             Email
@@ -60,4 +60,4 @@ const ResetDriverPwdForm = () => {
         </Formik>
     );
 };
-export default ResetDriverPwdForm;
+export default ResetDMPwdForm;

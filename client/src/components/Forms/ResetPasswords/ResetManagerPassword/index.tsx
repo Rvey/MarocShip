@@ -22,7 +22,7 @@ const ResetManagerPwd = () => {
         >
             {({ errors, touched }) => (
                 <Form>
-                     <div className='font-medium text-2xl'>Reset Password</div>
+                     <div className='font-medium text-2xl'>Reset Manager Password</div>
                     <div className="mt-4">
                         <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
                             Email
@@ -41,7 +41,7 @@ const ResetManagerPwd = () => {
                         </label>
                         <Field
                             type="password"
-                            id="firstName"
+                            id="Password"
                             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             name="Password"
                         />

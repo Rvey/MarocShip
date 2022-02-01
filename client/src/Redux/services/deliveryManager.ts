@@ -47,6 +47,13 @@ export const deliveryManagerApi = createApi({
                 body
             })
         }),
+        resetDeliveryManagerPwd: build.mutation<DeliveryManager, Partial<DeliveryManager>>({
+            query: (body) => ({
+                url: `deliveryManager/resetPassword`,
+                method: 'POST',
+                body
+            })
+        }),
         updateDeliveryManager: build.mutation<DeliveryManager, Partial<DeliveryManager>>({
             query: ({ id, ...patch }) => ({
                 url: `deliveryManager/${id}`,
@@ -64,4 +71,4 @@ export const deliveryManagerApi = createApi({
         })
     })
 });
-export const { useGetDeliveryManagersQuery, useGetDeliveryManagerQuery, useAddDeliveryManagerMutation, useDeleteDeliveryManagerMutation, useUpdateDeliveryManagerMutation, useLoginDeliveryManagerManagerMutation } = deliveryManagerApi;
+export const { useGetDeliveryManagersQuery, useGetDeliveryManagerQuery, useAddDeliveryManagerMutation, useDeleteDeliveryManagerMutation, useUpdateDeliveryManagerMutation, useLoginDeliveryManagerManagerMutation, useResetDeliveryManagerPwdMutation } = deliveryManagerApi;

@@ -4,7 +4,7 @@ import { useAppSelector } from '../Redux/hook';
 const PrivateRoute = ({ children , user }: { children: JSX.Element , user:string }) => {
     let location = useLocation();
     const role = useAppSelector(selectUser).role
-   return role === 'user' 
+   return role === user
    
    ? children
    : <Navigate to={`/${user}Login`} state={{ from: location }} />;

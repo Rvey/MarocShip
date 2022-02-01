@@ -103,7 +103,7 @@ const update = async (req, res) => {
 }
 const resetPassword = async (req, res) => {
     const email = req.body.email
-    const password = req.body.password
+    const password = req.body.Password
     try {
         const DManager = await DeliveryManager.findOne({ email })
         if (DManager == null) return res.status(400).json({ message: "delivery Manager not found" })

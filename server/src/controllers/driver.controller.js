@@ -126,7 +126,7 @@ const update = async (req, res) => {
 };
 const resetPassword = async (req, res) => {
   const email = req.body.email
-  const password = req.body.password
+  const password = req.body.Password
   try {
     const driver = await Driver.findOne({ email })
     if (driver == null) return res.status(400).json({ message: "Driver not found" })
@@ -135,8 +135,8 @@ const resetPassword = async (req, res) => {
         password: await bcrypt.hash(password, 12)
       }
     })
-    logger.info(`Driver with id: ${manager.id} updated his password`)
-    res.status(200).json({ message: "Driver password updated" })
+    logger.info(`Driver with id: ${driver.id} updated his password`)
+    res.status(200).json({ message: 'Password Successfully' })
   } catch (err) {
     res.status(400).json({ error: err.message })
   }
@@ -196,6 +196,7 @@ const driverBonus = async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 };
+
 
 module.exports = {
   index,

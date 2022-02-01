@@ -72,7 +72,14 @@ export const driverApi = createApi({
                     method: 'DELETE'
                 };
             }
-        })
+        }),
+        resetPwdDriver: build.mutation<Driver, Partial<Driver>>({
+            query: (body) => ({
+                url: `driver/resetPassword`,
+                method: 'POST',
+                body
+            })
+        }),
     })
 });
-export const { useGetDriversQuery, useGetDriverQuery, useAddDriverMutation, useDeleteDriverMutation, useUpdateDriverMutation,useAcceptDriverMutation, useLoginDriverManagerMutation } = driverApi;
+export const { useGetDriversQuery, useGetDriverQuery, useAddDriverMutation, useDeleteDriverMutation, useUpdateDriverMutation,useAcceptDriverMutation, useLoginDriverManagerMutation , useResetPwdDriverMutation } = driverApi;
