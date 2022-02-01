@@ -96,9 +96,9 @@ const DriverRegisterForm = () => {
                             <option value="" disabled>
                                 Select license
                             </option>
-                            <option value="Car">Car</option>
-                            <option value="Van">Van</option>
-                            <option value="Truck">Truck</option>
+                            <option value="car">Car</option>
+                            <option value="van">Van</option>
+                            <option value="truck">Truck</option>
                         </Field>
 
                         <div className="mt-4">

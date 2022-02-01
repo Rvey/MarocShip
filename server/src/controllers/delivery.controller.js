@@ -30,11 +30,11 @@ const show = async (req, res) => {
 };
 
 const store = async (req, res) => {
-    const { delivery, weight, from, to, shipmentMethod, region } = req.body;
+    const { delivery, weight, from, to, createdBy, region } = req.body;
     try {
         if (!delivery || !weight || !region) return res.status(400).json({ message: "Please fill all the fields" })
         let distance = 0
-        let createdBy = req.cookies.id
+       
         let price = 0
 
         // calculate distance
@@ -83,7 +83,7 @@ const store = async (req, res) => {
             if (carDrivers.length === 0) return res.status(400).json({ error: "No car driver available" });
 
             // store the delivery
-            await Delivery.create({ delivery, weight, from, to, distance: distance, price: price, shipmentMethod: "Car", createdBy: createdBy, region })
+            await Delivery.create({ delivery, weight, from, to, distance: distance, price: price, shipmentMethod: "Car", createdBy, region })
 
             // send mail to the driver who matched the shipmentMethod
             carDrivers.forEach((driver) => {
@@ -95,7 +95,7 @@ const store = async (req, res) => {
             });
         } else if (parsedWeight <= 800 && parsedWeight > 200 && region === 'national') {
             if (vanDrivers.length === 0) return res.status(400).json({ error: "No van driver available" });
-            await Delivery.create({ delivery, weight, from, to, distance: distance, price: price, shipmentMethod: "Van", createdBy: createdBy, region })
+            await Delivery.create({ delivery, weight, from, to, distance: distance, price: price, shipmentMethod: "Van", createdBy, region })
             vanDrivers?.forEach((driver) => {
                 sendMail(driver.email, driver.name, from, to, weight);
 

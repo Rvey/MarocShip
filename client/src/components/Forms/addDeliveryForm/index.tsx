@@ -1,6 +1,8 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { useState } from 'react';
 import * as Yup from 'yup';
+import { selectUser } from '../../../Redux/features/auth/userSlice';
+import { useAppSelector } from '../../../Redux/hook';
 import { useAddDeliveryMutation, useGetDeliveriesQuery } from '../../../Redux/services/deliveries';
 import Alert from '../../Shared/Alert';
 import LoadingSpinner from '../../Shared/LoadingSpinner';
@@ -18,7 +20,7 @@ const AddDeliveryForm: React.FC<AddDeliveryFormProps> = ({ setIsOpen }) => {
     const { refetch } = useGetDeliveriesQuery();
     const [addDelivery, { isError , isLoading }] = useAddDeliveryMutation();
     const [error, setError] = useState();
-
+    const deliveryManager = useAppSelector(selectUser)
     return (
         <Formik
             initialValues={{
@@ -26,7 +28,8 @@ const AddDeliveryForm: React.FC<AddDeliveryFormProps> = ({ setIsOpen }) => {
                 delivery: '',
                 weight: '',
                 from: '',
-                to: ''
+                to: '',
+                createdBy: deliveryManager.email,
             }}
             validationSchema={DeliverySchema}
             onSubmit={(values) => {

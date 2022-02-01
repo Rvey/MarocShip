@@ -1,6 +1,18 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Navigation from './navigation';
-import { AdminDashboard, AdminLogin, ManagerLogin, DriverLogin, DeliveryManagerLogin, ManageCandidate, ManageDriver, ManageDeliveries, ManageManagers, DriverRegister, ResetDriverPwdPage } from './../pages';
+import {
+    AdminDashboard,
+    AdminLogin,
+    ManagerLogin,
+    DriverLogin,
+    DeliveryManagerLogin,
+    ManageCandidate,
+    ManageDriver,
+    ManageDeliveries,
+    ManageManagers,
+    DriverRegister,
+    ResetDriverPwdPage
+} from './../pages';
 import BombField from '../pages/bombField';
 import ManageDeliveryManger from '../pages/ManageDeliveryManager';
 import AcceptDeliveries from '../pages/AcceptDeliveries';
@@ -14,8 +26,8 @@ const Routers = () => {
     const user = useAppSelector(selectUser);
     return (
         <BrowserRouter>
-            <Navigation />
-            <div className="pl-[18em]  pr-[1.5em] dark:bg-slate-900 bg-white dark:text-white min-h-screen ">
+            {user.email ? <Navigation /> : null}
+            <div className={`${user.email ? 'pl-[18em]  pr-[1.5em]' : ''} dark:bg-slate-900 bg-white min-h-screen dark:text-white `}>
                 <Routes>
                     <Route
                         path="/"

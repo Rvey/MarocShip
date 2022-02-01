@@ -33,8 +33,8 @@ const deliverySchema = new Schema({
         required: true,
     },
     createdBy: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "manager",
+        type:String,
+        
     },
     region: {
         type: String,
