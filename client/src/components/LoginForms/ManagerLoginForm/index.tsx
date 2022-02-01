@@ -4,6 +4,8 @@ import * as Yup from 'yup';
 import { useLoginManagerMutation } from '../../../Redux/services/managers';
 import { useAppDispatch } from '../../../Redux/hook';
 import { userData } from '../../../Redux/features/auth/userSlice';
+import LoadingSpinner from '../../Shared/LoadingSpinner';
+import Alert from '../../Shared/Alert';
 interface ManagerLoginFormProps {
     values?: {
         email: string;
@@ -16,7 +18,7 @@ const DriverSchema = Yup.object().shape({
 });
 
 const ManagerLoginForm: React.FC<ManagerLoginFormProps> = () => {
-    const [ManagerLogin, { error }] = useLoginManagerMutation();
+    const [ManagerLogin, { error, isError , isLoading }] = useLoginManagerMutation();
     const dispatch = useAppDispatch();
 
     return (
@@ -28,22 +30,23 @@ const ManagerLoginForm: React.FC<ManagerLoginFormProps> = () => {
             validationSchema={DriverSchema}
             onSubmit={async (values) => {
                 await ManagerLogin(values)
-                    .then((data: any) =>
+                    .unwrap()
+                    .then((payload) =>
                         dispatch(
                             userData({
-                                token: data.data.token,
-                                role: data.data.role,
-                                email: data.data.email
+                                token: payload.token,
+                                role: payload.role,
+                                email: payload.email
                             })
                         )
-                    )
-                    .then(() => location.replace('/bomb'))
-                    .catch((err) => console.log(err.message))
+                    );
             }}
         >
             {({ errors, touched }) => (
                 <Form>
                     <div>Manager Login</div>
+                    {isLoading && <LoadingSpinner size="22" />}
+                    {isError && <Alert error={error.data?.message} />}
                     <div className="mt-4">
                         <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
                             Email

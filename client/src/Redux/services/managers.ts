@@ -24,7 +24,7 @@ const baseQuery = fetchBaseQuery({
         }
         return headers;
     }
-});
+}) as any;
 
 
 // Define a service using a base URL and expected endpoints
@@ -33,7 +33,7 @@ export const managerApi = createApi({
     baseQuery,
     tagTypes: ['Managers'],
     endpoints: (build) => ({
-        loginManager: build.mutation<{ token?: string; data?: Manager }, any>({
+        loginManager: build.mutation<{ token?: string; data?: Manager;  role?:string ; email?:string }, any>({
             query: (credentials: any) => ({ url: 'manager/login', method: 'POST', body: credentials }),
             
         }),
