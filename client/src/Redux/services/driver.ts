@@ -7,10 +7,10 @@ interface Driver {
     email: string;
     license: string;
     createdAt: string;
-    name:string
-    file:string
-    verified:string
-    _id:string
+    name: string;
+    file: string;
+    verified: string;
+    _id: string;
 }
 type DriverResponse = Driver[];
 
@@ -25,9 +25,7 @@ const baseQuery = fetchBaseQuery({
         }
         return headers;
     }
-});
-
-// const baseQueryWithRetry = retry(baseQuery, { maxRetries: 6 });
+}) as any;
 
 // Define a service using a base URL and expected endpoints
 export const driverApi = createApi({
@@ -35,8 +33,8 @@ export const driverApi = createApi({
     baseQuery,
     tagTypes: ['Driver'],
     endpoints: (build) => ({
-        loginDriverManager: build.mutation<{ token?: string; data?: Driver }, any>({
-            query: (credentials: any) => ({ url: 'driver/login', method: 'POST', body: credentials }),
+        loginDriverManager: build.mutation<{ token?: string; data?: Driver; email?: string; role?: string }, any>({
+            query: (credentials: any) => ({ url: 'driver/login', method: 'POST', body: credentials })
         }),
         getDrivers: build.query<DriverResponse, void>({
             query: () => ({ url: 'driver' })
@@ -60,7 +58,7 @@ export const driverApi = createApi({
             })
         }),
         acceptDriver: build.mutation<Driver, Partial<Driver>>({
-            query: ({ id}) => ({
+            query: ({ id }) => ({
                 url: `driver/validateDriver/${id}`,
                 method: 'PUT'
             })
@@ -79,7 +77,16 @@ export const driverApi = createApi({
                 method: 'POST',
                 body
             })
-        }),
+        })
     })
 });
-export const { useGetDriversQuery, useGetDriverQuery, useAddDriverMutation, useDeleteDriverMutation, useUpdateDriverMutation,useAcceptDriverMutation, useLoginDriverManagerMutation , useResetPwdDriverMutation } = driverApi;
+export const {
+    useGetDriversQuery,
+    useGetDriverQuery,
+    useAddDriverMutation,
+    useDeleteDriverMutation,
+    useUpdateDriverMutation,
+    useAcceptDriverMutation,
+    useLoginDriverManagerMutation,
+    useResetPwdDriverMutation
+} = driverApi;

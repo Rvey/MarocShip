@@ -4,6 +4,8 @@ import * as Yup from 'yup';
 import { useAppDispatch } from '../../../Redux/hook';
 import { userData } from '../../../Redux/features/auth/userSlice';
 import { useLoginDriverManagerMutation } from '../../../Redux/services/driver';
+import LoadingSpinner from '../../Shared/LoadingSpinner';
+import Alert from '../../Shared/Alert';
 
 interface ManagerLoginFormProps {
     values?: {
@@ -18,7 +20,7 @@ const DriverSchema = Yup.object().shape({
 });
 
 const ManagerLoginForm: React.FC<ManagerLoginFormProps> = () => {
-    const [DriverLogin, { error }] = useLoginDriverManagerMutation();
+    const [DriverLogin, { error, isError, isLoading }] = useLoginDriverManagerMutation();
     const dispatch = useAppDispatch();
 
     return (
@@ -30,21 +32,23 @@ const ManagerLoginForm: React.FC<ManagerLoginFormProps> = () => {
             validationSchema={DriverSchema}
             onSubmit={async (values) => {
                 await DriverLogin(values)
-                    .then((data: any) =>
+                    .unwrap()
+                    .then((payload) =>
                         dispatch(
                             userData({
-                                token: data.data.token,
-                                role: data.data.role,
-                                email: data.data.email
+                                token: payload.token,
+                                role: payload.role,
+                                email: payload.email
                             })
                         )
-                    )
-                    .then(() => location.replace('/bomb'));
+                    );
             }}
         >
             {({ errors, touched }) => (
                 <Form>
                     <div>Driver Login</div>
+                    {isLoading && <LoadingSpinner size="22" />}
+                    {isError && <Alert error={error.data?.message} />}
                     <div className="mt-4">
                         <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
                             Email
