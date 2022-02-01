@@ -16,14 +16,14 @@ const baseQuery = fetchBaseQuery({
         }
         return headers;
     }
-});
+}) as any;
 
 // Define a service using a base URL and expected endpoints
 export const adminApi = createApi({
     reducerPath: 'adminApi',
     baseQuery,
     endpoints: (build) => ({
-        loginAdmin: build.mutation<{ token?: string; data?: Admin }, any>({
+        loginAdmin: build.mutation<{ token?: string; data?: Admin ; role?: string ; email?: string }, any>({
             query: (credentials: any) => ({ url: 'admin/login', method: 'POST', body: credentials })
         }),
     })

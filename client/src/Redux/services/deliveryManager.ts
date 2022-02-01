@@ -22,7 +22,7 @@ const baseQuery = fetchBaseQuery({
         }
         return headers;
     }
-});
+}) as any;
 
 // Define a service using a base URL and expected endpoints
 export const deliveryManagerApi = createApi({
@@ -30,7 +30,8 @@ export const deliveryManagerApi = createApi({
     baseQuery,
     tagTypes: ['DeliveryManager'],
     endpoints: (build) => ({
-        loginDeliveryManagerManager: build.mutation<{ token?: string; data?: DeliveryManager; error:DeliveryManager }, any>({
+ 
+        loginDeliveryManager: build.mutation<{ token?: string; data?: DeliveryManager;role?:string; email?:string; error:any }, any>({
             query: (credentials: any) => ({ url: 'deliveryManager/login', method: 'POST', body: credentials }),
         }),
         getDeliveryManagers: build.query<DeliveryManagerResponse, void>({
@@ -71,4 +72,4 @@ export const deliveryManagerApi = createApi({
         })
     })
 });
-export const { useGetDeliveryManagersQuery, useGetDeliveryManagerQuery, useAddDeliveryManagerMutation, useDeleteDeliveryManagerMutation, useUpdateDeliveryManagerMutation, useLoginDeliveryManagerManagerMutation, useResetDeliveryManagerPwdMutation } = deliveryManagerApi;
+export const { useGetDeliveryManagersQuery, useGetDeliveryManagerQuery, useAddDeliveryManagerMutation, useDeleteDeliveryManagerMutation, useUpdateDeliveryManagerMutation, useLoginDeliveryManagerMutation, useResetDeliveryManagerPwdMutation } = deliveryManagerApi;

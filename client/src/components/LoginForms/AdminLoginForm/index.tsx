@@ -4,6 +4,9 @@ import * as Yup from 'yup';
 import { useAppDispatch } from '../../../Redux/hook';
 import { userData } from '../../../Redux/features/auth/userSlice';
 import { useLoginAdminMutation } from '../../../Redux/services/admin';
+import { useState } from 'react';
+import LoadingSpinner from '../../Shared/LoadingSpinner';
+import Alert from '../../Shared/Alert';
 
 interface AdminLoginFormProps {
     values?: {
@@ -18,9 +21,8 @@ const DriverSchema = Yup.object().shape({
 });
 
 const AdminLoginForm: React.FC<AdminLoginFormProps> = () => {
-    const [adminLogin, { error }] = useLoginAdminMutation();
+    const [adminLogin, { isError, isLoading, error }] = useLoginAdminMutation();
     const dispatch = useAppDispatch();
-
     return (
         <Formik
             initialValues={{
@@ -30,21 +32,24 @@ const AdminLoginForm: React.FC<AdminLoginFormProps> = () => {
             validationSchema={DriverSchema}
             onSubmit={async (values) => {
                 await adminLogin(values)
-                    .then((data: any) =>
+                    .unwrap()
+                    .then((payload) =>
                         dispatch(
                             userData({
-                                token: data.data.token,
-                                role: data.data.role,
-                                email: data.data.email
+                                token: payload.token,
+                                role: payload.role,
+                                email: payload.email
                             })
                         )
-                    )
-                    .then(() => location.replace('/bomb'));
+                    );
             }}
         >
             {({ errors, touched }) => (
                 <Form>
                     <div>Admin Login</div>
+                    {isLoading && <LoadingSpinner size="22" />}
+                    {isError && <Alert error={error.data?.message} />}
+                    {/* <Alert error={error} /> */}
                     <div className="mt-4">
                         <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
                             Email
@@ -69,7 +74,7 @@ const AdminLoginForm: React.FC<AdminLoginFormProps> = () => {
                         />
                         {errors.password && touched.password ? <div className="text-red-500 font-semibold dark:text-red-400">{errors.password}</div> : null}
                     </div>
-         
+
                     <div className="mt-8 flex justify-between">
                         <button
                             type="submit"

@@ -35,6 +35,7 @@ const AddDeliveryForm: React.FC<AddDeliveryFormProps> = ({ setIsOpen }) => {
                     .then(() => {
                         setIsOpen(false);
                         refetch();
+                        
                     })
                     .catch((error) => setError(error.data.error));
             }}

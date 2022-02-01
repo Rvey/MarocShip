@@ -11,15 +11,15 @@ const loginAdmin = async (req, res) => {
     try {
         const existingAdmin = await Admin.findOne({ email })
 
-        if (!existingAdmin) return res.status(400).json({ message: "Admin not found" })
+        if (!existingAdmin) return res.status(404).json({ message: "Admin not found" })
 
         comparePassword(password, existingAdmin, res)
 
         logger.info(`GAdmin - email: ${existingAdmin.email} logged in`)
-        // return res.json({ role: existingAdmin.role, email: existingAdmin.email })
+        // return res.status(200).json({ data: existingAdmin })
 
     } catch (error) {
-        res.status(500).json({ message: error.message })
+        res.status(404).json({ message: error.message })
     }
 }
 module.exports = { loginAdmin }

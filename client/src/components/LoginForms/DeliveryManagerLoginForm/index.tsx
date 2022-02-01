@@ -2,7 +2,9 @@ import { Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import { useAppDispatch } from '../../../Redux/hook';
 import { userData } from '../../../Redux/features/auth/userSlice';
-import { useLoginDeliveryManagerMutation } from '../../../Redux/services/deliveries';
+import { useLoginDeliveryManagerMutation } from '../../../Redux/services/deliveryManager';
+import LoadingSpinner from '../../Shared/LoadingSpinner';
+import Alert from '../../Shared/Alert';
 
 interface ManagerLoginFormProps {
     values?: {
@@ -17,9 +19,9 @@ const DriverSchema = Yup.object().shape({
 });
 
 const ManagerLoginForm: React.FC<ManagerLoginFormProps> = () => {
-    const [DManager, { error }] = useLoginDeliveryManagerMutation();
+    const [DManager, { error , isError , isLoading }] = useLoginDeliveryManagerMutation();
     const dispatch = useAppDispatch();
-
+  
     return (
         <Formik
             initialValues={{
@@ -29,21 +31,23 @@ const ManagerLoginForm: React.FC<ManagerLoginFormProps> = () => {
             validationSchema={DriverSchema}
             onSubmit={async (values) => {
                 await DManager(values)
-                    .then((data: any) =>
-                        dispatch(
-                            userData({
-                                token: data.data.token,
-                                role: data.data.role,
-                                email: data.data.email
-                            })
-                        )
+                .unwrap()
+                .then((payload) =>
+                    dispatch(
+                        userData({
+                            token: payload.token,
+                            role: payload.role,
+                            email: payload.email
+                        })
                     )
-                    .then(() => location.replace('/bomb'));
+                );
             }}
         >
             {({ errors, touched }) => (
                 <Form>
                     <div>Delivery Manager Login</div>
+                    {isLoading && <LoadingSpinner size="22" />}
+                    {isError && <Alert error={error.data?.message} />}
                     <div className="mt-4">
                         <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
                             Email
