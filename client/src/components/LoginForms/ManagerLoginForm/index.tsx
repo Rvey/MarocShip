@@ -18,7 +18,7 @@ const DriverSchema = Yup.object().shape({
 });
 
 const ManagerLoginForm: React.FC<ManagerLoginFormProps> = () => {
-    const [ManagerLogin, { error, isError , isLoading }] = useLoginManagerMutation();
+    const [ManagerLogin, { error, isError, isLoading }] = useLoginManagerMutation();
     const dispatch = useAppDispatch();
     let navigate = useNavigate();
     return (
@@ -31,17 +31,16 @@ const ManagerLoginForm: React.FC<ManagerLoginFormProps> = () => {
             onSubmit={async (values) => {
                 await ManagerLogin(values)
                     .unwrap()
-                    .then((payload) =>
-                    {    dispatch(
+                    .then((payload) => {
+                        dispatch(
                             userData({
                                 token: payload.token,
                                 role: payload.role,
                                 email: payload.email
                             })
-                        )
-                        navigate('/DeliveryMangers')
-                    }
-                    );
+                        );
+                        navigate('/DeliveryMangers');
+                    });
             }}
         >
             {({ errors, touched }) => (
