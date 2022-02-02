@@ -54,6 +54,31 @@ const Navigation = () => {
                     <Link to="/deliveries" className={`${LinkStyle}`}>
                         Manage Deliveries
                     </Link>
+
+                    <Link
+                        to="/driverRegister"
+                        className={`${LinkStyle}`}
+                    >
+                        driverRegister
+                    </Link>
+                    <Link
+                        to="/restManagerPassword"
+                        className={`${LinkStyle}`}
+                    >
+                        ResetManagerPassword
+                    </Link>
+                    <Link
+                        to="/restDriverPassword"
+                        className={`${LinkStyle}`}
+                    >
+                        ResetDriverPassword
+                    </Link>
+                    <Link
+                        to="/restDManagerPassword"
+                        className={`${LinkStyle}`}
+                    >
+                        ResetDeliveryManagerPassword
+                    </Link>
                     <Link to="/bomb" className={`${LinkStyle}`}>
                         bombField
                     </Link>

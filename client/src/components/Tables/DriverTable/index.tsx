@@ -14,7 +14,7 @@ const DriversTable: React.FunctionComponent<DriversTableProps> = () => {
     return (
         <div className="inline-block py-2 min-w-full sm:px-6 lg:px-8">
             {isLoading && 'lOADING ...'}
-          <div className="overflow-hidden shadow-md sm:rounded-lg">
+            <div className="overflow-hidden shadow-md sm:rounded-lg">
                 <table className="min-w-full">
                     <thead className="bg-gray-50 dark:bg-gray-700">
                         <tr>
@@ -31,6 +31,9 @@ const DriversTable: React.FunctionComponent<DriversTableProps> = () => {
                                 Submitted At
                             </th>
                             <th scope="col" className="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">
+                                TotalTraveledDistance
+                            </th>
+                            <th scope="col" className="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">
                                 file
                             </th>
                             <th scope="col" className="relative py-3 px-6">
@@ -43,10 +46,13 @@ const DriversTable: React.FunctionComponent<DriversTableProps> = () => {
                             (driver, index) =>
                                 driver.verified && (
                                     <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                        <td className="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">{driver.firstName} {driver.lastName}</td>
+                                        <td className="py-4 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                            {driver.firstName} {driver.lastName}
+                                        </td>
                                         <td className="py-4 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">{driver.email}</td>
                                         <td className="py-4 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">{driver.license}</td>
                                         <td className="py-4 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">{driver.createdAt}</td>
+                                        <td className="py-4 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">{driver.TotalTraveledDistance}</td>
                                         <td className="py-4 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">{driver.file}</td>
                                         <td className="py-4 px-6 text-sm font-medium text-right whitespace-nowrap">
                                             <div className="space-x-3">
@@ -79,8 +85,7 @@ const DriversTable: React.FunctionComponent<DriversTableProps> = () => {
                 </table>
             </div>
             <ConfirmDeleteDriver isOpen={isOpenConfirm} setIsOpen={setIsOpenConfirm} driverId={driverId} />
-            <Modal isOpen={isOpen} setIsOpen={setIsOpen} component={<UpdateDriverFrom setIsOpen={setIsOpen} driverId={driverId}  />} title={'Update Driver'} />
-
+            <Modal isOpen={isOpen} setIsOpen={setIsOpen} component={<UpdateDriverFrom setIsOpen={setIsOpen} driverId={driverId} />} title={'Update Driver'} />
         </div>
     );
 };

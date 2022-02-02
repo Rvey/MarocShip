@@ -4,6 +4,7 @@ import Modal from '../../components/ModalContent/Modal';
 import AddDeliveryForm from '../../components/Forms/AddDeliveryForm';
 interface ManagerDeliveriesProps {
     setIsOpen?: (val: boolean) => void;
+    setIsError?: (val: boolean) => void;
 }
 const ManageDeliveries: React.FC<ManagerDeliveriesProps> = () => {
     const [isOpen, setIsOpen] = useState(false);

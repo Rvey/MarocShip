@@ -67,9 +67,9 @@ const Routers = () => {
                     <Route
                         path="/deliveries"
                         element={
-                            <PrivateRoute user="deliveryManager">
+                           
                                 <ManageDeliveries />
-                            </PrivateRoute>
+                          
                         }
                     />
 
@@ -99,7 +99,7 @@ const Routers = () => {
                     <Route path="/restManagerPassword" element={<ResetMPwdPage />} />
                     <Route path="/restDriverPassword" element={<ResetDriverPwdPage />} />
                     <Route path="/restDManagerPassword" element={<ResetDMPwdPage />} />
-                    <Route path="/bomb" element={<BombField name={''} />} />
+                    <Route path="/bomb" element={<BombField />} />
                 </Routes>
             </div>
         </BrowserRouter>

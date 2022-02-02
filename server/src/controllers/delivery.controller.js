@@ -7,7 +7,7 @@ const jwt = require("jsonwebtoken");
 
 const index = async (req, res) => {
     try {
-        const result = await Delivery.find()
+        const result = await Delivery.find().sort({Available: -1})
         if (result) {
             res.status(200).json(result)
         } else {

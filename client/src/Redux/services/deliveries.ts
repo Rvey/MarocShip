@@ -17,6 +17,7 @@ interface Delivery{
     Available:string
     fetched_at: string;
     data:any
+    updatedAt: string;
     driverId:string
 }
 type DeliveryResponse = Delivery[];

@@ -1,12 +1,11 @@
 import { Link, Navigate } from 'react-router-dom';
-import Avatar, { genConfig } from 'react-nice-avatar'
+import Avatar, { genConfig } from 'react-nice-avatar';
 import { useAppSelector, useAppDispatch } from '../../Redux/hook';
-import { selectCount } from '../../Redux/features/counter/counterSlice';
 import { clearData, selectUser } from '../../Redux/features/auth/userSlice';
 import Logo from '../../assets/logo';
-const AvatarConfig = 'className'
+const AvatarConfig = 'className';
 // @ts-ignore
-const config = genConfig('className')
+const config = genConfig('className');
 const LinkStyle =
     'pl-4 py-2 mt-2 text-sm font-semibold text-gray-900 bg-gray-200 rounded-lg dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:bg-gray-600 dark:focus:text-white dark:hover:text-white dark:text-gray-200 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline';
 const Navigation = () => {
@@ -28,34 +27,39 @@ const Navigation = () => {
                         <div className="text-sm font-semibold mt-3 text-white">{user.email}</div>
                         <div className="px-2 text-xs bg-blue-300 mt-3 rounded-md uppercase">{user.role}</div>
                     </div>
-                    <div>Admin Route</div>
-                    <Link to="/" className={`${LinkStyle}`}>
-                        Dashboard
-                    </Link>
-                    <Link to="/Recruit" className={`${LinkStyle}`}>
-                        Drivers Recruiting
-                    </Link>
-                    <Link to="/Managers" className={`${LinkStyle}`}>
-                        Managers
-                    </Link>
-                    <Link to="/Drivers" className={`${LinkStyle}`}>
-                        Drivers
-                    </Link>
-                    <div>manager Route</div>
-                    <Link to="/DeliveryMangers" className={`${LinkStyle}`}>
-                        Manage Delivery Managers
-                    </Link>
-                    <div>driver Route</div>
-                    <Link to="/AcceptDeliveries" className={`${LinkStyle}`}>
-                        Accept Deliveries
-                    </Link>
-                    <div>delivery manager Route</div>
+                    {user.role === 'admin' ? (
+                        <>
+                            <Link to="/" className={`${LinkStyle}`}>
+                                Dashboard
+                            </Link>
+                            <Link to="/Recruit" className={`${LinkStyle}`}>
+                                Drivers Recruiting
+                            </Link>
+                            <Link to="/Managers" className={`${LinkStyle}`}>
+                                Managers
+                            </Link>
+                            <Link to="/Drivers" className={`${LinkStyle}`}>
+                                Drivers
+                            </Link>
+                        </>
+                    ) : user.role === 'manager' || 'admin' ? (
+                        <>
+                            <Link to="/DeliveryMangers" className={`${LinkStyle}`}>
+                                Manage Delivery Managers
+                            </Link>
+                        </>
+                    ) : user.role === 'admin' ? (
+                        <Link to="/deliveries" className={`${LinkStyle}`}>
+                            Manage Deliveries
+                        </Link>
+                    ) : user.role === 'driver' ? (
+                        <Link to="/AcceptDeliveries" className={`${LinkStyle}`}>
+                            Accept Deliveries
+                        </Link>
+                    ) : null}
                     <Link to="/deliveries" className={`${LinkStyle}`}>
-                        Manage Deliveries
-                    </Link>
-                    <Link to="/bomb" className={`${LinkStyle}`}>
-                        bombField
-                    </Link>
+                            Manage Deliveries
+                        </Link>
                 </div>
                 <div>
                     <button

@@ -22,6 +22,7 @@ const index = (req, res) => {
     });
 };
 
+
 const show = async (req, res) => {
   let id = req.params.id;
   try {

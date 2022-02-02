@@ -65,13 +65,11 @@ const store = async (req, res) => {
 
         const newDeliveryManager = await DeliveryManager.create({ email, firstName, lastName, password: hashedPassword })
 
-        const token = jwt.sign({ id: newDeliveryManager._id, email: newDeliveryManager.email }, `${process.env.JWT_SECRET}`, { expiresIn: '1h' })
 
         managerEmail(email, firstName, lastName, password, url, role)
 
         logger.info(`DeliveryManager email: ${newDeliveryManager.email} created by ${req.cookies.role} - ${req.cookies.id}`)
-
-        res.status(200).json({ newDeliveryManager, token })
+        res.status(200).json({ newDeliveryManager })
 
     } catch (err) {
         res.status(400).json({ error: err.message })

@@ -10,6 +10,7 @@ interface Driver {
     name: string;
     file: string;
     verified: string;
+    TotalTraveledDistance: number;
     _id: string;
 }
 type DriverResponse = Driver[];
