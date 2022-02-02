@@ -19,34 +19,34 @@ module.exports = (app) => {
      */
     app.post('/api/manager/resetPassword', ManagerController.resetPassword)
     app.get('/api/manager/',AdminAuth ,ManagerController.index);
-    app.get('/api/manager/:id', ManagerController.show);
-    app.post('/api/manager/', ManagerController.store);
+    app.get('/api/manager/:id',AdminAuth, ManagerController.show);
+    app.post('/api/manager/',AdminAuth, ManagerController.store);
     app.post('/api/manager/login', ManagerController.loginManager);
-    app.delete('/api/manager/:id', ManagerController.destroy);
-    app.put('/api/manager/:id', ManagerController.update)
+    app.delete('/api/manager/:id',AdminAuth, ManagerController.destroy);
+    app.put('/api/manager/:id',AdminAuth, ManagerController.update)
 
     /**
      * Delivery Manager Routes
      */
     app.get('/api/deliveryManager/', DeliveryManager.index);
-    app.get('/api/deliveryManager/:id', DeliveryManager.show);
-    app.post('/api/deliveryManager/', DeliveryManager.store);
+    app.get('/api/deliveryManager/:id',managerAuth, DeliveryManager.show);
+    app.post('/api/deliveryManager/',managerAuth, DeliveryManager.store);
     app.post('/api/deliveryManager/login', DeliveryManager.loginDeliveryManager);
-    app.delete('/api/deliveryManager/:id', DeliveryManager.destroy);
-    app.put('/api/deliveryManager/:id', DeliveryManager.update)
+    app.delete('/api/deliveryManager/:id',managerAuth, DeliveryManager.destroy);
+    app.put('/api/deliveryManager/:id',managerAuth, DeliveryManager.update)
     app.post('/api/deliveryManager/resetPassword', DeliveryManager.resetPassword)
 
     /**
      * Driver Routes
     */
     app.get('/api/driver/', DriverController.index);
-    app.get('/api/driver/:id', DriverController.show);
+    app.get('/api/driver/:id',AdminAuth, DriverController.show);
     app.post('/api/driver/', upload, DriverController.store);
     app.post('/api/driver/login', DriverController.loginDriver);
-    app.delete('/api/driver/:id', DriverController.destroy);
-    app.put('/api/driver/validateDriver/:id', DriverController.validateDriver);
+    app.delete('/api/driver/:id',AdminAuth, DriverController.destroy);
+    app.put('/api/driver/validateDriver/:id',AdminAuth, DriverController.validateDriver);
     app.put('/api/driver/driverBonus/:id', DriverController.driverBonus);
-    app.put('/api/driver/:id', DriverController.update)
+    app.put('/api/driver/:id',AdminAuth, DriverController.update)
     app.post('/api/driver/resetPassword', DriverController.resetPassword)
 
     /**

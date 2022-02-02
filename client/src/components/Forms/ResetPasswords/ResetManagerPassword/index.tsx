@@ -1,4 +1,5 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import { useResetManagerPwdMutation } from '../../../../Redux/services/managers';
 
@@ -9,6 +10,7 @@ const DriverSchema = Yup.object().shape({
 
 const ResetManagerPwd = () => {
     const [updateMPwd] = useResetManagerPwdMutation();
+    let navigate = useNavigate()
     return (
         <Formik
             initialValues={{
@@ -17,7 +19,10 @@ const ResetManagerPwd = () => {
             }}
             validationSchema={DriverSchema}
             onSubmit={(values) => {
-                updateMPwd(values)             
+                updateMPwd(values).then(() => {
+
+                    navigate('/managerLogin');      
+                })    
             }}
         >
             {({ errors, touched }) => (
