@@ -1,7 +1,7 @@
 const nodemailer = require('nodemailer')
 const hbs = require('nodemailer-express-handlebars')
 
-const managerEmail = async (email, firstName , lastName,password) => {
+const managerEmail = async (email, firstName , lastName,password , url , role) => {
   try {
     let mailTransporter = nodemailer.createTransport({
       service: 'gmail',
@@ -30,7 +30,9 @@ const managerEmail = async (email, firstName , lastName,password) => {
         firstName: firstName,
         lastName: lastName,
         email:email,
-        password : password
+        password : password,
+        role : role,
+        url: url
       },
     }
 

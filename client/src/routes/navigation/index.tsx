@@ -1,10 +1,9 @@
 import { Link, Navigate } from 'react-router-dom';
 import Avatar, { genConfig } from 'react-nice-avatar'
-import { useAppDispatch, useAppSelector } from '../Redux/hook';
-import { clearData, selectUser } from '../Redux/features/auth/userSlice';
-import Logo from '../assets/logo';
-
-
+import { useAppSelector, useAppDispatch } from '../../Redux/hook';
+import { selectCount } from '../../Redux/features/counter/counterSlice';
+import { clearData, selectUser } from '../../Redux/features/auth/userSlice';
+import Logo from '../../assets/logo';
 const AvatarConfig = 'className'
 // @ts-ignore
 const config = genConfig('className')

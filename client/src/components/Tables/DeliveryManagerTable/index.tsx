@@ -3,12 +3,14 @@ import { useDeleteDeliveryManagerMutation, useGetDeliveryManagersQuery } from '.
 import UpdateDeliveryManagerFrom from '../../Forms/UpdateDeliveryManager';
 import UpdateDriverFrom from '../../Forms/UpdateDriverForm';
 import ConfirmDeleteDelivery from '../../ModalContent/ConfirmDeleteDelivery';
+import ConfirmDeleteDeliveryManager from '../../ModalContent/ConfirmDeleteDManager';
 import Modal from '../../ModalContent/Modal';
 
 
 const DeliveryManagerTable = () => {
     const { data, error, isLoading, refetch } = useGetDeliveryManagersQuery();
     const [isOpen , setIsOpen] = useState(false)
+    const [isOpenDelete , setIsOpenDelete] = useState(false)
     const [DManagerID , setDManagerID] = useState('')
 
     return (
@@ -39,26 +41,28 @@ const DeliveryManagerTable = () => {
                                     <td className="py-4 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">{deliveryManager.lastName}</td>
                                     <td className="py-4 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">{deliveryManager.email}</td>
                                     <td className="py-4 px-6 text-sm font-medium text-right whitespace-nowrap">
-                                        <button
-                                            type="button"
-                                            onClick={() => {
-                                                setDManagerID(deliveryManager._id)
-                                                setIsOpen(!isOpen)
-                                            }}
-                                            className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900"
-                                        >
-                                            edit
-                                        </button>
-                                        <button
-                                            type="button"
-                                            onClick={() => {
-                                                setDManagerID(deliveryManager._id)
-                                                setIsOpen(!isOpen)
-                                            }}
-                                            className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900"
-                                        >
-                                            delete
-                                        </button>
+                                    <div className="space-x-3">
+                                                <button
+                                                    type="button"
+                                                    onClick={() => {
+                                                        setDManagerID(deliveryManager._id)
+                                                        setIsOpen(!isOpen)
+                                                    }}
+                                                    className="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-600 dark:focus:ring-blue-800"
+                                                >
+                                                    Edit
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => {
+                                                        setDManagerID(deliveryManager._id)
+                                                        setIsOpenDelete(!isOpen)
+                                                    }}
+                                                    className=" text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-800"
+                                                >
+                                                    delete
+                                                </button>
+                                            </div>
                                     </td>
                                 </tr>
                             ))}
@@ -66,7 +70,7 @@ const DeliveryManagerTable = () => {
                 </table>
             </div>
             <Modal isOpen={isOpen} setIsOpen={setIsOpen} component={<UpdateDeliveryManagerFrom setIsOpen={setIsOpen} dManagerId={DManagerID}/>} title='Update Delivery Manager'/>
-            {/* <ConfirmDeleteDelivery isOpen={isOpen} setIsOpen={setIsOpen}  driverId={DManagerID}  /> */}
+            <ConfirmDeleteDeliveryManager isOpen={isOpenDelete} setIsOpen={setIsOpenDelete}  deliveryMId={DManagerID}  />
         </div>
     );
 };

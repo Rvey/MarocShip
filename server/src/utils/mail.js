@@ -23,7 +23,7 @@ const sendMail = async (email, name, from, to, weight , deliveryId) => {
     let mailDetails = {
       from: process.env.EMAIL,
       to: `${email}`,
-      subject: 'Nice Nodemailer test',
+      subject: 'Delivery Notification',
       text: 'Hey there, New Delivery Available ! ;) ',
       template: 'email',
       context: {

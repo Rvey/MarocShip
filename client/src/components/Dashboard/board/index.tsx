@@ -4,6 +4,7 @@ interface TopDriversProps {
 }
 const TopDrivers: React.FC<TopDriversProps> = () => {
     const AvatarConfig = 'className'
+    // @ts-ignore
     const config = genConfig(AvatarConfig)
     return ( 
         <div className="p-4 w-[27em] bg-slate-300 rounded-lg border shadow-md sm:p-4 dark:bg-gray-800 dark:border-gray-700">

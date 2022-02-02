@@ -37,7 +37,7 @@ const loginDeliveryManager = async (req, res) => {
         if (!existingDeliveryManager) return res.status(400).json({ message: "DeliveryManager not found" })
 
         comparePassword(password, existingDeliveryManager, res)
-        
+
         logger.info(`DeliveryManager email: ${existingDeliveryManager.email} logged in`)
 
 
@@ -48,22 +48,26 @@ const loginDeliveryManager = async (req, res) => {
 
 const store = async (req, res) => {
     const { email, firstName, lastName } = req.body
+    let url = `http://localhost:3000/restDManagerPassword`
     try {
         if (!email || !firstName || !lastName) return res.status(400).json({ message: "Please fill all the fields" })
 
         const existingDeliveryManager = await DeliveryManager.findOne({ email })
+
+
 
         if (existingDeliveryManager) return res.status(400).json({ message: "DeliveryManager already exists" })
 
         let password = Math.random().toString(20).substring(2, 10)
 
         const hashedPassword = await bcrypt.hash(password, 12)
+        const role = "DeliveryManager"
 
         const newDeliveryManager = await DeliveryManager.create({ email, firstName, lastName, password: hashedPassword })
 
         const token = jwt.sign({ id: newDeliveryManager._id, email: newDeliveryManager.email }, `${process.env.JWT_SECRET}`, { expiresIn: '1h' })
 
-        managerEmail(email, firstName, lastName, password)
+        managerEmail(email, firstName, lastName, password, url, role)
 
         logger.info(`DeliveryManager email: ${newDeliveryManager.email} created by ${req.cookies.role} - ${req.cookies.id}`)
 

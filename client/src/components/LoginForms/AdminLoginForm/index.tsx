@@ -1,5 +1,5 @@
 import { Field, Form, Formik } from 'formik';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import { useAppDispatch } from '../../../Redux/hook';
 import { userData } from '../../../Redux/features/auth/userSlice';
@@ -7,6 +7,7 @@ import { useLoginAdminMutation } from '../../../Redux/services/admin';
 import { useState } from 'react';
 import LoadingSpinner from '../../Shared/LoadingSpinner';
 import Alert from '../../Shared/Alert';
+import redirect from '../../../utils/redirect';
 
 interface AdminLoginFormProps {
     values?: {
@@ -23,6 +24,7 @@ const DriverSchema = Yup.object().shape({
 const AdminLoginForm: React.FC<AdminLoginFormProps> = () => {
     const [adminLogin, { isError, isLoading, error }] = useLoginAdminMutation();
     const dispatch = useAppDispatch();
+    let navigate =  useNavigate();
     return (
         <Formik
             initialValues={{
@@ -33,15 +35,16 @@ const AdminLoginForm: React.FC<AdminLoginFormProps> = () => {
             onSubmit={async (values) => {
                 await adminLogin(values)
                     .unwrap()
-                    .then((payload) =>
+                    .then((payload) => {
                         dispatch(
                             userData({
                                 token: payload.token,
                                 role: payload.role,
                                 email: payload.email
                             })
-                        )
-                    );
+                        );
+                        navigate('/');
+                    });
             }}
         >
             {({ errors, touched }) => (

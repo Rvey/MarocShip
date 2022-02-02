@@ -1,5 +1,5 @@
 import { Field, Form, Formik } from 'formik';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import { useAppDispatch } from '../../../Redux/hook';
 import { userData } from '../../../Redux/features/auth/userSlice';
@@ -22,7 +22,7 @@ const DriverSchema = Yup.object().shape({
 const ManagerLoginForm: React.FC<ManagerLoginFormProps> = () => {
     const [DriverLogin, { error, isError, isLoading }] = useLoginDriverManagerMutation();
     const dispatch = useAppDispatch();
-
+    let navigate = useNavigate();
     return (
         <Formik
             initialValues={{
@@ -34,13 +34,15 @@ const ManagerLoginForm: React.FC<ManagerLoginFormProps> = () => {
                 await DriverLogin(values)
                     .unwrap()
                     .then((payload) =>
-                        dispatch(
+                     {   dispatch(
                             userData({
                                 token: payload.token,
                                 role: payload.role,
                                 email: payload.email
                             })
                         )
+                    navigate('/AcceptDeliveries')
+                    }
                     );
             }}
         >

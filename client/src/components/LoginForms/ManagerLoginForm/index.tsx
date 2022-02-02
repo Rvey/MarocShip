@@ -1,5 +1,5 @@
 import { Field, Form, Formik } from 'formik';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import { useLoginManagerMutation } from '../../../Redux/services/managers';
 import { useAppDispatch } from '../../../Redux/hook';
@@ -20,7 +20,7 @@ const DriverSchema = Yup.object().shape({
 const ManagerLoginForm: React.FC<ManagerLoginFormProps> = () => {
     const [ManagerLogin, { error, isError , isLoading }] = useLoginManagerMutation();
     const dispatch = useAppDispatch();
-
+    let navigate = useNavigate();
     return (
         <Formik
             initialValues={{
@@ -32,13 +32,15 @@ const ManagerLoginForm: React.FC<ManagerLoginFormProps> = () => {
                 await ManagerLogin(values)
                     .unwrap()
                     .then((payload) =>
-                        dispatch(
+                    {    dispatch(
                             userData({
                                 token: payload.token,
                                 role: payload.role,
                                 email: payload.email
                             })
                         )
+                        navigate('/DeliveryMangers')
+                    }
                     );
             }}
         >

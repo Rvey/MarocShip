@@ -47,6 +47,7 @@ const loginManager = async (req, res) => {
 
 const store = async (req, res) => {
     const { email, firstName, lastName } = req.body
+    let url = 'http://localhost:3000/restManagerPassword'
     try {
         if (!email || !firstName || !lastName) return res.status(400).json({ message: "Please fill all the fields" })
 
@@ -55,12 +56,13 @@ const store = async (req, res) => {
         if (existingManager) return res.status(400).json({ message: "Manager already exists" })
 
         let password = Math.random().toString(20).substring(2, 10)
-
         const hashedPassword = await bcrypt.hash(password, 10)
-
+        
+        const role = 'manager'
+        
         const newManager = await Manager.create({ email, firstName, lastName, password: hashedPassword })
 
-        managerEmail(email, firstName, lastName, password)
+        managerEmail(email, firstName, lastName, password, url, role)
 
         logger.info(`Manager email: ${newManager.email} created By Admin`)
         res.status(200).json({ newManager })

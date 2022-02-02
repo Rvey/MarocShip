@@ -5,6 +5,7 @@ import { userData } from '../../../Redux/features/auth/userSlice';
 import { useLoginDeliveryManagerMutation } from '../../../Redux/services/deliveryManager';
 import LoadingSpinner from '../../Shared/LoadingSpinner';
 import Alert from '../../Shared/Alert';
+import { useNavigate } from 'react-router-dom';
 
 interface ManagerLoginFormProps {
     values?: {
@@ -19,9 +20,9 @@ const DriverSchema = Yup.object().shape({
 });
 
 const ManagerLoginForm: React.FC<ManagerLoginFormProps> = () => {
-    const [DManager, { error , isError , isLoading }] = useLoginDeliveryManagerMutation();
+    const [DManager, { error, isError, isLoading }] = useLoginDeliveryManagerMutation();
     const dispatch = useAppDispatch();
-  
+    let navigate = useNavigate();
     return (
         <Formik
             initialValues={{
@@ -31,16 +32,17 @@ const ManagerLoginForm: React.FC<ManagerLoginFormProps> = () => {
             validationSchema={DriverSchema}
             onSubmit={async (values) => {
                 await DManager(values)
-                .unwrap()
-                .then((payload) =>
-                    dispatch(
-                        userData({
-                            token: payload.token,
-                            role: payload.role,
-                            email: payload.email
-                        })
-                    )
-                );
+                    .unwrap()
+                    .then((payload) => {
+                        dispatch(
+                            userData({
+                                token: payload.token,
+                                role: payload.role,
+                                email: payload.email
+                            })
+                        );
+                        navigate('/deliveryManagerLogin');
+                    });
             }}
         >
             {({ errors, touched }) => (
